@@ -1,0 +1,48 @@
+<div class="container">
+    <h1 class="text-center mb-4">Nosso Acervo de Fotos</h1>
+    <div id="imageContainer" class="row">
+        <!-- As imagens serão carregadas aqui pelo JavaScript -->
+    </div>
+    <nav aria-label="Paginação do Acervo" class="acervo-pagination-nav">
+        <ul id="paginationContainer" class="pagination justify-content-center">
+            <!-- Os controles de paginação serão carregados aqui pelo JavaScript -->
+        </ul>
+    </nav>
+</div>
+
+<script>
+// Função simplificada para carregar o acervo
+function loadAcervo() {
+    console.log('Carregando acervo...');
+    
+    // Verificar se o jQuery está disponível
+    if (typeof $ === 'undefined') {
+        console.log('jQuery não disponível, tentando novamente...');
+        setTimeout(loadAcervo, 100);
+        return;
+    }
+    
+    // Resetar o flag de inicialização do acervo
+    window.acervoInitialized = false;
+    
+    // Carregar o script do acervo
+    $.getScript('INDEX/jsAPP/acervo.js')
+        .done(function() {
+            console.log('Script do acervo carregado com sucesso');
+        })
+        .fail(function(jqxhr, settings, exception) {
+            console.error('Erro ao carregar script do acervo:', exception);
+        });
+}
+
+// Executar imediatamente
+loadAcervo();
+
+// Também quando o documento estiver pronto
+$(document).ready(function() {
+    if (!window.acervoInitialized) {
+        setTimeout(loadAcervo, 100);
+    }
+});
+</script>
+   

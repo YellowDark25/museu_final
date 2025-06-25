@@ -1,0 +1,922 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+:root {
+    --navbar-height: 0;
+    --footer-height: 0;
+}
+
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/*Menu2*/
+.navbar {
+   background-color: #d12424 !important;
+}
+
+.navbar-brand {
+   color: white !important;
+}
+
+.navbar-nav .nav-link {
+   color: white !important;
+}
+
+.navbar-nav .nav-link:hover {
+   color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.dropdown-menu {
+   background-color: white !important;
+}
+
+.dropdown-menu .dropdown-item {
+   color: #d12424 !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+   background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Menu principal */
+nav {
+   background-color: #d12424;
+   padding: 10px 60px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+nav .logo a {
+   text-decoration: none;
+   color: #fff;
+   font-size: 18px;
+   font-weight: 450;
+   margin-right: 15px;
+}
+
+nav ul {
+   display: flex;
+   align-items: center;
+   list-style: none;
+   padding: 10px;
+}
+
+nav li {
+   margin-left: 7px;
+}
+
+nav li a {
+   text-decoration: none;
+   color: #fff;
+   font-size: 15px;
+   font-weight: 500;
+   padding: 8px 15px;
+   border-radius: 5px;
+   transition: 0.3s;
+}
+
+nav li a:hover {
+   background-color: white;
+   color: black;
+}
+
+/* Home Page Banner - Specific to index_firstpage.html */
+.homepage-banner {
+   height: 100vh;
+   background: linear-gradient(rgba(0, 0, 0, 0.281), rgba(0, 0, 0, 0.308)),
+      url("fundo1.jpg");
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   animation: changeBackground 24s infinite ease-in-out;
+   transition: background 3s ease-in-out;
+}
+
+@keyframes changeBackground {
+   0%, 20% {
+      background-image: linear-gradient(
+            rgba(0, 0, 0, 0.281),
+            rgba(0, 0, 0, 0.308)
+         ),
+         url("fundo1.jpg");
+   }
+   25%, 45% {
+      background-image: linear-gradient(
+            rgba(0, 0, 0, 0.281),
+            rgba(0, 0, 0, 0.308)
+         ),
+         url("fundo2.jpg");
+   }
+   50%, 70% {
+      background-image: linear-gradient(
+            rgba(0, 0, 0, 0.281),
+            rgba(0, 0, 0, 0.308)
+         ),
+         url("fundo3.jpg");
+   }
+   75%, 95% {
+      background-image: linear-gradient(
+            rgba(0, 0, 0, 0.281),
+            rgba(0, 0, 0, 0.308)
+         ),
+         url("fundo4.jpg");
+   }
+   100% {
+      background-image: linear-gradient(
+            rgba(0, 0, 0, 0.281),
+            rgba(0, 0, 0, 0.308)
+         ),
+         url("fundo1.jpg");
+   }
+}
+
+.banner1 {
+   /* height: 150vh; */
+   background: rgba(255, 160, 122);
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+}
+
+.banner2 {
+   height: 100vh;
+   background: rgba(255, 160, 122);
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   text-align: left;
+}
+
+.justificado {
+   text-align: justify;
+}
+
+.recuo-primeira-linha {
+   text-indent: 20px;
+   text-indent: 1.25cm;
+   /* margin-top: -10px;
+   margin-right: 250px;
+   margin-bottom: 10px;
+   margin-left: 250px; */
+   padding: 0 3rem 1rem 3rem;
+   margin: 0;
+}
+.margens-autor {
+   margin-top: 2px;
+   margin-right: 60px;
+   margin-bottom: 2px;
+   margin-left: 60px;
+}
+
+p {
+   color: black;
+   text-align: left;
+   font-size: 18px;
+}
+
+h1 {
+   text-align: center;
+   color: #333;
+}
+
+h2 {
+   color: #dc143c;
+}
+
+h3 {
+   text-align: center;
+   color: white;
+}
+h4 {
+   text-align: left;
+   color: black;
+   font-style: italic;
+   font-weight: normal;
+}
+
+h5 {
+   text-align: center;
+   color: #000000;
+}
+
+.h6 {
+   color: white;
+   text-align: left;
+   display: block;
+   font-size: 16px;
+   font-weight: normal;
+}
+
+.colored-link {
+   display: inline-block;
+   padding: 5px 10px;
+   background-color: rgba(209, 36, 36, 0.5);
+   color: #fff;
+   text-decoration: none;
+}
+
+.texto-titulo {
+   color: #fff;
+   font-size: 60px;
+   font-weight: 600;
+}
+
+.texto-titulo1 {
+   color: #000000;
+   font-size: 60px;
+   font-weight: 600;
+}
+
+.texto-sub_titulo {
+   color: #fff;
+   font-size: 30px;
+   font-weight: 600;
+}
+
+.texto-sub_titulo1 {
+   margin: 0 2rem;
+   color: #000000;
+   font-size: 30px;
+   font-weight: 600;
+}
+
+.texto .botoes {
+   margin-top: 30px;
+}
+
+.texto .botoes button {
+   height: 55px;
+   width: 170px;
+   border-radius: 5px;
+   border: 0;
+   margin: 0 10px;
+   font-size: 20px;
+   font-weight: 500;
+   padding: 0 10px;
+   cursor: pointer;
+   outline: none;
+   transition: 0.3s;
+}
+
+.texto .botoes button.n-overlay {
+   color: white;
+   background: none;
+   border: 2px solid white;
+}
+
+.texto .botoes button.n-overlay:hover {
+   color: black;
+   background-color: #d12424;
+}
+
+@keyframes vibrar {
+   0% {
+      transform: scale(1);
+   }
+
+   50% {
+      transform: scale(1.1);
+   }
+
+   100% {
+      transform: scale(1);
+   }
+}
+
+.botoes1 {
+   text-align: center;
+   margin-top: 20px;
+}
+
+.botoes1 button {
+   background-color: #d12424;
+   color: #fff;
+   border: none;
+   padding: 10px 20px;
+   font-size: 16px;
+   cursor: pointer;
+   transition: background-color 0.3s ease;
+}
+
+.botoes1 button:hover {
+   background-color: #d12424;
+}
+
+/* Social Buttons */
+.social-button {
+   display: inline-block;
+   background-color: #c41b3d;
+   color: #fff;
+   padding: 5px 10px;
+   text-decoration: none;
+   border-radius: 10px;
+}
+
+ .social-button i {
+   margin-right: 5px;
+} 
+
+.social-button1 {
+   display: inline-block;
+   background-color: #3b5998;
+   color: #fff;
+   padding: 5px 10px;
+   text-decoration: none;
+   border-radius: 10px;
+}
+
+ .social-button1 i {
+   margin-right: 5px;
+} 
+
+/* Estilo para o rodapé */
+footer {
+   background-color: #d12424;
+   color: white;
+   padding: 20px 0;
+   text-align: center;
+   margin-top: auto; /* Push footer to the bottom */
+}
+
+.footer-content {
+    padding: 15px 0; /* Melhor espaçamento vertical do footer */
+    min-height: 120px; /* Altura mínima para o footer */
+}
+
+footer p {
+    margin-bottom: 5px; /* Pequena margem para melhor espaçamento */
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+footer a {
+   text-decoration: none;
+   color: white;
+   font-weight: 500;
+   font-size: 15px;
+}
+
+footer a:hover {
+   text-decoration: underline;
+   color: #ffcccc;
+}
+
+.footer-logo {
+   border-radius: 8px;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+   transition: transform 0.3s ease;
+}
+
+.footer-logo:hover {
+   transform: scale(1.05);
+}
+
+/* Estilo para o botão da galeria */
+.botao-galeria {
+   display: inline-block;
+   padding: 60px 10px;
+   background-image: url("oficinatinta/foto10.jpeg");
+   background-size: cover;
+   width: 350px;
+   height: 350px;
+   border: none;
+   cursor: pointer;
+   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+      1px 1px 0 black;
+   color: white;
+   text-decoration: none;
+   border-radius: 0px;
+   font-weight: bold;
+   text-align: center;
+   line-height: 1;
+}
+
+.botao-galeria1 {
+   display: inline-block;
+   padding: 60px 10px;
+   background-image: url("album1/foto9.jpg");
+   background-size: cover;
+   width: 350px;
+   height: 350px;
+   border: none;
+   cursor: pointer;
+   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+      1px 1px 0 black;
+   color: white;
+   text-decoration: none;
+   border-radius: 0px;
+   font-weight: bold;
+   text-align: center;
+   line-height: 1;
+}
+
+.botao-galeria2 {
+   display: inline-block;
+   padding: 60px 10px;
+   background-image: url("album2/foto7.jpg");
+   background-size: cover;
+   width: 350px;
+   height: 350px;
+   border: none;
+   cursor: pointer;
+   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+      1px 1px 0 black;
+   color: white;
+   text-decoration: none;
+   border-radius: 0px;
+   font-weight: bold;
+   text-align: center;
+   line-height: 1;
+}
+
+
+
+botao-galeria {
+   display: inline-block;
+   padding: 60px 10px;
+   background-image: url("oficinatinta/foto10.jpeg");
+   background-size: cover;
+   width: 350px;
+   height: 350px;
+   border: none;
+   cursor: pointer;
+   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+      1px 1px 0 black;
+   color: white;
+   text-decoration: none;
+   border-radius: 0px;
+   font-weight: bold;
+   text-align: center;
+   line-height: 1;
+   border-left: 50px
+}
+
+/* Estilo para a galeria */
+.gallery-container {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-evenly;
+   gap: 2vw;
+   padding: 0 2vw;
+}
+
+.gallery-items {
+   width: 300px;
+   height: 303px;
+   border: 10px solid #fff;
+   box-shadow: 5px 5px 5px #0006;
+   flex-grow: 1;
+   transition: transform 0.5s linear;
+}
+
+.gallery-items img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.gallery-items:hover {
+   transform: scale(1.3);
+}
+
+/* Adicione este estilo para navegar entre as imagens */
+.gallery-items a {
+   position: relative;
+   display: block;
+   width: 100%;
+   height: 100%;
+}
+
+.gallery-items a::before {
+   content: "";
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   opacity: 0;
+}
+
+.gallery-items:hover a::before {
+   opacity: 1;
+   background: rgba(0, 0, 0, 0.5);
+   transition: opacity 0.3s;
+   cursor: pointer;
+}
+
+.texto_meio {
+   background: rgba(255, 160, 122);
+ 
+}
+
+.texto_meio1 {
+   background-color: #d12424; /* Updated color */
+   border: 1px solid #ccc;
+   padding: 20px;
+   max-width: 900px;
+   margin: 0 auto;
+}
+
+.texto_meio1 h3 {
+   font-size: 40px;
+   margin-bottom: 10px;
+}
+
+.texto_meio1 p {
+   font-size: 18px;
+   line-height: 1.5;
+   text-indent: 1.25cm;
+}
+
+/* Main Navigation */
+nav {
+   background-color: #d12424; /* Updated color */
+   color: #fff;
+   padding: 10px;
+}
+
+nav .logo a {
+   color: #fff;
+   font-weight: bold;
+   text-decoration: none;
+}
+
+nav ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+}
+
+nav ul li {
+   position: relative;
+   display: inline-block;
+}
+
+nav ul li a {
+   color: #fff;
+   display: block;
+   padding: 10px;
+   text-decoration: none;
+}
+
+nav ul li:hover > a {
+   background-color: #fa5555;
+}
+
+/* Sub-menus */
+nav ul li .sub-menu {
+   display: none;
+   position: absolute;
+   top: 100%;
+   left: 0;
+   background-color: #ffffff;
+   min-width: 200px;
+   padding: 10px 0;
+   z-index: 999;
+}
+
+nav ul li:hover > .sub-menu {
+   display: block;
+}
+
+nav ul li .sub-menu li {
+   display: block;
+}
+
+nav ul li .sub-menu li a {
+   color: #fa5555;
+   padding: 10px;
+   text-decoration: none;
+}
+
+nav ul li .sub-menu li a:hover {
+   background-color: #d12424;
+}
+
+/* Adjustments for Mobile Devices */
+@media screen and (max-width: 768px) {
+   nav ul li {
+      display: block;
+   }
+
+   nav ul li .sub-menu {
+      position: static;
+      background-color: transparent;
+      padding: 0;
+   }
+
+   nav ul li .sub-menu li a {
+      padding-left: 20px;
+   }
+}
+
+/* Estilos para o slideshow */
+.slideshow-container {
+   position: relative;
+   max-width: 100%;
+   overflow: hidden;
+   height: 100vh;
+}
+
+.slide {
+   display: none;
+   width: 100%;
+   height: 100%;
+   position: absolute; /* Adicione position absolute para sobrepor as imagens */
+   opacity: 0; /* Inicialmente, defina a opacidade para 0 (totalmente transparente) */
+   transition: opacity 2s ease-in-out; /* Adicione a transição de 1 segundo para suavizar a mudança de opacidade */
+}
+
+.slide img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+/* Animação */
+.fade {
+   animation-name: fade;
+   animation-duration: 5s; /* Ajuste a duração da animação conforme necessário */
+   animation-timing-function: ease-in-out;
+   animation-iteration-count: infinite;
+}
+
+@keyframes fade {
+   0%,
+   100% {
+      opacity: 0; /* Comece e termine com 0% de opacidade (totalmente transparente) */
+   }
+   25%,
+   75% {
+      opacity: 1; /* Chegue a 100% de opacidade (totalmente visível) nos 25% e 75% da animação */
+   }
+}
+
+/* BARRA DE PESQUISA */
+
+
+.button-container {
+   text-align: center;
+}
+
+.ano-button-container {
+   margin: 10px;
+   display: inline-block;
+}
+
+.ano-button {
+   background-color: #d12424;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   cursor: pointer;
+}
+
+.ano-button:focus + a {
+   display: block;
+}
+
+.sub-botoes {
+   display: none;
+   text-align: center;
+}
+.large-button {
+   width: 550px;
+   height: 45px;
+}
+a {
+   text-decoration: none;
+   color: #3498db;
+}
+
+.team-member {
+   border: 1px rgba(209, 36, 36);
+   padding: 30px;
+   margin: 40px;
+   text-align: center;
+   width: 300px;
+   display: inline-block;
+   background-color: rgba(209, 36, 36, 0.5);
+}
+
+.team-member img {
+   max-width: 150px;
+   border-radius: 10%;
+}
+
+.imagem-paginas {
+   width: 90%;
+   height: auto;
+   text-align: center;
+}
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+   .navbar-collapse .form-control-sm {
+      max-width: 70%;
+   }
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 576px) {
+   .navbar-collapse .form-control-sm {
+      max-width: 70%;
+   }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+   .navbar-collapse .navbar-brand {
+      font-size: 0.5rem;
+   }
+   .navbar-collapse .nav-link {
+      font-size: 0.4rem;
+   }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+   .navbar-collapse .navbar-brand {
+      font-size: 0.8rem;
+   }
+   .navbar-collapse .nav-link {
+      font-size: 0.6rem;
+   }
+   .recuo-primeira-linha {
+      padding: 0 10rem 2rem 10rem;
+   }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+   .navbar-collapse .form-control-sm {
+      max-width: 80%;
+   }
+   .navbar-collapse .navbar-brand {
+      font-size: 1.2rem;
+   }
+   .navbar-collapse .nav-link {
+      font-size: 1rem;
+   }
+}
+
+.acervo-card {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.acervo-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.acervo-image {
+    width: 100%;
+    height: 250px; /* Altura fixa para todas as imagens */
+    object-fit: cover; /* Garante que a imagem cubra o espaço sem distorcer */
+    border-radius: 8px 8px 0 0;
+    transition: transform 0.3s ease-in-out;
+}
+
+.acervo-image:hover {
+    transform: scale(1.05); /* Leve zoom na imagem ao passar o mouse */
+}
+
+.acervo-title {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #333;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eee;
+}
+
+.acervo-pagination {
+    margin-top: 30px; /* Espaço acima da paginação */
+    margin-bottom: 60px; /* Espaço abaixo da paginação para evitar sobreposição com o footer */
+    background-color: transparent !important; /* Remove qualquer fundo */
+    justify-content: center !important; /* Força centralização */
+    display: flex !important;
+    width: 100%;
+}
+
+.acervo-pagination .page-item .page-link {
+    color: #d12424;
+}
+
+.acervo-pagination .page-item.active .page-link {
+    background-color: #d12424;
+    border-color: #d12424;
+    color: white;
+}
+
+.acervo-pagination .page-item.active .page-link:hover {
+    background-color: #b01f1f;
+    border-color: #b01f1f;
+}
+
+.acervo-pagination .page-item {
+    background-color: transparent !important; /* Remove qualquer fundo dos itens */
+}
+
+.acervo-pagination .page-link {
+    background-color: white !important; /* Fundo branco para os links */
+    border: 1px solid #d12424;
+    margin: 0 2px; /* Pequeno espaçamento entre os botões */
+}
+
+/* Força remoção de qualquer fundo vermelho no container da paginação */
+nav[aria-label="Paginação do Acervo"] {
+    background-color: transparent !important;
+    background: none !important;
+}
+
+.pagination {
+    background-color: transparent !important;
+    background: none !important;
+}
+
+.acervo-pagination-nav {
+    padding: 20px 0 40px 0; /* Espaçamento adicional acima e abaixo da navegação */
+    margin-bottom: 30px; /* Margem extra para separar do footer */
+    background-color: transparent !important; /* Remove qualquer fundo */
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+/* Ensure main content adapts its height */
+#conteudo {
+    flex-grow: 1; /* Allow #conteudo to take available space */
+    min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content to the top */
+}
+
+/* Media queries específicas para o footer */
+@media only screen and (max-width: 768px) {
+   .footer-content {
+      padding: 10px 0;
+      min-height: auto;
+   }
+   
+   .footer-content .col-md-2 {
+      margin-bottom: 15px;
+      padding: 5px;
+   }
+   
+   footer a {
+      font-size: 13px;
+   }
+   
+   footer p {
+      font-size: 11px;
+      line-height: 1.3;
+   }
+   
+   .footer-logo {
+      width: 60px !important;
+      height: 60px !important;
+   }
+   
+   .acervo-pagination-nav {
+      padding: 15px 0 30px 0; /* Espaçamento reduzido em telas menores */
+      margin-bottom: 20px;
+      background-color: transparent !important; /* Remove qualquer fundo */
+      display: flex;
+      justify-content: center; /* Centraliza horizontalmente */
+      align-items: center; /* Centraliza verticalmente */
+   }
+}
+
+
