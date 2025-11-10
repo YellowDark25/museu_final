@@ -1,0 +1,422 @@
+/* AIDEV-NOTE: Estilos de acessibilidade WCAG 2.1 AA */
+
+/* Skip Links - Navegação por teclado */
+.skip-links {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 9999;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 0 0 4px 0;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #ffff00;
+  outline-offset: 2px;
+}
+
+/* Controles de Acessibilidade */
+.accessibility-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9998;
+  background: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.accessibility-toggle:hover {
+  background: #374151;
+  transform: scale(1.05);
+}
+
+.accessibility-toggle:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.accessibility-panel {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9997;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  min-width: 280px;
+  max-width: 320px;
+}
+
+.accessibility-panel-content {
+  padding: 20px;
+}
+
+.accessibility-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #1f2937;
+}
+
+.accessibility-controls-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+}
+
+.control-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.control-checkbox:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.font-size-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.font-size-btn {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 40px;
+}
+
+.font-size-btn:hover {
+  background: #e5e7eb;
+}
+
+.font-size-btn:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.font-size-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.font-size-btn:first-child {
+  font-size: 12px;
+}
+
+.font-size-btn:nth-child(2) {
+  font-size: 14px;
+}
+
+.font-size-btn:last-child {
+  font-size: 16px;
+}
+
+.accessibility-close {
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 16px;
+  width: 100%;
+  transition: background 0.2s ease;
+}
+
+.accessibility-close:hover {
+  background: #4b5563;
+}
+
+.accessibility-close:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Classes de acessibilidade aplicadas ao root */
+
+/* Tamanhos de fonte */
+.font-small {
+  font-size: 14px;
+}
+
+.font-medium {
+  font-size: 16px;
+}
+
+.font-large {
+  font-size: 18px;
+}
+
+.font-small h1 { font-size: 1.8rem; }
+.font-small h2 { font-size: 1.5rem; }
+.font-small h3 { font-size: 1.3rem; }
+.font-small h4 { font-size: 1.1rem; }
+.font-small h5 { font-size: 1rem; }
+.font-small h6 { font-size: 0.9rem; }
+
+.font-large h1 { font-size: 2.8rem; }
+.font-large h2 { font-size: 2.3rem; }
+.font-large h3 { font-size: 2rem; }
+.font-large h4 { font-size: 1.7rem; }
+.font-large h5 { font-size: 1.4rem; }
+.font-large h6 { font-size: 1.2rem; }
+
+/* Alto contraste */
+.high-contrast {
+  filter: contrast(150%) brightness(110%);
+}
+
+.high-contrast * {
+  border-color: #000 !important;
+}
+
+.high-contrast a {
+  color: #0000ff !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast a:visited {
+  color: #800080 !important;
+}
+
+.high-contrast button {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+
+.high-contrast .bg-white {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.high-contrast .bg-gray-100,
+.high-contrast .bg-gray-50 {
+  background: #f0f0f0 !important;
+  color: #000 !important;
+}
+
+.high-contrast .text-gray-600,
+.high-contrast .text-gray-500,
+.high-contrast .text-gray-400 {
+  color: #000 !important;
+}
+
+/* Movimento reduzido */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Modo leitor de tela */
+.screen-reader-mode {
+  font-family: 'Arial', sans-serif !important;
+  line-height: 1.6 !important;
+}
+
+.screen-reader-mode * {
+  font-family: inherit !important;
+}
+
+.screen-reader-mode img {
+  border: 1px solid #ccc !important;
+}
+
+.screen-reader-mode button,
+.screen-reader-mode a {
+  outline: 2px solid #000 !important;
+  outline-offset: 2px !important;
+}
+
+/* Utilitários para screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Focus visível melhorado */
+*:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Melhor contraste para links */
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: #7c3aed;
+}
+
+/* Botões com melhor acessibilidade */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Formulários acessíveis */
+input:invalid {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px #dc2626;
+}
+
+input:valid {
+  border-color: #16a34a;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* Tabelas acessíveis */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+/* Navegação por teclado melhorada */
+.keyboard-navigation *:focus {
+  outline: 3px solid #fbbf24;
+  outline-offset: 2px;
+  z-index: 1;
+  position: relative;
+}
+
+/* Responsividade para controles de acessibilidade */
+@media (max-width: 768px) {
+  .accessibility-toggle {
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .accessibility-panel {
+    top: 65px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+
+  .font-size-controls {
+    justify-content: space-between;
+  }
+}
+
+/* Modo escuro com alto contraste */
+@media (prefers-color-scheme: dark) {
+  .high-contrast {
+    background: #000 !important;
+    color: #fff !important;
+  }
+
+  .high-contrast * {
+    background: inherit !important;
+    color: inherit !important;
+  }
+
+  .high-contrast a {
+    color: #87ceeb !important;
+  }
+
+  .high-contrast button {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
+/* Animações respeitando preferências do usuário */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
