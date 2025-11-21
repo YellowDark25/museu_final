@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+// AIDEV: Polyfill global para Promise.withResolvers (necessário para pdfjs-dist em Node < 22)
+import "@/lib/polyfills/promiseWithResolvers";
 import "./globals.css";
 import { AccessibilityProvider, SkipLinks, AccessibilityControls } from "@/components/accessibility/AccessibilityProvider";
 import Header from "@/components/layout/Header";

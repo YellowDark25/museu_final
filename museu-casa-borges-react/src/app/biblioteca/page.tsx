@@ -11,21 +11,8 @@ import { Input } from '@/components/ui/input'
 import { 
   Search, 
   BookOpen, 
-  Download, 
-  Eye, 
-  Heart,
-  Calendar,
-  User,
-  Tag,
-  Star,
-  Clock,
-  Globe,
-  Filter,
   Library,
   FileText,
-  Headphones,
-  Video,
-  Bookmark,
   GraduationCap
 } from 'lucide-react'
 import { usePDFData, usePDFDataByCategory } from '@/hooks/usePDFData'
@@ -243,139 +230,11 @@ export default function BibliotecaPage() {
               />
             </TabsContent>
 
-            {/* AIDEV-NOTE: Seção de recursos e metodologia fora das tabs */}
-            <div className="space-y-6 mt-8">
-              {/* Seção de Metodologia de Pesquisa */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Metodologia de Pesquisa</CardTitle>
-                  <CardDescription>
-                    Recursos e ferramentas para pesquisadores
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Ferramentas de Pesquisa</h3>
-                      <div className="space-y-3">
-                        <div className="p-4 border rounded-lg">
-                          <Search className="h-6 w-6 text-blue-600 mb-2" />
-                          <h4 className="font-semibold">Busca Avançada</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Pesquise por múltiplos critérios e filtros específicos
-                          </p>
-                        </div>
-                        
-                        <div className="p-4 border rounded-lg">
-                          <Filter className="h-6 w-6 text-emerald-600 mb-2" />
-                          <h4 className="font-semibold">Filtros Temáticos</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Organize pesquisas por área de conhecimento
-                          </p>
-                        </div>
-                        
-                        <div className="p-4 border rounded-lg">
-                          <Tag className="h-6 w-6 text-purple-600 mb-2" />
-                          <h4 className="font-semibold">Sistema de Tags</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Navegue por temas e conceitos relacionados
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Recursos Acadêmicos</h3>
-                      <div className="space-y-3">
-                        <div className="p-4 border rounded-lg">
-                          <FileText className="h-6 w-6 text-orange-600 mb-2" />
-                          <h4 className="font-semibold">Citações ABNT</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Gere citações automáticas no padrão brasileiro
-                          </p>
-                        </div>
-                        
-                        <div className="p-4 border rounded-lg">
-                          <Download className="h-6 w-6 text-cyan-600 mb-2" />
-                          <h4 className="font-semibold">Download Completo</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Baixe pesquisas completas em PDF
-                          </p>
-                        </div>
-                        
-                        <div className="p-4 border rounded-lg">
-                          <Bookmark className="h-6 w-6 text-rose-600 mb-2" />
-                          <h4 className="font-semibold">Favoritos</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Salve pesquisas para consulta posterior
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Seção de Áreas de Pesquisa */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Áreas de Pesquisa</CardTitle>
-                  <CardDescription>
-                    Explore pesquisas por área de conhecimento
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2">
-                      <User className="h-6 w-6" />
-                      <span className="text-sm">Antropologia</span>
-                    </Button>
-                    <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2">
-                      <Globe className="h-6 w-6" />
-                      <span className="text-sm">História</span>
-                    </Button>
-                    <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2">
-                      <Library className="h-6 w-6" />
-                      <span className="text-sm">Patrimônio</span>
-                    </Button>
-                    <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2">
-                      <Search className="h-6 w-6" />
-                      <span className="text-sm">Arqueologia</span>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* AIDEV-NOTE: Seções de metodologia/áreas removidas conforme solicitação */}
           </Tabs>
         </motion.div>
 
-        {/* AIDEV-NOTE: Newsletter e acesso especial */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12"
-        >
-          <Card className="bg-gradient-to-r from-amber-600 to-orange-600 text-white">
-            <CardContent className="p-8 text-center">
-              <h2 className="text-2xl font-bold mb-4">
-                Acesso Completo à Biblioteca
-              </h2>
-              <p className="mb-6">
-                Cadastre-se gratuitamente para acessar todo o acervo digital, 
-                criar sua biblioteca pessoal e receber notificações sobre novas adições.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="bg-white text-amber-600 hover:bg-gray-100">
-                  Criar Conta Gratuita
-                </Button>
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-amber-600">
-                  Saiba Mais
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        {/* AIDEV-NOTE: CTA final removido conforme solicitação */}
       </div>
     </div>
   )

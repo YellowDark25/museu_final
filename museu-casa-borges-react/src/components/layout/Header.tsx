@@ -47,12 +47,7 @@ export default function Header() {
     },
     {
       title: 'Biblioteca',
-      items: [
-        { title: 'Publicações', href: '/publicacoes' },
-        { title: 'Pesquisas', href: '/pesquisas' },
-        { title: 'Artigos', href: '/artigos' },
-        { title: 'TCC', href: '/tcc' },
-      ]
+      href: '/biblioteca'
     },
     {
       title: 'Exposições',
@@ -239,7 +234,11 @@ export default function Header() {
                   Biblioteca
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white border border-gray-200 shadow-lg rounded-lg">
+                  {/* AIDEV-NOTE: Menu da Biblioteca simplificado
+                    - Removidos os itens "Catálogo", "Serviços" e "Horários" conforme solicitação
+                    - Mantida apenas a opção principal "Biblioteca"
+                  */}
+                  <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-1 bg-white border border-gray-200 shadow-lg rounded-lg">
                     <li>
                       <NavigationMenuLink asChild className="no-underline">
                         <Link
@@ -249,45 +248,6 @@ export default function Header() {
                           <div className="text-sm font-medium leading-none text-gray-900 no-underline">Biblioteca</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-600 no-underline">
                             Acesso ao acervo bibliográfico
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/biblioteca/catalogo"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Catálogo</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Busque livros e publicações
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/biblioteca/servicos"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Serviços</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Consulta e empréstimo
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/biblioteca/horarios"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Horários</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Funcionamento e agendamento
                           </p>
                         </Link>
                       </NavigationMenuLink>

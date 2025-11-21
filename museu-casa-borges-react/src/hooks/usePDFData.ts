@@ -66,12 +66,16 @@ export function usePDFData(): PDFDataHookReturn {
 
   // Converter dados para formato PDF com URLs completas
   const pdfData = useMemo(() => {
-    return bibliotecaData.data.map((item): PDFItem => ({
-      ...item,
-      pdfUrl: item.arquivo, // O arquivo já contém o caminho correto
-      isAvailable: true, // Assumir que todos estão disponíveis
-      // Adicionar propriedades específicas de PDF se necessário
-    }));
+    return bibliotecaData.data.map((item): PDFItem => {
+      // AIDEV: Garantir que a URL esteja devidamente codificada para lidar com espaços e acentos
+      const encodedUrl = encodeURI(item.arquivo);
+      return {
+        ...item,
+        pdfUrl: encodedUrl, // Caminho da Public/ com encoding seguro
+        isAvailable: true, // Assumir que todos estão disponíveis
+        // Adicionar propriedades específicas de PDF se necessário
+      };
+    });
   }, [bibliotecaData.data]);
 
   // Agrupar dados por categoria

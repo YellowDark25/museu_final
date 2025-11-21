@@ -61,7 +61,7 @@ export function PDFCard({
       onRead(pdf)
     } else {
       // Fallback: abrir PDF em nova aba
-      window.open(pdf.fullUrl, '_blank')
+      window.open(pdf.pdfUrl, '_blank')
     }
   }
 
@@ -72,7 +72,7 @@ export function PDFCard({
     } else {
       // Fallback: download direto
       const link = document.createElement('a')
-      link.href = pdf.fullUrl
+      link.href = pdf.pdfUrl
       link.download = pdf.titulo
       document.body.appendChild(link)
       link.click()
@@ -92,8 +92,10 @@ export function PDFCard({
         {/* AIDEV-NOTE: Header com miniatura do PDF */}
         <CardHeader className="p-0 relative">
           <div className="aspect-[3/4] relative overflow-hidden rounded-t-2xl bg-gray-100">
+            {/* AIDEV: Miniatura do PDF — garantir que o caminho correto seja passado */}
             <PDFThumbnail
-              url={pdf.fullUrl}
+              filePath={pdf.pdfUrl}
+              title={pdf.titulo}
               className="w-full h-full object-cover"
             />
             

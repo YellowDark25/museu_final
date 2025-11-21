@@ -2,7 +2,7 @@
 
 // AIDEV-NOTE: Componente para renderizar miniatura da primeira página de PDFs
 // Utiliza react-pdf para renderização otimizada com cache e loading states
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Document, Page } from 'react-pdf';
 import { motion } from 'framer-motion';
 import { FileText, AlertCircle, Loader2 } from 'lucide-react';
@@ -39,6 +39,9 @@ export function PDFThumbnail({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [numPages, setNumPages] = useState<number | null>(null);
+  // AIDEV: Referência ao container para obter a largura disponível
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [pageWidth, setPageWidth] = useState<number>(PDF_CONFIG.THUMBNAIL_WIDTH);
 
   // Callback para quando o documento é carregado com sucesso
   const onDocumentLoadSuccess = useCallback(({ numPages }: { numPages: number }) => {
@@ -64,6 +67,30 @@ export function PDFThumbnail({
     console.error('Erro ao renderizar página:', error);
     setHasError(true);
     setIsLoading(false);
+  }, []);
+
+  // AIDEV: Observar mudanças de tamanho do container para ajustar a largura da página
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const updateWidth = () => {
+      const w = el.clientWidth;
+      if (w && w > 0) {
+        setPageWidth(w);
+      }
+    };
+
+    updateWidth();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateWidth();
+    });
+    resizeObserver.observe(el);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, []);
 
   // Componente de loading
@@ -92,14 +119,13 @@ export function PDFThumbnail({
         ${onClick ? 'cursor-pointer' : ''}
         ${className}
       `}
-      style={{
-        width: PDF_CONFIG.THUMBNAIL_WIDTH,
-        height: PDF_CONFIG.THUMBNAIL_HEIGHT,
-      }}
+      // AIDEV: Tornar a miniatura responsiva e ocupar todo o espaço do header do Card
+      style={{ width: '100%', height: '100%' }}
       onClick={onClick}
       whileHover={showHover && onClick ? { scale: 1.02 } : undefined}
       whileTap={onClick ? { scale: 0.98 } : undefined}
       transition={{ duration: 0.2 }}
+      ref={containerRef}
     >
       {/* Loading state inicial */}
       {isLoading && <LoadingState />}
@@ -121,8 +147,8 @@ export function PDFThumbnail({
             pageNumber={1}
             onLoadSuccess={onPageLoadSuccess}
             onLoadError={onPageLoadError}
-            width={PDF_CONFIG.THUMBNAIL_WIDTH}
-            scale={PDF_CONFIG.THUMBNAIL_SCALE}
+            // AIDEV: Usar a largura dinâmica do container para ampliar a miniatura
+            width={pageWidth}
             loading={<LoadingState />}
             error={<ErrorState />}
             className="w-full h-full"
@@ -167,10 +193,7 @@ export function PDFThumbnailFallback({
         ${onClick ? 'cursor-pointer hover:bg-gray-100' : ''}
         ${className}
       `}
-      style={{
-        width: PDF_CONFIG.THUMBNAIL_WIDTH,
-        height: PDF_CONFIG.THUMBNAIL_HEIGHT,
-      }}
+      style={{ width: '100%', height: '100%' }}
       onClick={onClick}
       whileHover={onClick ? { scale: 1.02 } : undefined}
       whileTap={onClick ? { scale: 0.98 } : undefined}

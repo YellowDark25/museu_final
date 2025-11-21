@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -12,6 +13,8 @@ interface ImageFigureProps {
   width?: number
   height?: number
   className?: string
+  /** URL para navegação ao clicar na figura (opcional). */
+  href?: string
 }
 
 interface ContentSection {
@@ -39,9 +42,20 @@ export function ImageFigure({
   caption, 
   width = 800, 
   height = 600, 
-  className = '' 
+  className = '',
+  href 
 }: ImageFigureProps) {
-  return (
+  /**
+   * Renderiza a figura de imagem. Se "href" for fornecido, toda a figura
+   * torna-se clicável e navega para a rota indicada usando Next/Link.
+   *
+   * AIDEV-NOTE: Ajuste para imagens remotas
+   * Quando o src for uma URL externa (http/https), usamos <img> padrão para evitar
+   * restrições de domínio do next/image. Para caminhos locais (/public), usamos next/image
+   * com otimização.
+   */
+  const isRemote = src.startsWith('http://') || src.startsWith('https://')
+  const FigureContent = (
     <motion.figure
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
@@ -52,16 +66,29 @@ export function ImageFigure({
       <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
         <CardContent className="p-0">
           <div className="relative overflow-hidden group">
-            <Image
-              src={src}
-              alt={alt}
-              width={width}
-              height={height}
-              className="img-fluid w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-              placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-            />
+            {isRemote ? (
+              // Renderização de imagens externas sem next/image
+              <img
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                className="img-fluid w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+            ) : (
+              // Renderização otimizada para assets locais via next/image
+              <Image
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                className="img-fluid w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+              />
+            )}
             {caption && (
               <motion.figcaption
                 initial={{ opacity: 0, y: 10 }}
@@ -77,6 +104,15 @@ export function ImageFigure({
         </CardContent>
       </Card>
     </motion.figure>
+  )
+
+  // Se houver href, torna a figura clicável com Link
+  return href ? (
+    <Link href={href} aria-label={alt} className="block">
+      {FigureContent}
+    </Link>
+  ) : (
+    FigureContent
   )
 }
 

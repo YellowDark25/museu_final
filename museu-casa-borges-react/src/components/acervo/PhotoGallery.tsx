@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -200,11 +200,69 @@ const ACERVO_PHOTOS = [
 
 interface PhotoGalleryProps {
   className?: string
+  /** Quantidade de itens por página na grade (padrão: 10) */
+  pageSize?: number
+  /** Parâmetros de filtro da barra de busca */
+  query?: {
+    keyword?: string
+    period?: 'qualquer' | 'antigo' | 'moderno' | 'recente'
+  }
 }
 
-export default function PhotoGallery({ className = '' }: PhotoGalleryProps) {
+/**
+ * PhotoGallery
+ * Componente de galeria com paginação.
+ * - Exibe até `pageSize` itens por página (default 10)
+ * - Mantém navegação do modal em todo o conjunto de fotos
+ */
+/**
+ * PhotoGallery
+ * Galeria com paginação e suporte a filtros (keyword/period).
+ * - A paginação opera sobre o resultado filtrado
+ * - O modal navega dentro do conjunto filtrado
+ */
+export default function PhotoGallery({ className = '', pageSize = 10, query }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+
+  // Aplica filtros vindos da barra de busca
+  let filteredPhotos = ACERVO_PHOTOS
+  // Filtro por palavra‑chave (title/description/alt)
+  if (query?.keyword && query.keyword.trim() !== '') {
+    const kw = query.keyword.trim().toLowerCase()
+    filteredPhotos = ACERVO_PHOTOS.filter((p) =>
+      [p.title, p.description, p.alt].some((t) => t?.toLowerCase().includes(kw))
+    )
+  }
+  // Filtro por período – como não há metadados de data nas fotos,
+  // utilizamos um agrupamento aproximado por terços do array original.
+  if (query?.period && query.period !== 'qualquer') {
+    const len = filteredPhotos.length
+    const ancientCut = Math.floor(len / 3)
+    const modernCut = Math.floor((2 * len) / 3)
+    filteredPhotos = filteredPhotos.filter((_, idx) => {
+      if (query.period === 'antigo') return idx < ancientCut
+      if (query.period === 'moderno') return idx >= ancientCut && idx < modernCut
+      if (query.period === 'recente') return idx >= modernCut
+      return true
+    })
+  }
+
+  // Cálculos de paginação sobre o resultado filtrado
+  const totalPages = Math.ceil(filteredPhotos.length / pageSize)
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  const visiblePhotos = filteredPhotos.slice(startIndex, endIndex)
+
+  // Sempre que filtros mudarem, volta para a primeira página e fecha modal
+  // para evitar índices inconsistentes.
+  useEffect(() => {
+    setCurrentPage(1)
+    setSelectedPhoto(null)
+    setIsModalOpen(false)
+  }, [query, pageSize])
+  
 
   // AIDEV-NOTE: Função para abrir modal com foto selecionada
   const openModal = (index: number) => {
@@ -223,9 +281,9 @@ export default function PhotoGallery({ className = '' }: PhotoGalleryProps) {
     if (selectedPhoto === null) return
     
     if (direction === 'prev') {
-      setSelectedPhoto(selectedPhoto > 0 ? selectedPhoto - 1 : ACERVO_PHOTOS.length - 1)
+      setSelectedPhoto(selectedPhoto > 0 ? selectedPhoto - 1 : filteredPhotos.length - 1)
     } else {
-      setSelectedPhoto(selectedPhoto < ACERVO_PHOTOS.length - 1 ? selectedPhoto + 1 : 0)
+      setSelectedPhoto(selectedPhoto < filteredPhotos.length - 1 ? selectedPhoto + 1 : 0)
     }
   }
 
@@ -235,23 +293,23 @@ export default function PhotoGallery({ className = '' }: PhotoGalleryProps) {
       <div className="text-center">
         <h3 className="text-2xl font-bold mb-2">Fotografias do Acervo</h3>
         <p className="text-muted-foreground mb-4">
-          Coleção de {ACERVO_PHOTOS.length} fotografias históricas do Museu Casa Borges
+          Coleção de {filteredPhotos.length} fotografias históricas do Museu Casa Borges
         </p>
         <Badge className="bg-blue-100 text-blue-800">
-          {ACERVO_PHOTOS.length} fotografias disponíveis
+          {filteredPhotos.length} fotografias disponíveis
         </Badge>
       </div>
 
-      {/* AIDEV-NOTE: Grid de fotos com animações */}
+      {/* AIDEV-NOTE: Grid de fotos com animações (paginada) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {ACERVO_PHOTOS.map((photo, index) => (
+        {visiblePhotos.map((photo, index) => (
           <motion.div
-            key={index}
+            key={startIndex + index}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
             className="group cursor-pointer"
-            onClick={() => openModal(index)}
+            onClick={() => openModal(startIndex + index)}
           >
             <div className="relative aspect-square overflow-hidden rounded-lg border bg-white shadow-sm hover:shadow-lg transition-all duration-300">
               <Image
@@ -272,17 +330,43 @@ export default function PhotoGallery({ className = '' }: PhotoGalleryProps) {
         ))}
       </div>
 
+      {/* Controles de paginação */}
+      <div className="mt-6 flex items-center justify-center gap-2">
+        <Button variant="outline" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>
+          <ChevronLeft className="w-4 h-4 mr-1" /> Anterior
+        </Button>
+        <div className="flex items-center gap-1">
+          {Array.from({ length: totalPages }).map((_, i) => {
+            const p = i + 1
+            const active = p === currentPage
+            return (
+              <Button
+                key={p}
+                variant={active ? 'default' : 'outline'}
+                onClick={() => setCurrentPage(p)}
+                className={active ? '' : 'bg-white'}
+              >
+                {p}
+              </Button>
+            )
+          })}
+        </div>
+        <Button variant="outline" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>
+          Próxima <ChevronRight className="w-4 h-4 ml-1" />
+        </Button>
+      </div>
+
       {/* AIDEV-NOTE: Modal para visualização ampliada */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] p-0">
           <DialogHeader className="p-6 pb-0">
             <DialogTitle className="flex items-center justify-between">
               <span>
-                {selectedPhoto !== null ? ACERVO_PHOTOS[selectedPhoto].title : ''}
+                {selectedPhoto !== null ? filteredPhotos[selectedPhoto].title : ''}
               </span>
               <div className="flex items-center gap-2">
                 <Badge variant="outline">
-                  {selectedPhoto !== null ? selectedPhoto + 1 : 0} de {ACERVO_PHOTOS.length}
+                  {selectedPhoto !== null ? selectedPhoto + 1 : 0} de {filteredPhotos.length}
                 </Badge>
               </div>
             </DialogTitle>
@@ -303,8 +387,8 @@ export default function PhotoGallery({ className = '' }: PhotoGalleryProps) {
             {selectedPhoto !== null && (
               <div className="relative max-w-full max-h-[60vh] mx-12">
                 <Image
-                  src={ACERVO_PHOTOS[selectedPhoto].src}
-                  alt={ACERVO_PHOTOS[selectedPhoto].alt}
+                  src={filteredPhotos[selectedPhoto].src}
+                  alt={filteredPhotos[selectedPhoto].alt}
                   width={800}
                   height={600}
                   className="object-contain w-full h-full rounded-lg"
@@ -329,10 +413,10 @@ export default function PhotoGallery({ className = '' }: PhotoGalleryProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="font-semibold mb-1">
-                    {ACERVO_PHOTOS[selectedPhoto].title}
+                    {filteredPhotos[selectedPhoto].title}
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    {ACERVO_PHOTOS[selectedPhoto].description}
+                    {filteredPhotos[selectedPhoto].description}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
