@@ -19,8 +19,8 @@ export default function Footer() {
       items: [
         {
           icon: <MapPin size={16} />,
-          text: 'Rua Borges de Barros, 123',
-          subtext: 'Centro - Cuiabá/MT'
+          text: 'Rua Voluntários da Pátria, n° 80',
+          subtext: 'São Sebastião - Barra do Bugres/MT'
         },
         {
           icon: <Phone size={16} />,
@@ -45,7 +45,7 @@ export default function Footer() {
         {
           icon: <Clock size={16} />,
           text: 'Sábados',
-          subtext: '9h às 15h'
+          subtext: 'Fechado'
         },
         {
           icon: <Clock size={16} />,

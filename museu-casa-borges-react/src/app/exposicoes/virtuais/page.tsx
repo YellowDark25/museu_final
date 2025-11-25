@@ -63,26 +63,33 @@ export default function ExposicoesVirtuais() {
 
   // Montagem das sections para ContentPage
   const sections = [
-    {
-      type: 'text' as const,
-      content:
-        'As exposições virtuais a seguir foram inspiradas na antiga página do site. '+
-        'A equipe está migrando gradualmente os materiais e imagens para o novo projeto React.'
-    },
     { type: 'subtitle' as const, content: 'Exposições disponíveis' },
-    // Imagens com legendas
-    ...itensAntigos.map((item) => ({
-      type: 'image' as const,
-      content: `${item.img}|${item.alt}|${item.titulo}`,
-      imageProps: { width: 1024, height: 640, className: 'max-w-4xl mx-auto', href: `/exposicoes/virtuais/${item.slug}` }
-    })),
+    {
+      /**
+       * Seção em grade de imagens para exibir as exposições com tamanho reduzido,
+       * semelhante ao site antigo. Usa 3 colunas em telas grandes e 2 em médias.
+       */
+      type: 'image_grid' as const,
+      content: 'grid-exposicoes-virtuais',
+      items: itensAntigos.map((item) => ({
+        src: item.img,
+        alt: item.alt,
+        caption: item.titulo,
+        href: `/exposicoes/virtuais/${item.slug}`,
+        width: 340,
+        height: 230,
+      })),
+      className: 'mt-4',
+    },
   ]
 
   return (
     <ContentPage
       title="Exposições Virtuais"
-      subtitle="Explore o museu e suas coleções através de experiências digitais imersivas e interativas"
+      subtitle="Explore o museu e suas coleções através de experiências digitais imersivas"
       sections={sections}
+      // Ampliamos a largura máxima para comportar 3 colunas confortavelmente
+      contentWidthClass="max-w-7xl"
     />
   )
 }

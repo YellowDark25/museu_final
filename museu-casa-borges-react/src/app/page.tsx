@@ -223,7 +223,17 @@ export default function Home() {
                 whileHover={{ y: -5 }}
                 className="group"
               >
-                <Card className="h-full hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                {/**
+                 * Ajuste de alinhamento vertical dos botões "Saiba Mais" nos cards de destaque.
+                 *
+                 * Estratégia:
+                 * - Torna o Card um container flex em coluna (flex flex-col) com h-full para ocupar a altura total disponível.
+                 * - Define o CardContent como flex-1 para ocupar o espaço restante, garantindo que o botão possa ficar
+                 *   sempre encostado na base do card com mt-auto.
+                 * - Isso iguala a altura visual entre cards com descrições de tamanhos diferentes e mantém os botões
+                 *   perfeitamente nivelados.
+                 */}
+                <Card className="h-full flex flex-col hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
                   <CardHeader className="text-center pb-4">
                     <div className={`w-16 h-16 rounded-full ${item.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       {item.icon}
@@ -232,14 +242,14 @@ export default function Home() {
                       {item.title}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-center">
+                  <CardContent className="text-center flex flex-col flex-1">
                     <p className="text-gray-600 mb-6 leading-relaxed">
                       {item.description}
                     </p>
                     <Button
                       asChild
                       variant="outline"
-                      className="group-hover:bg-[var(--museu-red)] group-hover:text-white group-hover:border-[var(--museu-red)] transition-all duration-300"
+                      className="mt-auto group-hover:bg-[var(--museu-red)] group-hover:text-white group-hover:border-[var(--museu-red)] transition-all duration-300"
                     >
                       <Link href={item.href}>
                         Saiba Mais
@@ -294,14 +304,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            <Newsletter />
-          </div>
-        </div>
-      </section>
+      {/* Newsletter Section removida conforme solicitação */}
     </>
   )
 }

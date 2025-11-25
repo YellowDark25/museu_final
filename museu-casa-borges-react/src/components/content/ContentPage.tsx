@@ -17,11 +17,24 @@ interface ImageFigureProps {
   href?: string
 }
 
+interface GridItem {
+  src: string
+  alt: string
+  caption?: string
+  href?: string
+  width?: number
+  height?: number
+}
+
 interface ContentSection {
-  type: 'text' | 'image' | 'subtitle'
+  type: 'text' | 'image' | 'subtitle' | 'image_grid'
   content: string
   imageProps?: Omit<ImageFigureProps, 'src' | 'alt'>
   className?: string
+  /**
+   * Itens para grids de imagens. Usado quando type === 'image_grid'.
+   */
+  items?: GridItem[]
 }
 
 interface ContentPageProps {
@@ -30,6 +43,15 @@ interface ContentPageProps {
   sections: ContentSection[]
   author?: string
   className?: string
+  /**
+   * Controla a largura máxima do conteúdo. Padrão: "max-w-4xl".
+   * Em páginas com grids (ex.: Exposições Virtuais), pode ser útil ampliar para "max-w-6xl" ou "max-w-7xl".
+   */
+  contentWidthClass?: string
+  /**
+   * Variante de densidade visual. "compact" usa tipografia e espaçamentos menores.
+   */
+  variant?: 'default' | 'compact'
 }
 
 /**
@@ -108,7 +130,7 @@ export function ImageFigure({
 
   // Se houver href, torna a figura clicável com Link
   return href ? (
-    <Link href={href} aria-label={alt} className="block">
+    <Link href={href} prefetch={false} aria-label={alt} className="block">
       {FigureContent}
     </Link>
   ) : (
@@ -121,16 +143,31 @@ export function ImageFigure({
  * Template reutilizável para páginas de conteúdo do museu
  * Suporta texto, imagens e subtítulos com animações
  */
+/**
+ * Função: ContentPage
+ * Objetivo: Template reutilizável para páginas de conteúdo do museu.
+ * Atualizações:
+ * - Adicionado suporte ao tipo de seção 'image_grid' para renderização em grade.
+ * - Adicionado prop 'contentWidthClass' para controlar a largura máxima do conteúdo.
+ */
 export default function ContentPage({ 
   title, 
   subtitle, 
   sections, 
   author, 
-  className = '' 
+  className = '',
+  contentWidthClass,
+  variant = 'default'
 }: ContentPageProps) {
+  const isCompact = variant === 'compact'
+  const widthClass = contentWidthClass ?? (isCompact ? 'max-w-3xl' : 'max-w-4xl')
+  const titleClass = isCompact ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl'
+  const subTitleClass = isCompact ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'
+  const sectionSubtitleClass = isCompact ? 'text-xl' : 'text-2xl'
+
   return (
     <div className={`texto_meio container mx-auto px-4 py-12 ${className}`}>
-      <div className="max-w-4xl mx-auto">
+      <div className={`${widthClass} mx-auto`}>
         {/* Título Principal */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -138,11 +175,11 @@ export default function ContentPage({
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="text-center mb-12"
         >
-          <h1 className="texto-titulo text-4xl md:text-5xl font-bold text-[var(--museu-red)] mb-4">
+          <h1 className={`font-bold text-[var(--museu-red)] mb-4 ${titleClass}`}>
             {title}
           </h1>
           {subtitle && (
-            <h2 className="texto-sub_titulo text-xl md:text-2xl text-gray-700 font-light">
+            <h2 className={`text-gray-700 font-light ${subTitleClass}`}>
               {subtitle}
             </h2>
           )}
@@ -175,7 +212,7 @@ export default function ContentPage({
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay }}
                     viewport={{ once: true }}
-                    className={`texto-sub_titulo1 text-2xl font-semibold text-[var(--museu-red)] mt-12 mb-6 ${section.className || ''}`}
+                    className={`font-semibold text-[var(--museu-red)] mt-12 mb-6 ${sectionSubtitleClass} ${section.className || ''}`}
                   >
                     {section.content}
                   </motion.h3>
@@ -192,6 +229,32 @@ export default function ContentPage({
                     className={section.className}
                     {...section.imageProps}
                   />
+                )
+
+              case 'image_grid':
+                // Renderiza um grid responsivo de figuras de imagem
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay }}
+                    viewport={{ once: true }}
+                    className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ${section.className || ''}`}
+                  >
+                    {(section.items || []).map((item, i) => (
+                      <ImageFigure
+                        key={i}
+                        src={item.src}
+                        alt={item.alt}
+                        caption={item.caption}
+                        width={item.width ?? 400}
+                        height={item.height ?? 300}
+                        href={item.href}
+                        className="my-0"
+                      />
+                    ))}
+                  </motion.div>
                 )
 
               default:

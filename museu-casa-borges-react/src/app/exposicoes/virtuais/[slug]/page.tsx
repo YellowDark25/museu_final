@@ -256,44 +256,19 @@ export default function ExposicaoVirtualPage({ params }: { params: Params }) {
           content: 'Galeria de artistas'
         },
         {
-          type: 'image',
-          content: '/exposicoes/artistas/Luis.jpeg|Luis Carlos Moura|Publicado em 20 de Dezembro, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
-        },
-        {
-          type: 'image',
-          content: '/exposicoes/artistas/Francisco.jpg|Francisco de Assis|Publicado em 25 de Novembro, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
-        },
-        {
-          type: 'image',
-          content: '/exposicoes/artistas/Claudyo.jpg|Claudyo Casares|Publicado em 05 de Novembro, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
-        },
-        {
-          type: 'image',
-          content: '/exposicoes/artistas/Carlos.jpg|Carlos Pina|Publicado em 25 de Outubro, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
-        },
-        {
-          type: 'image',
-          content: '/exposicoes/artistas/LuisB.jpg|Luis Badaró|Publicado em 16 de Setembro, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
-        },
-        {
-          type: 'image',
-          content: '/exposicoes/artistas/Maninho.jpg|Maninho|Publicado em 31 de Agosto, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
-        },
-        {
-          type: 'image',
-          content: '/exposicoes/artistas/Judite.jpg|Judite Malaquias|Publicado em 05 de Agosto, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
-        },
-        {
-          type: 'image',
-          content: '/exposicoes/artistas/Joao.jpeg|João Pedro de Arruda Neto|Publicado em 27 de Junho, 2021',
-          imageProps: { width: 640, height: 640, className: 'max-w-xl mx-auto' }
+          type: 'image_grid',
+          content: 'grid-artistas',
+          items: [
+            { src: '/exposicoes/artistas/Luis.jpeg', alt: 'Luis Carlos Moura', caption: 'Luis Carlos Moura\nPublicado em 20 de Dezembro, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/luis' },
+            { src: '/exposicoes/artistas/Francisco.jpg', alt: 'Francisco de Assis', caption: 'Francisco de Assis\nPublicado em 25 de Novembro, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/francisco' },
+            { src: '/exposicoes/artistas/Claudyo.jpg', alt: 'Claudyo Casares', caption: 'Claudyo Casares\nPublicado em 05 de Novembro, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/claudyo' },
+            { src: '/exposicoes/artistas/Carlos.jpg', alt: 'Carlos Pina', caption: 'Carlos Pina\nPublicado em 25 de Outubro, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/carlos' },
+            { src: '/exposicoes/artistas/LuisB.jpg', alt: 'Luis Badaró', caption: 'Luis Badaró\nPublicado em 16 de Setembro, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/luisb' },
+            { src: '/exposicoes/artistas/Maninho.jpg', alt: 'Maninho', caption: 'Maninho\nPublicado em 31 de Agosto, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/maninho' },
+            { src: '/exposicoes/artistas/Judite.jpg', alt: 'Judite Malaquias', caption: 'Judite Malaquias\nPublicado em 05 de Agosto, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/judite' },
+            { src: '/exposicoes/artistas/Joao.jpeg', alt: 'João Pedro de Arruda Neto', caption: 'João Pedro de Arruda Neto\nPublicado em 27 de Junho, 2021', width: 360, height: 360, href: '/exposicoes/virtuais/artistas/joao' }
+          ],
+          className: 'mt-6'
         }
       ]
     },
@@ -817,6 +792,7 @@ export default function ExposicaoVirtualPage({ params }: { params: Params }) {
             imageProps: { href: '/exposicoes/virtuais', width: 1024, height: 640 }
           }
         ]}
+        variant="compact"
       />
     )
   }
@@ -827,6 +803,7 @@ export default function ExposicaoVirtualPage({ params }: { params: Params }) {
       subtitle={data.subtitle}
       sections={data.sections}
       author={data.author}
+      variant="compact"
     />
   )
 }

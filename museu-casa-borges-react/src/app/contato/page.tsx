@@ -251,7 +251,7 @@ export default function ContatoPage() {
                       <div>
                         <h4 className="font-semibold text-gray-800 mb-1">Telefone</h4>
                         <p className="text-gray-600">(11) 1234-5678</p>
-                        <p className="text-sm text-gray-500">Segunda a Sexta, 9h às 17h</p>
+                        <p className="text-sm text-gray-500">Terça a Sexta, 8h - 11:30h e 13:30h - 17h</p>
                       </div>
                     </div>
 
@@ -273,9 +273,9 @@ export default function ContatoPage() {
                       <div>
                         <h4 className="font-semibold text-gray-800 mb-1">Endereço</h4>
                         <p className="text-gray-600">
-                          Rua Principal, 123<br />
-                          Centro Histórico<br />
-                          CEP: 12345-678
+                          Rua Voluntários da Pátria, n° 80<br />
+                          São Sebastiao<br />
+                          Barra do Bugres, MT 78390-000
                         </p>
                       </div>
                     </div>
@@ -302,11 +302,11 @@ export default function ContatoPage() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Sábado</span>
-                        <span className="font-medium text-green-600">9h às 16h</span>
+                        <span className="font-medium text-red-600">Fechado</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Domingo</span>
-                        <span className="font-medium text-green-600">10h às 15h</span>
+                        <span className="font-medium text-red-600">Fechado</span>
                       </div>
                     </div>
                   </CardContent>
