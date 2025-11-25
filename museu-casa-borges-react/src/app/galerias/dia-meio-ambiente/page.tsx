@@ -78,7 +78,9 @@ const galleryImages: GalleryImage[] = [
 ]
 
 export default function DioMeioAmbientePage() {
-  return (        {/* AIDEV-NOTE: Header da galeria */}
+  return (
+        <>
+        {/* AIDEV-NOTE: Header da galeria */}
         <section className="py-8 border-b">
           <div className="container mx-auto px-4">
             <motion.div
@@ -358,5 +360,7 @@ export default function DioMeioAmbientePage() {
               </div>
             </motion.div>
           </div>
-        </section>  )
+        </section>
+        </>
+  )
 }

@@ -1,6 +1,6 @@
+"use client"
 import { Metadata } from 'next'
-import { Layout } from '@/components/layout/Layout'
-import { ContentPage } from '@/components/ui/ContentPage'
+import ContentPage from '@/components/content/ContentPage'
 import { AuthorCredit } from '@/components/ui/AuthorCredit'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -22,11 +22,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Casa Herculano - Casas Históricas - Museu Casa Borges',
-  description: 'Explore a Casa Herculano, uma das residências coloniais mais bem preservadas do século XIX, com arquitetura típica da época.',
-  keywords: 'Casa Herculano, arquitetura colonial, século XIX, patrimônio histórico, adobe, pátio central'
-}
+
 
 // AIDEV-NOTE: Página detalhada da Casa Herculano
 // Apresenta informações completas sobre história, arquitetura, restauração e galeria

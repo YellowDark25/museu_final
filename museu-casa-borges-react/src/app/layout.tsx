@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 // AIDEV: Polyfill global para Promise.withResolvers (necessário para pdfjs-dist em Node < 22)
 import "@/lib/polyfills/promiseWithResolvers";
 import "./globals.css";
@@ -21,7 +21,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

@@ -1,6 +1,7 @@
+"use client"
 import { Metadata } from 'next'
 import { Layout } from '@/components/layout/Layout'
-import { ContentPage } from '@/components/ui/ContentPage'
+import ContentPage from '@/components/content/ContentPage'
 import { AuthorCredit } from '@/components/ui/AuthorCredit'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,11 +10,7 @@ import { Button } from '@/components/ui/button'
 import { MapPin, Calendar, Home, Users, ArrowRight, Clock, Camera } from 'lucide-react'
 import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Casas Históricas - Museu Casa Borges',
-  description: 'Explore as casas históricas preservadas pelo museu, cada uma contando uma parte importante da história cultural argentina.',
-  keywords: 'casas históricas, patrimônio, arquitetura, história argentina, preservação cultural'
-}
+// metadata removido neste componente client
 
 // AIDEV-NOTE: Página índice das casas históricas
 // Apresenta todas as casas preservadas pelo museu com informações detalhadas

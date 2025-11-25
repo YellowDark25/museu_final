@@ -1,6 +1,7 @@
+"use client"
 import { Metadata } from 'next'
 import { Layout } from '@/components/layout/Layout'
-import { ContentPage } from '@/components/ui/ContentPage'
+import ContentPage from '@/components/content/ContentPage'
 import { AuthorCredit } from '@/components/ui/AuthorCredit'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -22,11 +23,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Comunidades - Museu Casa Borges',
-  description: 'Conheça os projetos sociais e culturais do Museu Casa Borges com diferentes comunidades locais, promovendo inclusão e educação.',
-  keywords: 'comunidades, projetos sociais, educação, cultura, inclusão, workshops, oficinas'
-}
+// metadata removido neste componente client
 
 // AIDEV-NOTE: Página das comunidades e projetos sociais
 // Apresenta os diferentes programas comunitários do museu

@@ -6,8 +6,8 @@ type Params = { slug: string }
  * Página de artista da exposição virtual "Os Artistas do Museu Casa Borges".
  * Renderiza biografia e obras com base no conteúdo migrado da pasta INDEX.
  */
-export default function ArtistaVirtualPage({ params }: { params: Params }) {
-  const { slug } = params
+export default async function ArtistaVirtualPage({ params }: { params: Promise<Params> }) {
+  const { slug } = await params
 
   const ARTISTES: Record<string, {
     title: string

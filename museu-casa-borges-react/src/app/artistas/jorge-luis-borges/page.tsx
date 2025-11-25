@@ -1,3 +1,4 @@
+"use client"
 import { Metadata } from 'next'
 import ContentPage from '@/components/content/ContentPage'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -8,11 +9,7 @@ import { motion } from 'framer-motion'
 import { Calendar, BookOpen, Award, Quote, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 
-export const metadata: Metadata = {
-  title: 'Jorge Luis Borges | Museu Casa Borges',
-  description: 'Conheça a vida e obra de Jorge Luis Borges, o grande escritor argentino. Biografia, obras principais, cronologia e legado literário.',
-  keywords: ['Jorge Luis Borges', 'escritor argentino', 'literatura', 'biografia', 'obras', 'labirintos', 'ficções'],
-}
+// metadata removido neste componente client
 
 // AIDEV-NOTE: Página dedicada a Jorge Luis Borges com biografia completa, obras e cronologia
 // Utiliza tabs para organizar o conteúdo e animações para engajamento

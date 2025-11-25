@@ -1,7 +1,6 @@
+"use client"
 import { Metadata } from 'next'
-import { Layout } from '@/components/layout/Layout'
-import { ContentPage } from '@/components/ui/ContentPage'
-import { ImageFigure } from '@/components/ui/ImageFigure'
+import ContentPage from '@/components/content/ContentPage'
 import { AuthorCredit } from '@/components/ui/AuthorCredit'
 import { motion } from 'framer-motion'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -9,11 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Calendar, BookOpen, Award, Quote } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: 'Julio Cortázar - Museu Casa Borges',
-  description: 'Conheça a vida e obra de Julio Cortázar, um dos maiores escritores da literatura argentina e latino-americana.',
-  keywords: 'Julio Cortázar, literatura argentina, contos, Rayuela, O Jogo da Amarelinha, realismo fantástico'
-}
+// metadata removido neste componente client
 
 // AIDEV-NOTE: Página dedicada ao escritor Julio Cortázar
 // Apresenta biografia completa, principais obras, cronologia e citações famosas
@@ -79,230 +74,168 @@ export default function JulioCortazarPage() {
   ]
 
   return (
-    &lt;Layout&gt;
-      &lt;ContentPage
-        title="Julio Cortázar"
-        subtitle="Mestre do Realismo Fantástico"
-        backgroundImage="/images/fundo2.jpg"
-      &gt;
-        &lt;div className="space-y-12"&gt;
-          {/* Biografia Principal */}
-          &lt;motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          &gt;
-            &lt;div className="grid md:grid-cols-3 gap-8 items-start"&gt;
-              &lt;div className="md:col-span-2"&gt;
-                &lt;p className="text-xl leading-relaxed text-gray-700 mb-6"&gt;
-                  Julio Cortázar (1914-1984) foi um dos escritores mais inovadores e influentes 
-                  da literatura argentina e latino-americana. Nascido em Bruxelas e criado na Argentina, 
-                  Cortázar revolucionou a narrativa moderna com sua abordagem experimental e seu 
-                  domínio do realismo fantástico.
-                &lt;/p&gt;
-                &lt;p className="text-lg leading-relaxed text-gray-600 mb-6"&gt;
-                  Sua obra-prima, "Rayuela" (O Jogo da Amarelinha), publicada em 1963, é considerada 
-                  um marco da literatura experimental, propondo múltiplas formas de leitura e 
-                  questionando as convenções narrativas tradicionais.
-                &lt;/p&gt;
-                &lt;p className="text-lg leading-relaxed text-gray-600"&gt;
-                  Cortázar viveu grande parte de sua vida adulta em Paris, onde desenvolveu uma 
-                  perspectiva única sobre a identidade latino-americana e a condição humana moderna. 
-                  Seus contos, marcados pelo fantástico que irrompe no cotidiano, influenciaram 
-                  gerações de escritores.
-                &lt;/p&gt;
-              &lt;/div&gt;
-              &lt;div className="space-y-4"&gt;
-                &lt;Card&gt;
-                  &lt;CardHeader&gt;
-                    &lt;CardTitle className="flex items-center gap-2"&gt;
-                      &lt;Calendar className="h-5 w-5" /&gt;
-                      Dados Biográficos
-                    &lt;/CardTitle&gt;
-                  &lt;/CardHeader&gt;
-                  &lt;CardContent className="space-y-2"&gt;
-                    &lt;div&gt;
-                      &lt;strong&gt;Nascimento:&lt;/strong&gt; 26 de agosto de 1914
-                    &lt;/div&gt;
-                    &lt;div&gt;
-                      &lt;strong&gt;Local:&lt;/strong&gt; Bruxelas, Bélgica
-                    &lt;/div&gt;
-                    &lt;div&gt;
-                      &lt;strong&gt;Falecimento:&lt;/strong&gt; 12 de fevereiro de 1984
-                    &lt;/div&gt;
-                    &lt;div&gt;
-                      &lt;strong&gt;Nacionalidade:&lt;/strong&gt; Argentina/Francesa
-                    &lt;/div&gt;
-                    &lt;div&gt;
-                      &lt;strong&gt;Gêneros:&lt;/strong&gt; Conto, Romance, Ensaio
-                    &lt;/div&gt;
-                  &lt;/CardContent&gt;
-                &lt;/Card&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/motion.section&gt;
+    <ContentPage title="Julio Cortázar" subtitle="Mestre do Realismo Fantástico" contentWidthClass="max-w-6xl">
+      <div className="space-y-12">
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="prose prose-lg max-w-none">
+          <div className="grid md:grid-cols-3 gap-8 items-start">
+            <div className="md:col-span-2">
+              <p className="text-xl leading-relaxed text-gray-700 mb-6">
+                Julio Cortázar (1914-1984) foi um dos escritores mais inovadores e influentes da literatura argentina e latino-americana. Nascido em Bruxelas e criado na Argentina, Cortázar revolucionou a narrativa moderna com sua abordagem experimental e seu domínio do realismo fantástico.
+              </p>
+              <p className="text-lg leading-relaxed text-gray-600 mb-6">
+                Sua obra-prima, "Rayuela" (O Jogo da Amarelinha), publicada em 1963, é considerada um marco da literatura experimental, propondo múltiplas formas de leitura e questionando as convenções narrativas tradicionais.
+              </p>
+              <p className="text-lg leading-relaxed text-gray-600">
+                Cortázar viveu grande parte de sua vida adulta em Paris, onde desenvolveu uma perspectiva única sobre a identidade latino-americana e a condição humana moderna. Seus contos, marcados pelo fantástico que irrompe no cotidiano, influenciaram gerações de escritores.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    Dados Biográficos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div>
+                    <strong>Nascimento:</strong> 26 de agosto de 1914
+                  </div>
+                  <div>
+                    <strong>Local:</strong> Bruxelas, Bélgica
+                  </div>
+                  <div>
+                    <strong>Falecimento:</strong> 12 de fevereiro de 1984
+                  </div>
+                  <div>
+                    <strong>Nacionalidade:</strong> Argentina/Francesa
+                  </div>
+                  <div>
+                    <strong>Gêneros:</strong> Conto, Romance, Ensaio
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </motion.section>
 
-          {/* Tabs com conteúdo detalhado */}
-          &lt;motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          &gt;
-            &lt;Tabs defaultValue="obras" className="w-full"&gt;
-              &lt;TabsList className="grid w-full grid-cols-4"&gt;
-                &lt;TabsTrigger value="obras"&gt;Principais Obras&lt;/TabsTrigger&gt;
-                &lt;TabsTrigger value="cronologia"&gt;Cronologia&lt;/TabsTrigger&gt;
-                &lt;TabsTrigger value="estilo"&gt;Estilo Literário&lt;/TabsTrigger&gt;
-                &lt;TabsTrigger value="citacoes"&gt;Citações&lt;/TabsTrigger&gt;
-              &lt;/TabsList&gt;
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+          <Tabs defaultValue="obras" className="w-full">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="obras">Principais Obras</TabsTrigger>
+              <TabsTrigger value="cronologia">Cronologia</TabsTrigger>
+              <TabsTrigger value="estilo">Estilo Literário</TabsTrigger>
+              <TabsTrigger value="citacoes">Citações</TabsTrigger>
+            </TabsList>
 
-              &lt;TabsContent value="obras" className="mt-8"&gt;
-                &lt;div className="grid md:grid-cols-2 gap-6"&gt;
-                  {obras.map((obra, index) =&gt; (
-                    &lt;motion.div
-                      key={obra.titulo}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                    &gt;
-                      &lt;Card className="h-full hover:shadow-lg transition-shadow"&gt;
-                        &lt;CardHeader&gt;
-                          &lt;div className="flex justify-between items-start"&gt;
-                            &lt;CardTitle className="text-lg"&gt;{obra.titulo}&lt;/CardTitle&gt;
-                            &lt;Badge variant="secondary"&gt;{obra.ano}&lt;/Badge&gt;
-                          &lt;/div&gt;
-                          &lt;CardDescription&gt;
-                            &lt;Badge variant="outline"&gt;{obra.tipo}&lt;/Badge&gt;
-                          &lt;/CardDescription&gt;
-                        &lt;/CardHeader&gt;
-                        &lt;CardContent&gt;
-                          &lt;p className="text-gray-600"&gt;{obra.descricao}&lt;/p&gt;
-                        &lt;/CardContent&gt;
-                      &lt;/Card&gt;
-                    &lt;/motion.div&gt;
-                  ))}
-                &lt;/div&gt;
-              &lt;/TabsContent&gt;
+            <TabsContent value="obras" className="mt-8">
+              <div className="grid md:grid-cols-2 gap-6">
+                {obras.map((obra, index) => (
+                  <motion.div key={obra.titulo} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }}>
+                    <Card className="h-full hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-lg">{obra.titulo}</CardTitle>
+                          <Badge variant="secondary">{obra.ano}</Badge>
+                        </div>
+                        <CardDescription>
+                          <Badge variant="outline">{obra.tipo}</Badge>
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-gray-600">{obra.descricao}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
 
-              &lt;TabsContent value="cronologia" className="mt-8"&gt;
-                &lt;div className="space-y-4"&gt;
-                  {cronologia.map((item, index) =&gt; (
-                    &lt;motion.div
-                      key={item.ano}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm border"
-                    &gt;
-                      &lt;div className="flex-shrink-0 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center"&gt;
-                        &lt;span className="text-blue-600 font-bold text-sm"&gt;{item.ano}&lt;/span&gt;
-                      &lt;/div&gt;
-                      &lt;div&gt;
-                        &lt;p className="text-gray-800 font-medium"&gt;{item.evento}&lt;/p&gt;
-                      &lt;/div&gt;
-                    &lt;/motion.div&gt;
-                  ))}
-                &lt;/div&gt;
-              &lt;/TabsContent&gt;
+            <TabsContent value="cronologia" className="mt-8">
+              <div className="space-y-4">
+                {cronologia.map((item, index) => (
+                  <motion.div key={item.ano} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm border">
+                    <div className="flex-shrink-0 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 font-bold text-sm">{item.ano}</span>
+                    </div>
+                    <div>
+                      <p className="text-gray-800 font-medium">{item.evento}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
 
-              &lt;TabsContent value="estilo" className="mt-8"&gt;
-                &lt;div className="grid md:grid-cols-2 gap-8"&gt;
-                  &lt;Card&gt;
-                    &lt;CardHeader&gt;
-                      &lt;CardTitle className="flex items-center gap-2"&gt;
-                        &lt;BookOpen className="h-5 w-5" /&gt;
-                        Características Literárias
-                      &lt;/CardTitle&gt;
-                    &lt;/CardHeader&gt;
-                    &lt;CardContent className="space-y-4"&gt;
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Realismo Fantástico&lt;/h4&gt;
-                        &lt;p className="text-gray-600 text-sm"&gt;
-                          Mestre em inserir elementos fantásticos no cotidiano de forma natural e perturbadora.
-                        &lt;/p&gt;
-                      &lt;/div&gt;
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Narrativa Experimental&lt;/h4&gt;
-                        &lt;p className="text-gray-600 text-sm"&gt;
-                          Inovador em estruturas narrativas, especialmente em "Rayuela" com sua leitura não-linear.
-                        &lt;/p&gt;
-                      &lt;/div&gt;
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Linguagem Poética&lt;/h4&gt;
-                        &lt;p className="text-gray-600 text-sm"&gt;
-                          Prosa de alta qualidade poética, com atenção especial ao ritmo e à musicalidade.
-                        &lt;/p&gt;
-                      &lt;/div&gt;
-                    &lt;/CardContent&gt;
-                  &lt;/Card&gt;
+            <TabsContent value="estilo" className="mt-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BookOpen className="h-5 w-5" />
+                      Características Literárias
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Realismo Fantástico</h4>
+                      <p className="text-gray-600 text-sm">Mestre em inserir elementos fantásticos no cotidiano de forma natural e perturbadora.</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Narrativa Experimental</h4>
+                      <p className="text-gray-600 text-sm">Inovador em estruturas narrativas, especialmente em "Rayuela" com sua leitura não-linear.</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Linguagem Poética</h4>
+                      <p className="text-gray-600 text-sm">Prosa de alta qualidade poética, com atenção especial ao ritmo e à musicalidade.</p>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  &lt;Card&gt;
-                    &lt;CardHeader&gt;
-                      &lt;CardTitle className="flex items-center gap-2"&gt;
-                        &lt;Award className="h-5 w-5" /&gt;
-                        Influência e Legado
-                      &lt;/CardTitle&gt;
-                    &lt;/CardHeader&gt;
-                    &lt;CardContent className="space-y-4"&gt;
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Boom Latino-americano&lt;/h4&gt;
-                        &lt;p className="text-gray-600 text-sm"&gt;
-                          Figura central do boom da literatura latino-americana dos anos 1960-70.
-                        &lt;/p&gt;
-                      &lt;/div&gt;
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Influência Global&lt;/h4&gt;
-                        &lt;p className="text-gray-600 text-sm"&gt;
-                          Suas técnicas narrativas influenciaram escritores em todo o mundo.
-                        &lt;/p&gt;
-                      &lt;/div&gt;
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Traduções&lt;/h4&gt;
-                        &lt;p className="text-gray-600 text-sm"&gt;
-                          Obras traduzidas para mais de 30 idiomas, com reconhecimento mundial.
-                        &lt;/p&gt;
-                      &lt;/div&gt;
-                    &lt;/CardContent&gt;
-                  &lt;/Card&gt;
-                &lt;/div&gt;
-              &lt;/TabsContent&gt;
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Award className="h-5 w-5" />
+                      Influência e Legado
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Boom Latino-americano</h4>
+                      <p className="text-gray-600 text-sm">Figura central do boom da literatura latino-americana dos anos 1960-70.</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Influência Global</h4>
+                      <p className="text-gray-600 text-sm">Suas técnicas narrativas influenciaram escritores em todo o mundo.</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Traduções</h4>
+                      <p className="text-gray-600 text-sm">Obras traduzidas para mais de 30 idiomas, com reconhecimento mundial.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
 
-              &lt;TabsContent value="citacoes" className="mt-8"&gt;
-                &lt;div className="grid md:grid-cols-2 gap-6"&gt;
-                  {citacoes.map((citacao, index) =&gt; (
-                    &lt;motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                    &gt;
-                      &lt;Card className="h-full"&gt;
-                        &lt;CardContent className="p-6"&gt;
-                          &lt;Quote className="h-8 w-8 text-blue-500 mb-4" /&gt;
-                          &lt;blockquote className="text-lg italic text-gray-700 leading-relaxed"&gt;
-                            "{citacao}"
-                          &lt;/blockquote&gt;
-                          &lt;footer className="mt-4 text-sm text-gray-500"&gt;
-                            — Julio Cortázar
-                          &lt;/footer&gt;
-                        &lt;/CardContent&gt;
-                      &lt;/Card&gt;
-                    &lt;/motion.div&gt;
-                  ))}
-                &lt;/div&gt;
-              &lt;/TabsContent&gt;
-            &lt;/Tabs&gt;
-          &lt;/motion.section&gt;
+            <TabsContent value="citacoes" className="mt-8">
+              <div className="grid md:grid-cols-2 gap-6">
+                {citacoes.map((citacao, index) => (
+                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }}>
+                    <Card className="h-full">
+                      <CardContent className="p-6">
+                        <Quote className="h-8 w-8 text-blue-500 mb-4" />
+                        <blockquote className="text-lg italic text-gray-700 leading-relaxed">"{citacao}"</blockquote>
+                        <footer className="mt-4 text-sm text-gray-500">— Julio Cortázar</footer>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </motion.section>
 
-          {/* Créditos */}
-          &lt;AuthorCredit 
-            author="Curadoria Museu Casa Borges"
-            date="2024"
-            description="Conteúdo baseado em pesquisa acadêmica e fontes históricas"
-          /&gt;
-        &lt;/div&gt;
-      &lt;/ContentPage&gt;
-    &lt;/Layout&gt;
+        <AuthorCredit author="Curadoria Museu Casa Borges" date="2024" description="Conteúdo baseado em pesquisa acadêmica e fontes históricas" />
+      </div>
+    </ContentPage>
   )
 }

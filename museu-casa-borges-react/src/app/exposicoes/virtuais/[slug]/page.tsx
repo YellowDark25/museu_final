@@ -10,8 +10,8 @@ type Params = { slug: string }
  * e renderiza o conteúdo correspondente usando o componente ContentPage.
  * Inclui tratamento de erros quando o slug não possui conteúdo mapeado.
  */
-export default function ExposicaoVirtualPage({ params }: { params: Params }) {
-  const { slug } = params
+export default async function ExposicaoVirtualPage({ params }: { params: Promise<Params> }) {
+  const { slug } = await params
 
   /**
    * Mapa de conteúdo das exposições virtuais.

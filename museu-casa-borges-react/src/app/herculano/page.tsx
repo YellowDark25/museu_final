@@ -1,3 +1,4 @@
+"use client"
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,17 +27,15 @@ import {
 import Image from 'next/image'
 import { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Herculano Borges | Museu Casa Jorge Luis Borges',
-  description: 'Conheça a vida e obra de Herculano Borges, figura histórica importante na preservação da cultura e memória regional.',
-  keywords: 'Herculano Borges, biografia, história, cultura, Mato Grosso, literatura, preservação',
-}
-
 /**
  * AIDEV-NOTE: Página dedicada a Herculano Borges
  * Apresenta biografia, contribuições e legado histórico
  * Utiliza tabs para organizar cronologia, obras e reconhecimentos
  * Design responsivo com animações e microinterações
+ */
+/**
+ * HerculanoPage
+ * Componente client com animações e conteúdo biográfico
  */
 export default function HerculanoPage() {
   const cronologia = [

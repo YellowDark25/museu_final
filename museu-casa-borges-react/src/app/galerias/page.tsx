@@ -55,7 +55,9 @@ const stats = [
 ]
 
 export default function GaleriasPage() {
-  return (        {/* AIDEV-NOTE: Hero section com imagem de fundo */}
+  return (
+        <>
+        {/* AIDEV-NOTE: Hero section com imagem de fundo */}
         <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0">
             <Image
@@ -295,5 +297,7 @@ export default function GaleriasPage() {
               </div>
             </motion.div>
           </div>
-        </section>  )
+        </section>
+        </>
+  )
 }

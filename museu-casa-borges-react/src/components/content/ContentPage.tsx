@@ -40,7 +40,7 @@ interface ContentSection {
 interface ContentPageProps {
   title: string
   subtitle?: string
-  sections: ContentSection[]
+  sections?: ContentSection[]
   author?: string
   className?: string
   /**
@@ -52,6 +52,7 @@ interface ContentPageProps {
    * Variante de densidade visual. "compact" usa tipografia e espaçamentos menores.
    */
   variant?: 'default' | 'compact'
+  children?: React.ReactNode
 }
 
 /**
@@ -157,7 +158,8 @@ export default function ContentPage({
   author, 
   className = '',
   contentWidthClass,
-  variant = 'default'
+  variant = 'default',
+  children
 }: ContentPageProps) {
   const isCompact = variant === 'compact'
   const widthClass = contentWidthClass ?? (isCompact ? 'max-w-3xl' : 'max-w-4xl')
@@ -187,7 +189,7 @@ export default function ContentPage({
 
         {/* Conteúdo das Seções */}
         <div className="space-y-8">
-          {sections.map((section, index) => {
+          {(sections ?? []).map((section, index) => {
             const delay = index * 0.1
 
             switch (section.type) {
@@ -262,6 +264,8 @@ export default function ContentPage({
             }
           })}
         </div>
+
+        {children}
 
         {/* Crédito do Autor */}
         {author && (

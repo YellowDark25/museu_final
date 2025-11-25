@@ -1,6 +1,6 @@
+"use client"
 import { Metadata } from 'next'
-import { Layout } from '@/components/layout/Layout'
-import { ContentPage } from '@/components/ui/ContentPage'
+import ContentPage from '@/components/content/ContentPage'
 import { AuthorCredit } from '@/components/ui/AuthorCredit'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,11 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Calendar, BookOpen, Award, ArrowRight, Users, Globe } from 'lucide-react'
 import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Artistas e Escritores - Museu Casa Borges',
-  description: 'Conheça os grandes nomes da literatura argentina e latino-americana em nossa coleção de biografias e obras.',
-  keywords: 'artistas, escritores, literatura argentina, Jorge Luis Borges, Julio Cortázar, Octavio Paz, Gabriel García Márquez'
-}
+// metadata removido neste componente client
 
 // AIDEV-NOTE: Página índice dos artistas e escritores
 // Serve como hub de navegação para todas as páginas individuais de autores
@@ -94,7 +90,7 @@ export default function ArtistasPage() {
     }
   ]
 
-  const getCorClasses = (cor: string) =&gt; {
+  const getCorClasses = (cor: string) => {
     const cores = {
       blue: "border-blue-200 hover:border-blue-300 hover:shadow-blue-100",
       purple: "border-purple-200 hover:border-purple-300 hover:shadow-purple-100",
@@ -105,7 +101,7 @@ export default function ArtistasPage() {
     return cores[cor as keyof typeof cores] || cores.blue
   }
 
-  const getBadgeClasses = (cor: string) =&gt; {
+  const getBadgeClasses = (cor: string) => {
     const cores = {
       blue: "bg-blue-100 text-blue-800",
       purple: "bg-purple-100 text-purple-800",
@@ -117,170 +113,108 @@ export default function ArtistasPage() {
   }
 
   return (
-    &lt;Layout&gt;
-      &lt;ContentPage
-        title="Artistas e Escritores"
-        subtitle="Grandes Nomes da Literatura Latino-Americana"
-        backgroundImage="/images/fundo1.jpg"
-      &gt;
-        &lt;div className="space-y-12"&gt;
-          {/* Introdução */}
-          &lt;motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none text-center"
-          &gt;
-            &lt;p className="text-xl leading-relaxed text-gray-700 mb-8"&gt;
-              Explore a vida e obra dos grandes mestres da literatura argentina e latino-americana. 
-              Cada autor representa uma voz única que contribuiu para o rico panorama cultural 
-              de nossa região, influenciando gerações de leitores e escritores em todo o mundo.
-            &lt;/p&gt;
-          &lt;/motion.section&gt;
+    <ContentPage title="Artistas e Escritores" subtitle="Grandes Nomes da Literatura Latino-Americana" contentWidthClass="max-w-6xl">
+      <div className="space-y-12">
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="prose prose-lg max-w-none text-center">
+          <p className="text-xl leading-relaxed text-gray-700 mb-8">
+            Explore a vida e obra dos grandes mestres da literatura argentina e latino-americana. Cada autor representa uma voz única que contribuiu para o rico panorama cultural de nossa região, influenciando gerações de leitores e escritores em todo o mundo.
+          </p>
+        </motion.section>
 
-          {/* Estatísticas */}
-          &lt;motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          &gt;
-            &lt;div className="grid grid-cols-2 md:grid-cols-4 gap-6"&gt;
-              {estatisticas.map((stat, index) =&gt; (
-                &lt;motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                &gt;
-                  &lt;Card className={`text-center ${getCorClasses(stat.cor)}`}&gt;
-                    &lt;CardContent className="p-6"&gt;
-                      &lt;stat.icone className={`h-8 w-8 mx-auto mb-3 text-${stat.cor}-600`} /&gt;
-                      &lt;div className={`text-3xl font-bold text-${stat.cor}-600 mb-1`}&gt;
-                        {stat.numero}
-                      &lt;/div&gt;
-                      &lt;div className="text-sm text-gray-600"&gt;{stat.label}&lt;/div&gt;
-                    &lt;/CardContent&gt;
-                  &lt;/Card&gt;
-                &lt;/motion.div&gt;
-              ))}
-            &lt;/div&gt;
-          &lt;/motion.section&gt;
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {estatisticas.map((stat, index) => (
+              <motion.div key={stat.label} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: index * 0.1 }}>
+                <Card className={`text-center ${getCorClasses(stat.cor)}`}>
+                  <CardContent className="p-6">
+                    <stat.icone className={`h-8 w-8 mx-auto mb-3 text-${stat.cor}-600`} />
+                    <div className={`text-3xl font-bold text-${stat.cor}-600 mb-1`}>{stat.numero}</div>
+                    <div className="text-sm text-gray-600">{stat.label}</div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
 
-          {/* Grid de Artistas */}
-          &lt;motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          &gt;
-            &lt;div className="grid md:grid-cols-2 gap-8"&gt;
-              {artistas.map((artista, index) =&gt; (
-                &lt;motion.div
-                  key={artista.slug}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 * index }}
-                &gt;
-                  &lt;Card className={`h-full transition-all duration-300 ${getCorClasses(artista.cor)} hover:shadow-lg`}&gt;
-                    &lt;CardHeader&gt;
-                      &lt;div className="flex justify-between items-start mb-2"&gt;
-                        &lt;CardTitle className="text-xl"&gt;{artista.nome}&lt;/CardTitle&gt;
-                        &lt;Badge variant="outline" className={getBadgeClasses(artista.cor)}&gt;
-                          {artista.nacionalidade}
-                        &lt;/Badge&gt;
-                      &lt;/div&gt;
-                      &lt;CardDescription className="flex items-center gap-2 text-gray-600"&gt;
-                        &lt;Calendar className="h-4 w-4" /&gt;
-                        {artista.periodo}
-                      &lt;/CardDescription&gt;
-                    &lt;/CardHeader&gt;
-                    &lt;CardContent className="space-y-4"&gt;
-                      &lt;p className="text-gray-700 leading-relaxed"&gt;
-                        {artista.descricao}
-                      &lt;/p&gt;
-                      
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Obra em Destaque:&lt;/h4&gt;
-                        &lt;p className="text-gray-600 italic"&gt;{artista.obraDestaque}&lt;/p&gt;
-                      &lt;/div&gt;
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
+          <div className="grid md:grid-cols-2 gap-8">
+            {artistas.map((artista, index) => (
+              <motion.div key={artista.slug} initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.1 * index }}>
+                <Card className={`h-full transition-all duration-300 ${getCorClasses(artista.cor)} hover:shadow-lg`}>
+                  <CardHeader>
+                    <div className="flex justify-between items-start mb-2">
+                      <CardTitle className="text-xl">{artista.nome}</CardTitle>
+                      <Badge variant="outline" className={getBadgeClasses(artista.cor)}>{artista.nacionalidade}</Badge>
+                    </div>
+                    <CardDescription className="flex items-center gap-2 text-gray-600">
+                      <Calendar className="h-4 w-4" />
+                      {artista.periodo}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-gray-700 leading-relaxed">{artista.descricao}</p>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Obra em Destaque:</h4>
+                      <p className="text-gray-600 italic">{artista.obraDestaque}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Gêneros Literários:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {artista.generos.map((genero) => (
+                          <Badge key={genero} variant="secondary" className="text-xs">{genero}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Principais Prêmios:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {artista.premios.slice(0, 2).map((premio) => (
+                          <Badge key={premio} variant="outline" className="text-xs">
+                            <Award className="h-3 w-3 mr-1" />
+                            {premio}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="pt-4">
+                      <Link href={`/artistas/${artista.slug}`}>
+                        <Button className="w-full group">
+                          Conhecer Biografia Completa
+                          <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
 
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Gêneros Literários:&lt;/h4&gt;
-                        &lt;div className="flex flex-wrap gap-2"&gt;
-                          {artista.generos.map((genero) =&gt; (
-                            &lt;Badge key={genero} variant="secondary" className="text-xs"&gt;
-                              {genero}
-                            &lt;/Badge&gt;
-                          ))}
-                        &lt;/div&gt;
-                      &lt;/div&gt;
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }}>
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+            <CardHeader>
+              <CardTitle className="text-2xl text-center">O Boom Latino-Americano</CardTitle>
+            </CardHeader>
+            <CardContent className="prose max-w-none">
+              <p className="text-gray-700 leading-relaxed text-center">
+                Os autores apresentados aqui foram figuras centrais do "boom" da literatura latino-americana dos anos 1960-70, um movimento que levou nossa literatura ao reconhecimento mundial. Suas obras transcenderam fronteiras geográficas e linguísticas, estabelecendo a América Latina como uma das regiões mais criativas e inovadoras da literatura contemporânea.
+              </p>
+              <div className="text-center mt-6">
+                <Link href="/sobre">
+                  <Button variant="outline">
+                    Saiba Mais Sobre o Museu
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
 
-                      &lt;div&gt;
-                        &lt;h4 className="font-semibold text-gray-800 mb-2"&gt;Principais Prêmios:&lt;/h4&gt;
-                        &lt;div className="flex flex-wrap gap-2"&gt;
-                          {artista.premios.slice(0, 2).map((premio) =&gt; (
-                            &lt;Badge key={premio} variant="outline" className="text-xs"&gt;
-                              &lt;Award className="h-3 w-3 mr-1" /&gt;
-                              {premio}
-                            &lt;/Badge&gt;
-                          ))}
-                        &lt;/div&gt;
-                      &lt;/div&gt;
-
-                      &lt;div className="pt-4"&gt;
-                        &lt;Link href={`/artistas/${artista.slug}`}&gt;
-                          &lt;Button className="w-full group"&gt;
-                            Conhecer Biografia Completa
-                            &lt;ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" /&gt;
-                          &lt;/Button&gt;
-                        &lt;/Link&gt;
-                      &lt;/div&gt;
-                    &lt;/CardContent&gt;
-                  &lt;/Card&gt;
-                &lt;/motion.div&gt;
-              ))}
-            &lt;/div&gt;
-          &lt;/motion.section&gt;
-
-          {/* Seção de Contexto Histórico */}
-          &lt;motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          &gt;
-            &lt;Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200"&gt;
-              &lt;CardHeader&gt;
-                &lt;CardTitle className="text-2xl text-center"&gt;
-                  O Boom Latino-Americano
-                &lt;/CardTitle&gt;
-              &lt;/CardHeader&gt;
-              &lt;CardContent className="prose max-w-none"&gt;
-                &lt;p className="text-gray-700 leading-relaxed text-center"&gt;
-                  Os autores apresentados aqui foram figuras centrais do "boom" da literatura 
-                  latino-americana dos anos 1960-70, um movimento que levou nossa literatura 
-                  ao reconhecimento mundial. Suas obras transcenderam fronteiras geográficas 
-                  e linguísticas, estabelecendo a América Latina como uma das regiões mais 
-                  criativas e inovadoras da literatura contemporânea.
-                &lt;/p&gt;
-                &lt;div className="text-center mt-6"&gt;
-                  &lt;Link href="/sobre"&gt;
-                    &lt;Button variant="outline"&gt;
-                      Saiba Mais Sobre o Museu
-                      &lt;ArrowRight className="h-4 w-4 ml-2" /&gt;
-                    &lt;/Button&gt;
-                  &lt;/Link&gt;
-                &lt;/div&gt;
-              &lt;/CardContent&gt;
-            &lt;/Card&gt;
-          &lt;/motion.section&gt;
-
-          {/* Créditos */}
-          &lt;AuthorCredit 
-            author="Curadoria Museu Casa Borges"
-            date="2024"
-            description="Conteúdo baseado em pesquisa acadêmica e fontes históricas"
-          /&gt;
-        &lt;/div&gt;
-      &lt;/ContentPage&gt;
-    &lt;/Layout&gt;
+        <AuthorCredit author="Curadoria Museu Casa Borges" date="2024" description="Conteúdo baseado em pesquisa acadêmica e fontes históricas" />
+      </div>
+    </ContentPage>
   )
 }

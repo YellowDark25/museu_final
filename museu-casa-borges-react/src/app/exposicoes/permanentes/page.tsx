@@ -1,3 +1,4 @@
+"use client"
 import { Metadata } from 'next'
 import ContentPage from '@/components/content/ContentPage'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -7,11 +8,7 @@ import { motion } from 'framer-motion'
 import { Clock, MapPin, Users, Camera } from 'lucide-react'
 import Image from 'next/image'
 
-export const metadata: Metadata = {
-  title: 'Exposições Permanentes | Museu Casa Borges',
-  description: 'Conheça as exposições permanentes do Museu Casa Borges, incluindo a vida e obra de Jorge Luis Borges, literatura argentina e patrimônio cultural.',
-  keywords: ['exposições permanentes', 'Jorge Luis Borges', 'literatura argentina', 'museu', 'patrimônio cultural'],
-}
+// metadata removido neste componente client
 
 // AIDEV-NOTE: Página de exposições permanentes com informações detalhadas sobre cada exposição fixa
 // Utiliza componentes reutilizáveis e animações para criar uma experiência envolvente

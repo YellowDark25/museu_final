@@ -1,3 +1,4 @@
+'use client'
 import { Metadata } from 'next'
 import ContentPage from '@/components/content/ContentPage'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -7,11 +8,7 @@ import { motion } from 'framer-motion'
 import { Calendar, Clock, MapPin, Users, Ticket } from 'lucide-react'
 import Image from 'next/image'
 
-export const metadata: Metadata = {
-  title: 'Exposições Temporárias | Museu Casa Borges',
-  description: 'Descubra as exposições temporárias do Museu Casa Borges, com mostras especiais sobre literatura, arte e cultura.',
-  keywords: ['exposições temporárias', 'mostras especiais', 'literatura', 'arte', 'cultura', 'eventos'],
-}
+// Metadata removida para compatibilidade com Client Component
 
 // AIDEV-NOTE: Página de exposições temporárias com informações sobre mostras atuais e futuras
 // Inclui sistema de status (em cartaz, próximas, encerradas) e informações detalhadas

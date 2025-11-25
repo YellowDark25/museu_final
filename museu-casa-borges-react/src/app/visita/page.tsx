@@ -11,7 +11,7 @@ import {
   Mail, 
   Car, 
   Bus, 
-  Wheelchair, 
+  Accessibility, 
   Users, 
   Camera, 
   Coffee,
@@ -44,7 +44,7 @@ export default function VisitaPage() {
 
   const servicos = [
     {
-      icon: <Wheelchair className="w-6 h-6" />,
+      icon: <Accessibility className="w-6 h-6" />,
       titulo: "Acessibilidade",
       descricao: "Rampas de acesso, elevador e banheiros adaptados"
     },

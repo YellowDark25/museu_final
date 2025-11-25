@@ -17,7 +17,8 @@ import {
   Waves,
   Sun,
   Flower,
-  Palette
+  Palette,
+  Music
 } from 'lucide-react'
 
 /**
