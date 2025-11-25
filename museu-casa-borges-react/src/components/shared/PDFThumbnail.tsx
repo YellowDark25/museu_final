@@ -3,13 +3,12 @@
 // AIDEV-NOTE: Componente para renderizar miniatura da primeira página de PDFs
 // Utiliza react-pdf para renderização otimizada com cache e loading states
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Document, Page } from 'react-pdf';
+import dynamic from 'next/dynamic';
+const PDFDocument = dynamic(() => import('react-pdf').then(mod => mod.Document), { ssr: false });
+const PDFPage = dynamic(() => import('react-pdf').then(mod => mod.Page), { ssr: false });
 import { motion } from 'framer-motion';
 import { FileText, AlertCircle, Loader2 } from 'lucide-react';
 import { PDF_CONFIG } from '@/lib/pdf-config';
-
-// Importar configuração do PDF
-import '@/lib/pdf-config';
 
 interface PDFThumbnailProps {
   /** Caminho para o arquivo PDF */
@@ -93,6 +92,22 @@ export function PDFThumbnail({
     };
   }, []);
 
+  // AIDEV: Configurar worker do pdfjs dinamicamente no cliente
+  useEffect(() => {
+    (async () => {
+      try {
+        const mod = await import('react-pdf');
+        const { pdfjs } = mod as any;
+        if (pdfjs?.GlobalWorkerOptions) {
+          pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+        }
+      } catch (e) {
+        // Silenciar erros de configuração de worker para evitar quebrar a UI
+        console.error('Falha ao configurar worker do pdfjs', e);
+      }
+    })();
+  }, []);
+
   // Componente de loading
   const LoadingState = () => (
     <div className="flex flex-col items-center justify-center h-full bg-gray-50 rounded-lg">
@@ -135,7 +150,7 @@ export function PDFThumbnail({
       
       {/* PDF Document */}
       {!hasError && (
-        <Document
+        <PDFDocument
           file={filePath}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={onDocumentLoadError}
@@ -143,7 +158,7 @@ export function PDFThumbnail({
           error={<ErrorState />}
           className="w-full h-full"
         >
-          <Page
+          <PDFPage
             pageNumber={1}
             onLoadSuccess={onPageLoadSuccess}
             onLoadError={onPageLoadError}
@@ -155,7 +170,7 @@ export function PDFThumbnail({
             renderTextLayer={false}
             renderAnnotationLayer={false}
           />
-        </Document>
+        </PDFDocument>
       )}
       
       {/* Hover overlay */}

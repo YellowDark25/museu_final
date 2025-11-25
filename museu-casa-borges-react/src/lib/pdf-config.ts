@@ -1,13 +1,5 @@
-// AIDEV-NOTE: Configuração do react-pdf para renderização de PDFs
-// Necessário para configurar o worker do pdfjs-dist
-import { pdfjs } from 'react-pdf';
-
-// Configuração do worker do PDF.js para Next.js
-// Observação:
-// - A partir do pdfjs-dist v4, o worker é distribuído como módulo ESM (.mjs)
-// - Evitar URLs com protocolo relativo (//), pois em ambiente http local pode tentar http e falhar
-// - Usar CDN com HTTPS explícito e caminho .mjs para evitar o erro "Setting up fake worker failed"
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// AIDEV-NOTE: Configurações do PDF sem import de react-pdf
+// O worker do pdfjs será configurado dinamicamente no cliente
 
 // Configurações padrão para renderização
 export const PDF_CONFIG = {
