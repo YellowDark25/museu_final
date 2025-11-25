@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "museu-casa-borges-react/package.json", "use": "@vercel/next" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "museu-casa-borges-react/$1" }
+  ]
+}
