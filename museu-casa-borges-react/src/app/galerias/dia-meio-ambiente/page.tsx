@@ -13,7 +13,7 @@ import Link from 'next/link'
 const galleryImages: GalleryImage[] = [
   {
     id: '1',
-    src: '/INDEX/album1/foto1.jpg',
+    src: '/galerias/dia-meio-ambiente/foto1.jpg',
     alt: 'Abertura do evento Dia do Meio Ambiente',
     title: 'Abertura do Evento',
     description: 'Cerimônia de abertura com apresentação do Projeto Doce Vida',
@@ -21,7 +21,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '2',
-    src: '/INDEX/album1/foto2.jpg',
+    src: '/galerias/dia-meio-ambiente/foto2.jpg',
     alt: 'Atividades educativas sobre sustentabilidade',
     title: 'Atividades Educativas',
     description: 'Oficinas e demonstrações sobre práticas sustentáveis',
@@ -29,7 +29,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '3',
-    src: '/INDEX/album1/foto3.jpg',
+    src: '/galerias/dia-meio-ambiente/foto3.jpg',
     alt: 'Exposição de plantas nativas',
     title: 'Plantas Nativas',
     description: 'Mostra de espécies vegetais nativas da região',
@@ -37,7 +37,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '4',
-    src: '/INDEX/album1/foto4.jpg',
+    src: '/galerias/dia-meio-ambiente/foto4.jpg',
     alt: 'Participantes em atividade de plantio',
     title: 'Atividade de Plantio',
     description: 'Participantes engajados em atividades de plantio e jardinagem',
@@ -45,7 +45,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '5',
-    src: '/INDEX/album1/foto5.jpg',
+    src: '/galerias/dia-meio-ambiente/foto5.jpg',
     alt: 'Demonstração de compostagem',
     title: 'Compostagem',
     description: 'Demonstração prática de técnicas de compostagem doméstica',
@@ -53,7 +53,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '6',
-    src: '/INDEX/album1/foto6.jpg',
+    src: '/galerias/dia-meio-ambiente/foto6.jpg',
     alt: 'Crianças participando das atividades',
     title: 'Participação Infantil',
     description: 'Crianças aprendendo sobre cuidados com o meio ambiente',
@@ -61,7 +61,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '7',
-    src: '/INDEX/album1/foto7.jpg',
+    src: '/galerias/dia-meio-ambiente/foto7.jpg',
     alt: 'Palestra sobre sustentabilidade',
     title: 'Palestra Educativa',
     description: 'Apresentação sobre práticas sustentáveis e preservação ambiental',
@@ -69,7 +69,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '8',
-    src: '/INDEX/album1/foto8.jpg',
+    src: '/galerias/dia-meio-ambiente/foto8.jpg',
     alt: 'Encerramento com grupo de participantes',
     title: 'Encerramento',
     description: 'Foto final com todos os participantes do evento',

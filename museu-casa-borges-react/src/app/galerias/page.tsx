@@ -18,7 +18,7 @@ const galleries = [
     date: '26 de outubro de 2023',
     category: 'Oficinas',
     imageCount: 25,
-    coverImage: '/INDEX/oficinatinta/foto10.jpeg',
+    coverImage: '/galerias/oficina-tinta-terra/foto10.jpeg',
     slug: 'oficina-tinta-terra',
     featured: true
   },
@@ -29,7 +29,7 @@ const galleries = [
     date: '10 de junho de 2023',
     category: 'Eventos',
     imageCount: 8,
-    coverImage: '/INDEX/album1/foto9.jpg',
+    coverImage: '/galerias/dia-meio-ambiente/foto9.jpg',
     slug: 'dia-meio-ambiente',
     featured: true
   },
@@ -40,7 +40,7 @@ const galleries = [
     date: '18 de maio de 2023',
     category: 'Visitas',
     imageCount: 10,
-    coverImage: '/INDEX/album2/foto7.jpg',
+    coverImage: '/galerias/visita-ufmt/foto7.jpg',
     slug: 'visita-ufmt',
     featured: true
   }
@@ -61,7 +61,7 @@ export default function GaleriasPage() {
         <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/INDEX/fundo1.jpg"
+              src="/images/fundo1.jpg"
               alt="Galeria do Museu"
               fill
               className="object-cover"
@@ -255,7 +255,7 @@ export default function GaleriasPage() {
               >
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
                   <Image
-                    src="/INDEX/fundo2.jpg"
+                    src="/images/fundo2.jpg"
                     alt="Atividades do museu"
                     fill
                     className="object-cover"

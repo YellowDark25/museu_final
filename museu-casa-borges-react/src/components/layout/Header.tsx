@@ -52,20 +52,12 @@ export default function Header() {
     {
       title: 'Exposições',
       items: [
-        { title: 'Exposição Temporária', href: '/exposicao-temporaria' },
-        { title: 'Exposição Permanente', href: '/exposicao-permanente' },
-        { title: 'Exposição Virtual', href: '/exposicao-virtual' },
-        { title: 'Tour', href: '/tour' },
+        { title: 'Virtuais', href: '/exposicoes/virtuais' },
       ]
     },
     {
       title: 'Galeria',
-      items: [
-        { title: 'Galeria Principal', href: '/galeria' },
-        { title: 'Álbum 1', href: '/album1' },
-        { title: 'Álbum 2', href: '/album2' },
-        { title: 'Oficina', href: '/oficina' },
-      ]
+      href: '/galerias'
     },
     {
       title: 'Contato',
@@ -261,46 +253,7 @@ export default function Header() {
                   Exposições
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white border border-gray-200 shadow-lg rounded-lg">
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/exposicoes"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Exposições</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Todas as exposições
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/exposicoes/atuais"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Em Cartaz</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Exposições atuais
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/exposicoes/permanentes"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Permanentes</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Exposições permanentes
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
+                  <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-1 bg-white border border-gray-200 shadow-lg rounded-lg">
                     <li>
                       <NavigationMenuLink asChild>
                         <Link
@@ -319,73 +272,22 @@ export default function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent hover:bg-white/10 text-white font-medium text-base transition-all duration-200">
-                  Galeria
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white border border-gray-200 shadow-lg rounded-lg">
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/galeria"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Galeria</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Galeria de imagens
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/galeria/fotos"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none text-foreground">Fotografias</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Registros fotográficos
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/galeria/eventos"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none text-foreground">Eventos</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Fotos de eventos
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/galeria/arquivo"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none text-foreground">Arquivo</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Arquivo histórico
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
+                <NavigationMenuLink 
+                  asChild 
+                  className="bg-transparent hover:bg-white/10 text-white font-medium text-base px-4 py-2 rounded-md transition-all duration-200 inline-flex items-center justify-center whitespace-nowrap no-underline"
+                >
+                  <Link href="/galerias">
+                    Galeria
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link 
-                    href="/contato" 
-                    className="bg-transparent hover:bg-white/10 text-white font-medium text-base px-4 py-2 rounded-md transition-all duration-200 inline-flex items-center justify-center whitespace-nowrap no-underline"
-                  >
+                <NavigationMenuLink 
+                  asChild 
+                  className="bg-transparent hover:bg-white/10 text-white font-medium text-base px-4 py-2 rounded-md transition-all duration-200 inline-flex items-center justify-center whitespace-nowrap no-underline"
+                >
+                  <Link href="/contato">
                     Contato
                   </Link>
                 </NavigationMenuLink>

@@ -13,79 +13,47 @@ import Link from 'next/link'
 const galleryImages: GalleryImage[] = [
   {
     id: '1',
-    src: '/INDEX/oficinatinta/foto1.jpeg',
-    alt: 'Preparação dos materiais para a oficina',
-    title: 'Preparação dos Materiais',
-    description: 'Organização dos ingredientes naturais para produção da tinta de terra',
-    category: 'Preparação'
-  },
-  {
-    id: '2',
-    src: '/INDEX/oficinatinta/foto2.jpeg',
+    src: '/galerias/oficina-tinta-terra/foto10.jpeg',
     alt: 'Participantes reunidos para início da oficina',
     title: 'Início da Oficina',
     description: 'Participantes se reunindo para conhecer o processo de produção',
     category: 'Atividade'
   },
   {
-    id: '3',
-    src: '/INDEX/oficinatinta/foto3.jpeg',
-    alt: 'Demonstração da técnica de mistura',
-    title: 'Técnica de Mistura',
-    description: 'Demonstração prática da técnica tradicional de mistura dos pigmentos',
-    category: 'Técnica'
-  },
-  {
-    id: '4',
-    src: '/INDEX/oficinatinta/foto4.jpeg',
-    alt: 'Processo de peneiramento da terra',
-    title: 'Peneiramento da Terra',
-    description: 'Processo cuidadoso de peneiramento para obter a textura ideal',
-    category: 'Processo'
-  },
-  {
-    id: '5',
-    src: '/INDEX/oficinatinta/foto5.jpeg',
-    alt: 'Adição de aglutinantes naturais',
-    title: 'Aglutinantes Naturais',
-    description: 'Incorporação de aglutinantes naturais para dar consistência à tinta',
-    category: 'Processo'
-  },
-  {
-    id: '6',
-    src: '/INDEX/oficinatinta/foto6.jpeg',
-    alt: 'Teste de cores e tonalidades',
-    title: 'Teste de Cores',
-    description: 'Experimentação com diferentes tonalidades e intensidades',
-    category: 'Experimentação'
-  },
-  {
-    id: '7',
-    src: '/INDEX/oficinatinta/foto7.jpeg',
-    alt: 'Aplicação da tinta em superfície teste',
-    title: 'Aplicação Teste',
-    description: 'Primeira aplicação da tinta produzida em superfície de teste',
-    category: 'Aplicação'
-  },
-  {
-    id: '8',
-    src: '/INDEX/oficinatinta/foto8.jpeg',
+    id: '2',
+    src: '/galerias/oficina-tinta-terra/foto8.jpeg',
     alt: 'Participantes trabalhando em grupo',
     title: 'Trabalho em Grupo',
     description: 'Colaboração entre participantes durante o processo criativo',
     category: 'Atividade'
   },
   {
-    id: '9',
-    src: '/INDEX/oficinatinta/foto9.jpeg',
+    id: '3',
+    src: '/galerias/oficina-tinta-terra/foto4.jpeg',
+    alt: '',
+    title: '',
+    description: '',
+    category: 'Processo'
+  },
+  {
+    id: '4',
+    src: '/galerias/oficina-tinta-terra/foto6.jpeg',
+    alt: '',
+    title: '',
+    description: '',
+    category: 'Experimentação'
+  },
+  {
+    id: '5',
+    src: '/galerias/oficina-tinta-terra/foto9.jpeg',
     alt: 'Resultado final das tintas produzidas',
     title: 'Tintas Produzidas',
     description: 'Variedade de tintas naturais produzidas durante a oficina',
     category: 'Resultado'
   },
   {
-    id: '10',
-    src: '/INDEX/oficinatinta/foto10.jpeg',
+    id: '6',
+    src: '/galerias/oficina-tinta-terra/foto2.jpeg',
     alt: 'Grupo final de participantes',
     title: 'Encerramento',
     description: 'Foto final com todos os participantes e suas criações',
@@ -232,8 +200,8 @@ export default function OficinaPage() {
                 className="space-y-6"
               >
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
-                  <Image
-                    src="/INDEX/oficinatinta/foto10.jpeg"
+                <Image
+                    src="/galerias/oficina-tinta-terra/foto10.jpeg"
                     alt="Resultado final da oficina"
                     fill
                     className="object-cover"

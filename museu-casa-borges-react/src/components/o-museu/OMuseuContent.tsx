@@ -56,9 +56,6 @@ export default function OMuseuContent() {
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
               O Museu Casa Borges
             </h1>
-            <p className="text-xl md:text-2xl max-w-2xl mx-auto">
-              Preservando a memória cultural de Mato Grosso
-            </p>
           </motion.div>
         </div>
       </section>
@@ -71,10 +68,6 @@ export default function OMuseuContent() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-8 text-center">
-            O Museu Casa Borges
-          </h2>
-          
           <div className="prose prose-lg max-w-4xl mx-auto text-slate-700">
             <p className="text-lg leading-relaxed mb-6">
               O Museu Casa Borges surgiu da iniciativa de professores, historiadores, artistas e artesãos do município de Barra do Bugres, inicialmente institucionalizado através de um projeto de extensão, parceria entre a <strong>Universidade do Estado de Mato Grosso - UNEMAT</strong> e o <strong>Departamento de Cultura do município</strong>. Instalado em uma casa histórica, patrimônio cultural da cidade, teve sua primeira atividade em <strong>julho de 2018</strong>, realizando desde então, 13 ações culturais até o final de 2019.

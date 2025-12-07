@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 // AIDEV: Polyfill global para Promise.withResolvers (necessário para pdfjs-dist em Node < 22)
 import "@/lib/polyfills/promiseWithResolvers";
 import "./globals.css";
-import { AccessibilityProvider, SkipLinks, AccessibilityControls } from "@/components/accessibility/AccessibilityProvider";
+import { AccessibilityProvider } from "@/components/accessibility/AccessibilityProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -37,8 +37,6 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className="font-sans antialiased min-h-screen flex flex-col bg-[var(--museu-white)]">
         <AccessibilityProvider>
-          <SkipLinks />
-          <AccessibilityControls />
           <Header />
           <main className="flex-1" role="main" aria-label="Conteúdo principal">
             {children}

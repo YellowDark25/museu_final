@@ -57,6 +57,21 @@ export default function ImageGallery({
   showSearch = true,
   className = ''
 }: ImageGalleryProps) {
+  const resolveSrc = (src: string) => {
+    if (src.startsWith('/INDEX/oficinatinta/')) {
+      return src.replace('/INDEX/oficinatinta/', '/galerias/oficina-tinta-terra/')
+    }
+    if (src.startsWith('/INDEX/album1/')) {
+      return src.replace('/INDEX/album1/', '/galerias/dia-meio-ambiente/')
+    }
+    if (src.startsWith('/INDEX/album2/')) {
+      return src.replace('/INDEX/album2/', '/galerias/visita-ufmt/')
+    }
+    if (src.startsWith('/INDEX/')) {
+      return '/images/fundo1.jpg'
+    }
+    return src
+  }
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -259,7 +274,7 @@ export default function ImageGallery({
                 <CardContent className="p-0">
                   <div className="relative aspect-square overflow-hidden">
                     <Image
-                      src={image.src}
+                      src={resolveSrc(image.src)}
                       alt={image.alt}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-110"
@@ -373,7 +388,7 @@ export default function ImageGallery({
               {/* AIDEV-NOTE: Imagem principal no modal */}
               <div className="relative w-full h-full">
                 <Image
-                  src={selectedImage.src}
+                  src={resolveSrc(selectedImage.src)}
                   alt={selectedImage.alt}
                   fill
                   className="object-contain"

@@ -13,7 +13,7 @@ import Link from 'next/link'
 const galleryImages: GalleryImage[] = [
   {
     id: '1',
-    src: '/INDEX/album2/foto1.jpg',
+    src: '/galerias/visita-ufmt/foto1.jpg',
     alt: 'Chegada do grupo da UFMT ao museu',
     title: 'Chegada da UFMT',
     description: 'Recepção do grupo de estudantes e professores da Universidade Federal de Mato Grosso',
@@ -21,7 +21,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '2',
-    src: '/INDEX/album2/foto2.jpg',
+    src: '/galerias/visita-ufmt/foto2.jpg',
     alt: 'Apresentação da história do museu',
     title: 'Apresentação Institucional',
     description: 'Introdução à história e missão do Museu Casa Borges',
@@ -29,7 +29,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '3',
-    src: '/INDEX/album2/foto3.jpg',
+    src: '/galerias/visita-ufmt/foto3.jpg',
     alt: 'Visita guiada pelas salas do museu',
     title: 'Visita Guiada',
     description: 'Percurso pelas principais salas e exposições do museu',
@@ -37,7 +37,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '4',
-    src: '/INDEX/album2/foto4.jpg',
+    src: '/galerias/visita-ufmt/foto4.jpg',
     alt: 'Estudantes observando o acervo',
     title: 'Exploração do Acervo',
     description: 'Estudantes analisando peças históricas e documentos',
@@ -45,7 +45,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '5',
-    src: '/INDEX/album2/foto5.jpg',
+    src: '/galerias/visita-ufmt/foto5.jpg',
     alt: 'Discussão sobre preservação histórica',
     title: 'Discussão Acadêmica',
     description: 'Debate sobre métodos de preservação e pesquisa histórica',
@@ -53,7 +53,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '6',
-    src: '/INDEX/album2/foto6.jpg',
+    src: '/galerias/visita-ufmt/foto6.jpg',
     alt: 'Interação com educadores do museu',
     title: 'Intercâmbio Educativo',
     description: 'Troca de experiências entre educadores e pesquisadores',
@@ -61,7 +61,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '7',
-    src: '/INDEX/album2/foto7.jpg',
+    src: '/galerias/visita-ufmt/foto7.jpg',
     alt: 'Sessão de perguntas e respostas',
     title: 'Sessão de Q&A',
     description: 'Momento de esclarecimento de dúvidas e aprofundamento',
@@ -69,7 +69,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '8',
-    src: '/INDEX/album2/foto8.jpg',
+    src: '/galerias/visita-ufmt/foto8.jpg',
     alt: 'Foto final do grupo',
     title: 'Registro Final',
     description: 'Foto comemorativa com todo o grupo da UFMT',
@@ -77,7 +77,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '9',
-    src: '/INDEX/album2/foto9.jpg',
+    src: '/galerias/visita-ufmt/foto9.jpg',
     alt: 'Avaliação da visita',
     title: 'Avaliação',
     description: 'Feedback dos participantes sobre a experiência',
@@ -85,7 +85,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     id: '10',
-    src: '/INDEX/album2/foto10.jpg',
+    src: '/galerias/visita-ufmt/foto10.jpg',
     alt: 'Despedida e agradecimentos',
     title: 'Despedida',
     description: 'Momento de despedida e agradecimentos mútuos',
@@ -240,7 +240,7 @@ export default function VisitaUFMTPage() {
               >
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
                   <Image
-                    src="/INDEX/album2/foto7.jpg"
+                    src="/galerias/visita-ufmt/foto7.jpg"
                     alt="Discussão acadêmica durante a visita"
                     fill
                     className="object-cover"
