@@ -29,8 +29,8 @@ export default function Footer() {
         },
         {
           icon: <Mail size={16} />,
-          text: 'contato@museucasaborges.org.br',
-          href: 'mailto:contato@museucasaborges.org.br'
+          text: 'museucasaborges@unemat.br',
+          href: 'mailto:museucasaborges@unemat.br'
         }
       ]
     },

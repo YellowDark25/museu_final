@@ -8,7 +8,6 @@ import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "Museu Casa Borges | Preservando a Memória de Mato Grosso",
-  description: "Museu Casa Borges - Preservando a memória e cultura de Mato Grosso através do legado de Herculano Borges e da rica história regional.",
   keywords: "museu, casa borges, herculano borges, mato grosso, cultura, história, acervo, exposições",
   authors: [{ name: "Museu Casa Borges" }],
   openGraph: {

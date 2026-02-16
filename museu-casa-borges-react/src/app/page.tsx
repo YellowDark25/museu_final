@@ -1,10 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Head from 'next/head'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, Calendar, MapPin, Users, BookOpen } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,26 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { OptimizedImage } from '@/components/ui/optimized-image'
 import { useSEO } from '@/hooks/useSEO'
 import { Newsletter } from '@/components/newsletter/Newsletter'
+import { Badge } from '@/components/ui/badge'
+
+/**
+ * Hook de carrossel de imagens de fundo com troca automática.
+ */
+function useBackgroundCarousel(images: string[], intervalMs: number = 8000) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    if (images.length <= 1) return
+
+    const intervalId = window.setInterval(() => {
+      setCurrentIndex((previousIndex) => (previousIndex + 1) % images.length)
+    }, intervalMs)
+
+    return () => window.clearInterval(intervalId)
+  }, [images, intervalMs])
+
+  return images[currentIndex] ?? images[0]
+}
 
 /**
  * AIDEV-NOTE: Página inicial do Museu Casa Borges
@@ -27,34 +47,66 @@ export default function Home() {
     image: '/images/fundo1.jpg'
   })
 
+  const backgroundImages = [
+    '/images/fundo1.jpg',
+    '/images/fundo2.jpg',
+    '/images/fundo3.jpg',
+    '/images/fundo4.jpg'
+  ]
+
+  const currentBackground = useBackgroundCarousel(backgroundImages, 8000)
+
   const highlights = [
     {
       icon: <BookOpen className="w-8 h-8" />,
       title: 'Acervo Digital',
       description: 'Explore nossa coleção de documentos, fotografias e objetos históricos',
       href: '/acervo',
-      color: 'bg-blue-50 text-blue-600'
+      color: 'bg-blue-50 text-blue-600',
+      tags: ['Documentos', 'Fotografias', 'Objetos']
     },
     {
       icon: <Calendar className="w-8 h-8" />,
       title: 'Exposições',
       description: 'Descubra nossas exposições permanentes e temporárias',
       href: '/exposicoes',
-      color: 'bg-green-50 text-green-600'
+      color: 'bg-green-50 text-green-600',
+      tags: ['Permanentes', 'Temporárias', 'Curadoria']
     },
     {
       icon: <Users className="w-8 h-8" />,
       title: 'Visitas Guiadas',
       description: 'Agende sua visita e conheça a história de Herculano Borges',
       href: '/contato',
-      color: 'bg-purple-50 text-purple-600'
+      color: 'bg-purple-50 text-purple-600',
+      tags: ['Agendamento', 'Grupos', 'Guias']
     },
     {
       icon: <MapPin className="w-8 h-8" />,
       title: 'Localização',
       description: 'Encontre-nos no centro histórico de Cuiabá',
       href: '/contato',
-      color: 'bg-red-50 text-red-600'
+      color: 'bg-red-50 text-red-600',
+      tags: ['Centro Histórico', 'Mapa', 'Acessibilidade']
+    }
+  ]
+
+  const discoverySections = [
+    {
+      id: 'exposicoes-acervo',
+      title: 'Exposições e Acervo',
+      subtitle: 'Conheça as exposições em cartaz e explore o acervo digital do museu.',
+      ctaLabel: 'Ver exposições',
+      ctaHref: '/exposicoes',
+      items: highlights.slice(0, 2)
+    },
+    {
+      id: 'planeje-sua-visita',
+      title: 'Planeje sua Visita',
+      subtitle: 'Encontre informações para organizar sua experiência no Museu Casa Borges.',
+      ctaLabel: 'Informações para visitantes',
+      ctaHref: '/visita',
+      items: highlights.slice(2)
     }
   ]
 
@@ -96,102 +148,97 @@ export default function Home() {
         />
       </Head>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background com animação */}
-        <div className="absolute inset-0 z-0">
-          <div className="w-full h-full bg-gradient-to-br from-[var(--museu-red)] via-red-700 to-red-900 opacity-90" />
-          <motion.div
-            className="absolute inset-0 bg-[url('/images/fundo1.jpg')] bg-cover bg-center"
-            animate={{
-              backgroundImage: [
-                "url('/images/fundo1.jpg')",
-                "url('/images/fundo2.jpg')",
-                "url('/images/fundo3.jpg')",
-                "url('/images/fundo4.jpg')",
-                "url('/images/fundo1.jpg')"
-              ]
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-          />
+      <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[var(--museu-red)] via-red-700 to-red-900 text-white">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="w-full h-full bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_transparent_55%)]" />
         </div>
 
-        {/* Conteúdo Hero */}
-        <div className="relative z-10 container mx-auto px-4 text-center text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-          >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              MUSEU
-              <br />
-              <span className="text-[var(--museu-light-salmon)]">CASA BORGES</span>
-            </h1>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
-            >
-              Preservando a memória e cultura de Mato Grosso através do legado 
-              de Herculano Borges e da rica história regional
-            </motion.p>
-
+        <div className="relative z-10 container mx-auto px-4 py-16">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              transition={{ duration: 1, ease: 'easeOut' }}
+              className="text-left space-y-8"
             >
-              <Button
-                asChild
-                size="lg"
-                className="bg-white text-[var(--museu-red)] hover:bg-gray-100 text-lg px-8 py-6 rounded-full font-semibold group"
+              <div>
+                <div className="mb-6">
+                  <h1 className="sr-only">Museu Casa Borges</h1>
+                  <Image
+                    src="/logo.png"
+                    alt="Logo do Museu Casa Borges"
+                    width={360}
+                    height={160}
+                    className="w-48 sm:w-64 md:w-72 lg:w-80 h-auto"
+                    priority
+                  />
+                </div>
+                <p className="max-w-xl text-base md:text-lg text-white/85">
+                  Um espaço dedicado à preservação da memória, da arte e da cultura.
+                  Explore exposições, acervos e experiências que contam a história do nosso território.
+                </p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.4 }}
+                className="flex flex-col sm:flex-row gap-4"
               >
-                <Link href="/acervo">
-                  Explorar Acervo
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="border-white text-white hover:bg-white hover:text-[var(--museu-red)] text-lg px-8 py-6 rounded-full font-semibold"
-              >
-                <Link href="/o-museu">
-                  Sobre o Museu
-                </Link>
-              </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-white text-[var(--museu-red)] hover:bg-gray-100 text-lg px-8 py-6 rounded-full font-semibold group"
+                >
+                  <Link href="/acervo">
+                    Explorar Acervo
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-white text-white hover:bg-white hover:text-[var(--museu-red)] text-lg px-8 py-6 rounded-full font-semibold"
+                >
+                  <Link href="/o-museu">
+                    Sobre o Museu
+                  </Link>
+                </Button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-6 h-10 border-2 border-white rounded-full flex justify-center"
-          >
             <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-1 h-3 bg-white rounded-full mt-2"
-            />
-          </motion.div>
-        </motion.div>
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
+              className="relative h-full w-full"
+            >
+              <div className="relative h-[50vh] min-h-[320px] lg:min-h-[420px] w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 bg-black/20 backdrop-blur-sm">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentBackground}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0, scale: 1.02 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 1.2, ease: 'easeInOut' }}
+                  >
+                    <Image
+                      src={currentBackground}
+                      alt="Vista do Museu Casa Borges"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* Destaques Section */}
@@ -212,52 +259,76 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {highlights.map((item, index) => (
+          <div className="space-y-16">
+            {discoverySections.map((section, sectionIndex) => (
               <motion.div
-                key={index}
+                key={section.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.7, delay: sectionIndex * 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-                className="group"
+                className="border-t border-gray-200 pt-10"
               >
-                {/**
-                 * Ajuste de alinhamento vertical dos botões "Saiba Mais" nos cards de destaque.
-                 *
-                 * Estratégia:
-                 * - Torna o Card um container flex em coluna (flex flex-col) com h-full para ocupar a altura total disponível.
-                 * - Define o CardContent como flex-1 para ocupar o espaço restante, garantindo que o botão possa ficar
-                 *   sempre encostado na base do card com mt-auto.
-                 * - Isso iguala a altura visual entre cards com descrições de tamanhos diferentes e mantém os botões
-                 *   perfeitamente nivelados.
-                 */}
-                <Card className="h-full flex flex-col hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
-                  <CardHeader className="text-center pb-4">
-                    <div className={`w-16 h-16 rounded-full ${item.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      {item.icon}
-                    </div>
-                    <CardTitle className="text-xl font-semibold text-gray-800">
-                      {item.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center flex flex-col flex-1">
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      {item.description}
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+                  <div className="text-left">
+                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
+                      {section.title}
+                    </h3>
+                    <p className="text-gray-600 max-w-xl mt-2">
+                      {section.subtitle}
                     </p>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="mt-auto group-hover:bg-[var(--museu-red)] group-hover:text-white group-hover:border-[var(--museu-red)] transition-all duration-300"
-                    >
-                      <Link href={item.href}>
-                        Saiba Mais
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="self-start md:self-auto text-[var(--museu-red)] hover:text-[var(--museu-red)] hover:bg-[var(--museu-red)]/5 font-semibold group"
+                  >
+                    <Link href={section.ctaHref}>
+                      {section.ctaLabel}
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {section.items.map((item) => (
+                    <div key={item.title} className="group">
+                      <Card className="h-full flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 shadow-lg bg-white rounded-2xl overflow-hidden">
+                        <div className="h-1 w-full bg-gradient-to-r from-[var(--museu-red)]/70 via-[var(--museu-red)] to-[var(--museu-red)]/70" />
+                        <CardHeader className="pb-4">
+                          <div className={`w-14 h-14 rounded-full ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                            {item.icon}
+                          </div>
+                          <CardTitle className="text-xl font-semibold text-gray-800">
+                            {item.title}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex flex-col flex-1">
+                          <p className="text-gray-600 mb-6 leading-relaxed">
+                            {item.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2 mb-6">
+                            {item.tags?.map((tag) => (
+                              <Badge key={tag} variant="outline" className="rounded-full text-xs px-3 py-1">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                          <Button
+                            asChild
+                            variant="outline"
+                            className="mt-auto self-start hover:bg-[var(--museu-red)] hover:text-white hover:border-[var(--museu-red)] transition-all duration-300"
+                          >
+                            <Link href={item.href}>
+                              Saiba Mais
+                              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -285,9 +356,9 @@ export default function Home() {
                 size="lg"
                 className="bg-white text-[var(--museu-red)] hover:bg-gray-100 text-lg px-8 py-6 rounded-full font-semibold"
               >
-                <Link href="/contato">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfyxS5SWiUlpznLfsuc3tUWKtePX_s4luBRK1RObfPocQTMcg/viewform">
                   Agendar Visita
-                </Link>
+                </a>
               </Button>
               <Button
                 asChild
