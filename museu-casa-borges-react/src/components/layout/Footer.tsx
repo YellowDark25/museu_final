@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react'
 
@@ -80,15 +81,15 @@ export default function Footer() {
             className="lg:col-span-1"
           >
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-[var(--museu-red)] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">M</span>
-              </div>
+              <Image
+                src="/images/logo1.jpg"
+                alt="Logo Museu Casa Borges"
+                width={40}
+                height={40}
+                className="rounded-full object-cover"
+              />
               <span className="font-semibold text-lg">MUSEU CASA BORGES</span>
             </div>
-            <p className="text-gray-300 text-sm leading-relaxed mb-6">
-              Preservando a memória e cultura de Mato Grosso através do legado 
-              de Herculano Borges e da rica história regional.
-            </p>
             
             {/* Redes Sociais */}
             <div className="flex space-x-4">

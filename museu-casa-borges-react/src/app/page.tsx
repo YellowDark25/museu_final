@@ -9,9 +9,7 @@ import { ArrowRight, Calendar, MapPin, Users, BookOpen } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { OptimizedImage } from '@/components/ui/optimized-image'
 import { useSEO } from '@/hooks/useSEO'
-import { Newsletter } from '@/components/newsletter/Newsletter'
 import { Badge } from '@/components/ui/badge'
 
 /**
@@ -69,7 +67,7 @@ export default function Home() {
       icon: <Calendar className="w-8 h-8" />,
       title: 'Exposições',
       description: 'Descubra nossas exposições permanentes e temporárias',
-      href: '/exposicoes',
+      href: '/exposicoes/virtuais',
       color: 'bg-green-50 text-green-600',
       tags: ['Permanentes', 'Temporárias', 'Curadoria']
     },
@@ -99,14 +97,6 @@ export default function Home() {
       ctaLabel: 'Ver exposições',
       ctaHref: '/exposicoes',
       items: highlights.slice(0, 2)
-    },
-    {
-      id: 'planeje-sua-visita',
-      title: 'Planeje sua Visita',
-      subtitle: 'Encontre informações para organizar sua experiência no Museu Casa Borges.',
-      ctaLabel: 'Informações para visitantes',
-      ctaHref: '/visita',
-      items: highlights.slice(2)
     }
   ]
 
@@ -200,7 +190,7 @@ export default function Home() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-white text-white hover:bg-white hover:text-[var(--museu-red)] text-lg px-8 py-6 rounded-full font-semibold"
+                  className="bg-white text-[var(--museu-red)] hover:bg-gray-100 text-lg px-8 py-6 rounded-full font-semibold group"
                 >
                   <Link href="/o-museu">
                     Sobre o Museu
@@ -281,7 +271,7 @@ export default function Home() {
                   <Button
                     asChild
                     variant="ghost"
-                    className="self-start md:self-auto text-[var(--museu-red)] hover:text-[var(--museu-red)] hover:bg-[var(--museu-red)]/5 font-semibold group"
+                    className="self-start md:self-auto text-[var(--museu-red)] hover:underline font-semibold group"
                   >
                     <Link href={section.ctaHref}>
                       {section.ctaLabel}
@@ -317,7 +307,7 @@ export default function Home() {
                           <Button
                             asChild
                             variant="outline"
-                            className="mt-auto self-start hover:bg-[var(--museu-red)] hover:text-white hover:border-[var(--museu-red)] transition-all duration-300"
+                            className="mt-auto self-start transition-all duration-300"
                           >
                             <Link href={item.href}>
                               Saiba Mais
@@ -336,7 +326,7 @@ export default function Home() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-[var(--museu-red)] text-white">
+      <section className="py-8 md:py-10 bg-[var(--museu-red)] text-white">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -344,31 +334,21 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">
               Visite o Museu Casa Borges
             </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+            <p className="text-lg mb-4 max-w-2xl mx-auto opacity-90">
               Venha conhecer pessoalmente nossa coleção e mergulhar na história de Mato Grosso
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
                 asChild
                 size="lg"
-                className="bg-white text-[var(--museu-red)] hover:bg-gray-100 text-lg px-8 py-6 rounded-full font-semibold"
+                className="bg-white text-[var(--museu-red)] visited:text-[var(--museu-red)] hover:bg-gray-100 border-white text-base px-6 py-3 rounded-full font-semibold no-underline"
               >
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSfyxS5SWiUlpznLfsuc3tUWKtePX_s4luBRK1RObfPocQTMcg/viewform">
                   Agendar Visita
                 </a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="border-white text-white hover:bg-white hover:text-[var(--museu-red)] text-lg px-8 py-6 rounded-full font-semibold"
-              >
-                <Link href="/tour">
-                  Tour Virtual
-                </Link>
               </Button>
             </div>
           </motion.div>

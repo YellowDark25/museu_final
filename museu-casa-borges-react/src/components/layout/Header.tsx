@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Instagram, Facebook, Menu, X, Search } from 'lucide-react'
+import { Instagram, Facebook, Menu, X} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { GlobalSearch } from '@/components/search/GlobalSearch'
 import { useGlobalSearch } from '@/hooks/useGlobalSearch'
@@ -297,17 +297,6 @@ export default function Header() {
 
           {/* Search, Social Links & Mobile Menu */}
           <div className="flex items-center space-x-4">
-            {/* Search Button */}
-            <motion.button
-              onClick={openSearch}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-2 rounded-full hover:bg-red-700 transition-colors"
-              aria-label="Buscar no site (Ctrl+K)"
-              title="Buscar (Ctrl+K)"
-            >
-              <Search size={20} />
-            </motion.button>
 
             {/* Social Links */}
             <div className="hidden sm:flex items-center space-x-2">
