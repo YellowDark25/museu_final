@@ -104,36 +104,29 @@ export function usePDFData(): PDFDataHookReturn {
 
   // Função para abrir PDF em nova aba
   const openPDF = useCallback((item: PDFItem) => {
-    // AIDEV-NOTE: Abre o PDF em nova aba para leitura
-    // Usa window.open para garantir que abre em nova aba
+    // AIDEV-NOTE: Abre o PDF em nova aba para leitura, sem forçar download
     const pdfUrl = item.pdfUrl;
     
     try {
       const newWindow = window.open(pdfUrl, '_blank', 'noopener,noreferrer');
-      
-      if (!newWindow) {
-        // Fallback se popup foi bloqueado
-        console.warn('Popup bloqueado, tentando download direto');
-        downloadPDF(item);
-      } else {
-        // Focar na nova aba
+
+      if (newWindow) {
         newWindow.focus();
+      } else {
+        console.warn('Janela de leitura bloqueada pelo navegador.');
       }
     } catch (error) {
       console.error('Erro ao abrir PDF:', error);
-      // Fallback para download
-      downloadPDF(item);
     }
   }, []);
 
   // Função para fazer download do PDF
   const downloadPDF = useCallback((item: PDFItem) => {
-    // AIDEV-NOTE: Força o download do PDF
+    // AIDEV-NOTE: Força o download do PDF sem abrir nova aba
     try {
       const link = document.createElement('a');
       link.href = item.pdfUrl;
       link.download = `${item.titulo}.pdf`;
-      link.target = '_blank';
       
       // Adicionar ao DOM temporariamente
       document.body.appendChild(link);

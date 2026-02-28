@@ -79,7 +79,7 @@ export default function AcervoClient() {
       <HeroAcervo />
 
       <div className="container mx-auto px-4 py-12">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="mb-10">
           <StatsCards stats={stats} loading={loading} />
         </motion.div>
 
@@ -89,12 +89,12 @@ export default function AcervoClient() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="manuscritos">Manuscritos</TabsTrigger>
-              <TabsTrigger value="fotografias">Fotografias</TabsTrigger>
-              <TabsTrigger value="documentos">Documentos</TabsTrigger>
-              <TabsTrigger value="audiovisual">Audiovisual</TabsTrigger>
-              <TabsTrigger value="colecoes">Coleções</TabsTrigger>
+            <TabsList className="flex h-auto w-full justify-start overflow-x-auto bg-muted p-1 md:grid md:grid-cols-5 md:justify-center md:overflow-visible">
+              <TabsTrigger value="manuscritos" className="min-w-[120px] md:min-w-0">Manuscritos</TabsTrigger>
+              <TabsTrigger value="fotografias" className="min-w-[120px] md:min-w-0">Fotografias</TabsTrigger>
+              <TabsTrigger value="documentos" className="min-w-[120px] md:min-w-0">Documentos</TabsTrigger>
+              <TabsTrigger value="audiovisual" className="min-w-[120px] md:min-w-0">Audiovisual</TabsTrigger>
+              <TabsTrigger value="colecoes" className="min-w-[120px] md:min-w-0">Coleções</TabsTrigger>
             </TabsList>
 
             <TabsContent value="manuscritos" className="mt-6">

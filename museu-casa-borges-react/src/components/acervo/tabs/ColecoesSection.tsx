@@ -11,23 +11,13 @@ type Props = {
  * Apresenta coleções especiais do acervo, opcionalmente usando estatísticas.
  */
 export default function ColecoesSection({ stats, loading }: Props) {
-  const collections = [
-    { title: "Coleção Barra do Bugres", desc: "Fotografias e documentos da cidade e região." },
-    { title: "Projeto Memória Oral", desc: "Depoimentos e registros sonoros." },
-    { title: "Acervo Educacional", desc: "Materiais de pesquisa e TCCs." },
-  ]
-
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {collections.map((c) => (
-          <Card key={c.title}>
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-2">{c.title}</h3>
-              <p className="text-sm text-slate-600">{c.desc}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+        <h3 className="text-lg font-medium text-gray-900">Nenhuma coleção em destaque</h3>
+        <p className="mt-2 text-sm text-gray-500">
+          Em breve apresentaremos as coleções especiais do museu.
+        </p>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm p-6">

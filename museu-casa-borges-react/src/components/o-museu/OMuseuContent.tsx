@@ -152,35 +152,11 @@ export default function OMuseuContent() {
           </div>
         </motion.div>
 
-        {/* AIDEV-NOTE: Seção sobre SMEC e gestão atual */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2 }}
-          className="mb-16"
-        >
-          <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-            <CardHeader className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Building className="w-8 h-8 text-blue-600" />
-              </div>
-              <CardTitle className="text-2xl text-slate-800">Gestão Atual</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="prose prose-lg max-w-3xl mx-auto text-slate-700 text-center">
-                <p className="text-lg leading-relaxed">
-                  Atualmente o Museu Casa Borges é gerido pela <strong>SMEC - Secretaria Municipal de Educação e Cultura</strong> da Prefeitura Municipal de Barra do Bugres, mantendo seu compromisso com a preservação da memória cultural local e a educação patrimonial.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
         {/* AIDEV-NOTE: Seção sobre Lei Municipal */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.4 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
           className="mb-16"
         >
           <Card className="border-0 shadow-lg bg-gradient-to-r from-amber-50 to-orange-50">

@@ -37,8 +37,7 @@ export default function Header() {
       title: 'Sobre',
       items: [
         { title: 'O Museu', href: '/o-museu' },
-        { title: 'Herculano', href: '/herculano' },
-        { title: 'Identidade', href: '/identidade' },
+        { title: 'Herculano', href: '/herculano' }
       ]
     },
     {
@@ -100,22 +99,7 @@ export default function Header() {
                   Sobre
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          href="/sobre"
-                        >
-                          <div className="mb-2 mt-4 text-lg font-semibold text-foreground">
-                            Sobre o Museu
-                          </div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Conheça a história e missão do Museu Casa Borges
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
+                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
                     <li>
                       <NavigationMenuLink asChild>
                         <Link
@@ -125,19 +109,6 @@ export default function Header() {
                           <div className="text-sm font-medium leading-none text-foreground">O Museu</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             História e informações institucionais
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/identidade"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none text-foreground">Identidade</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Missão, visão e valores
                           </p>
                         </Link>
                       </NavigationMenuLink>
@@ -160,65 +131,14 @@ export default function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent hover:bg-white/10 text-white font-medium text-base transition-all duration-200">
-                  Acervo
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white border border-gray-200 shadow-lg rounded-lg">
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/acervo"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Acervo Completo</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Explore todo nosso acervo
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/acervo?categoria=obras"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Obras</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Pinturas e esculturas
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/acervo?categoria=documentos"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Documentos</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Documentos históricos
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href="/acervo?categoria=fotografias"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 text-gray-700"
-                        >
-                          <div className="text-sm font-medium leading-none text-gray-900">Fotografias</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-600">
-                            Registros fotográficos
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
+                <NavigationMenuLink 
+                  asChild 
+                  className="bg-transparent hover:bg-white/10 text-white font-medium text-base px-4 py-2 rounded-md transition-all duration-200 inline-flex items-center justify-center whitespace-nowrap no-underline"
+                >
+                  <Link href="/acervo">
+                    Acervo
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>

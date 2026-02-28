@@ -295,9 +295,6 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
         <p className="text-muted-foreground mb-4">
           Coleção de {filteredPhotos.length} fotografias históricas do Museu Casa Borges
         </p>
-        <Badge className="bg-blue-100 text-blue-800">
-          {filteredPhotos.length} fotografias disponíveis
-        </Badge>
       </div>
 
       {/* AIDEV-NOTE: Grid de fotos com animações (paginada) */}
@@ -331,11 +328,11 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
       </div>
 
       {/* Controles de paginação */}
-      <div className="mt-6 flex items-center justify-center gap-2">
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
         <Button variant="outline" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>
           <ChevronLeft className="w-4 h-4 mr-1" /> Anterior
         </Button>
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1 justify-center">
           {Array.from({ length: totalPages }).map((_, i) => {
             const p = i + 1
             const active = p === currentPage
@@ -358,76 +355,86 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
 
       {/* AIDEV-NOTE: Modal para visualização ampliada */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] p-0">
-          <DialogHeader className="p-6 pb-0">
-            <DialogTitle className="flex items-center justify-between">
-              <span>
-                {selectedPhoto !== null ? filteredPhotos[selectedPhoto].title : ''}
-              </span>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline">
-                  {selectedPhoto !== null ? selectedPhoto + 1 : 0} de {filteredPhotos.length}
-                </Badge>
-              </div>
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="relative flex items-center justify-center p-6 pt-0">
-            {/* AIDEV-NOTE: Botão anterior */}
+        <DialogContent className="max-w-[95vw] w-full h-[90vh] p-0 flex flex-col bg-black/95 border-none text-white overflow-hidden">
+          {/* Título acessível para leitores de tela */}
+          <DialogTitle className="sr-only">
+            {selectedPhoto !== null ? filteredPhotos[selectedPhoto].title : 'Visualização de foto'}
+          </DialogTitle>
+
+          {/* Header minimalista com contador */}
+          <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+             <Badge variant="secondary" className="bg-black/50 text-white border-white/20 hover:bg-black/70">
+                {selectedPhoto !== null ? selectedPhoto + 1 : 0} / {filteredPhotos.length}
+             </Badge>
+          </div>
+
+          {/* Área principal da imagem */}
+          <div className="relative flex-1 flex items-center justify-center w-full h-full bg-black/50 group">
+            {/* Botão anterior */}
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white"
-              onClick={() => navigatePhoto('prev')}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/10 h-12 w-12 rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigatePhoto('prev');
+              }}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-8 w-8" />
             </Button>
 
-            {/* AIDEV-NOTE: Imagem principal */}
+            {/* Imagem */}
             {selectedPhoto !== null && (
-              <div className="relative max-w-full max-h-[60vh] mx-12">
+              <div className="relative w-full h-full flex items-center justify-center p-4">
                 <Image
                   src={filteredPhotos[selectedPhoto].src}
                   alt={filteredPhotos[selectedPhoto].alt}
-                  width={800}
-                  height={600}
-                  className="object-contain w-full h-full rounded-lg"
+                  fill
+                  className="object-contain"
+                  quality={90}
+                  priority
                 />
               </div>
             )}
 
-            {/* AIDEV-NOTE: Botão próximo */}
+            {/* Botão próximo */}
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white"
-              onClick={() => navigatePhoto('next')}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/10 h-12 w-12 rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigatePhoto('next');
+              }}
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-8 w-8" />
             </Button>
           </div>
 
-          {/* AIDEV-NOTE: Informações da foto */}
+          {/* Footer com informações */}
           {selectedPhoto !== null && (
-            <div className="p-6 pt-0 border-t">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-semibold mb-1">
-                    {filteredPhotos[selectedPhoto].title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground">
-                    {filteredPhotos[selectedPhoto].description}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline">
-                    <Heart className="h-4 w-4 mr-1" />
-                    Favoritar
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Download className="h-4 w-4 mr-1" />
-                    Download
-                  </Button>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent p-6 pb-8 pt-12 z-10">
+              <div className="container mx-auto max-w-5xl">
+                <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4">
+                  <div>
+                    <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
+                      {filteredPhotos[selectedPhoto].title}
+                    </h2>
+                    <p className="text-gray-300 text-sm md:text-base max-w-2xl">
+                      {filteredPhotos[selectedPhoto].description}
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 shrink-0">
+                    <Button size="sm" variant="secondary" className="bg-white/10 hover:bg-white/20 text-white border-none">
+                      <Heart className="h-4 w-4 mr-2" />
+                      Favoritar
+                    </Button>
+                    <Button size="sm" variant="secondary" className="bg-white text-black hover:bg-gray-200 border-none">
+                      <Download className="h-4 w-4 mr-2" />
+                      Baixar Original
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

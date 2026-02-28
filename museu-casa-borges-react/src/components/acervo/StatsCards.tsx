@@ -24,7 +24,7 @@ export default function StatsCards({ stats, loading }: Props) {
       {items.map((it) => (
         <Card key={it.label} className="bg-white shadow-sm">
           <CardContent className="p-6 flex items-center gap-4">
-            <it.icon className="w-6 h-6 text-blue-600" />
+            <it.icon className="w-6 h-6 text-[var(--museu-red)]" />
             <div>
               <div className="text-sm text-slate-500">{it.label}</div>
               <div className="text-2xl font-bold">
