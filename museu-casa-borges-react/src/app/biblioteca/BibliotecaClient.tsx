@@ -71,30 +71,32 @@ export default function BibliotecaClient() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50">
-      <section className="relative h-96 overflow-hidden">
-        <Image
-          src="/images/fundo2.jpg"
-          alt="Biblioteca Digital do Museu"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 flex items-center justify-center">
+      <section className="relative w-full text-white overflow-hidden">
+        <div className="absolute inset-0 z-0 h-96 md:h-auto">
+          <Image
+            src="/images/fundo2.jpg"
+            alt="Biblioteca Digital do Museu"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/60" />
+        </div>
+        
+        <div className="container relative z-10 mx-auto px-4 py-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center text-white"
+            className="max-w-3xl"
           >
-            <h1 className="text-5xl font-bold mb-4">Biblioteca Digital</h1>
-            <p className="text-xl max-w-2xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 drop-shadow-lg">
+              BIBLIOTECA DIGITAL
+            </h1>
+            <p className="text-base sm:text-lg opacity-90 mb-6 drop-shadow-md">
               Acesse nossa coleção digital de livros, artigos, teses e recursos 
-              especializados sobre Jorge Luis Borges e literatura argentina
+              especializados sobre a história e cultura de Barra do Bugres e Região.
             </p>
-            <Badge className="mt-4 bg-amber-600 hover:bg-amber-700">
-              Acesso Gratuito
-            </Badge>
           </motion.div>
         </div>
       </section>
@@ -149,7 +151,7 @@ export default function BibliotecaClient() {
                 Biblioteca Digital
               </CardTitle>
               <CardDescription>
-                Explore nossa coleção de publicações, pesquisas, artigos e trabalhos acadêmicos sobre a história e cultura de Barra do Bugres
+                Explore nossa coleção de publicações, pesquisas, artigos e trabalhos acadêmicos sobre a história e cultura de Barra do Bugres e Região
               </CardDescription>
             </CardHeader>
           </Card>

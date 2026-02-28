@@ -46,13 +46,7 @@ const galleries = [
   }
 ]
 
-// AIDEV-NOTE: Estatísticas das galerias
-const stats = [
-  { label: 'Total de Fotos', value: '150+', icon: ImageIcon },
-  { label: 'Eventos Registrados', value: '25', icon: Calendar },
-  { label: 'Visitantes Fotografados', value: '500+', icon: Users },
-  { label: 'Oficinas Documentadas', value: '12', icon: Camera }
-]
+
 
 export default function GaleriasPage() {
   return (
@@ -82,47 +76,11 @@ export default function GaleriasPage() {
               <p className="text-xl md:text-2xl mb-8 text-gray-200">
                 Registros visuais da vida cultural e educativa do museu
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Badge variant="secondary" className="text-lg px-4 py-2">
-                  <Camera className="h-5 w-5 mr-2" />
-                  Documentação Visual
-                </Badge>
-                <Badge variant="secondary" className="text-lg px-4 py-2">
-                  <Calendar className="h-5 w-5 mr-2" />
-                  Eventos e Atividades
-                </Badge>
-              </div>
             </motion.div>
           </div>
         </section>
 
-        {/* AIDEV-NOTE: Estatísticas das galerias */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8"
-            >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-4">
-                    <stat.icon className="h-8 w-8" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                  <div className="text-gray-600">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+
 
         {/* AIDEV-NOTE: Galerias em destaque */}
         <section className="py-16">

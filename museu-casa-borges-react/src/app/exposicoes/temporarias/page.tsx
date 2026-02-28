@@ -151,6 +151,7 @@ export default function ExposicoesTemporarias() {
                         src={exposicao.imagem}
                         alt={exposicao.titulo}
                         fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         className="object-cover transition-transform duration-300 hover:scale-105"
                       />
                       <div className="absolute top-4 right-4">
@@ -243,6 +244,7 @@ export default function ExposicoesTemporarias() {
                           src={exposicao.imagem}
                           alt={exposicao.titulo}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover grayscale"
                         />
                         <div className="absolute top-2 right-2">

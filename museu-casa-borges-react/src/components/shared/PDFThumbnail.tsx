@@ -10,6 +10,14 @@ import { motion } from 'framer-motion';
 import { FileText, AlertCircle, Loader2 } from 'lucide-react';
 import { PDF_CONFIG } from '@/lib/pdf-config';
 
+// Opções do PDF.js configuradas fora do componente para evitar re-renderizações
+// AIDEV: verbosity: 0 silencia avisos de fontes (TT: undefined function)
+const PDF_OPTIONS = {
+  cMapUrl: 'https://unpkg.com/pdfjs-dist@5.4.296/cmaps/',
+  cMapPacked: true,
+  verbosity: 0,
+};
+
 interface PDFThumbnailProps {
   /** Caminho para o arquivo PDF */
   filePath: string;
@@ -41,6 +49,7 @@ export function PDFThumbnail({
   // AIDEV: Referência ao container para obter a largura disponível
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [pageWidth, setPageWidth] = useState<number>(PDF_CONFIG.THUMBNAIL_WIDTH);
+  const [isWorkerReady, setIsWorkerReady] = useState(false);
 
   // Callback para quando o documento é carregado com sucesso
   const onDocumentLoadSuccess = useCallback(({ numPages }: { numPages: number }) => {
@@ -101,9 +110,12 @@ export function PDFThumbnail({
         if (pdfjs?.GlobalWorkerOptions) {
           pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
         }
+        setIsWorkerReady(true);
       } catch (e) {
         // Silenciar erros de configuração de worker para evitar quebrar a UI
         console.error('Falha ao configurar worker do pdfjs', e);
+        // Mesmo com erro, tentamos renderizar
+        setIsWorkerReady(true);
       }
     })();
   }, []);
@@ -143,13 +155,13 @@ export function PDFThumbnail({
       ref={containerRef}
     >
       {/* Loading state inicial */}
-      {isLoading && <LoadingState />}
+      {(isLoading || !isWorkerReady) && <LoadingState />}
       
       {/* Error state */}
       {hasError && <ErrorState />}
       
       {/* PDF Document */}
-      {!hasError && (
+      {!hasError && isWorkerReady && (
         <PDFDocument
           file={filePath}
           onLoadSuccess={onDocumentLoadSuccess}
@@ -157,6 +169,7 @@ export function PDFThumbnail({
           loading={<LoadingState />}
           error={<ErrorState />}
           className="w-full h-full"
+          options={PDF_OPTIONS}
         >
           <PDFPage
             pageNumber={1}

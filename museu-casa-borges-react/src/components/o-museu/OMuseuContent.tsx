@@ -42,6 +42,7 @@ export default function OMuseuContent() {
           src="/images/fundo2.jpg"
           alt="Museu Casa Borges"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />
@@ -88,6 +89,7 @@ export default function OMuseuContent() {
                 src="/sobre/museu.jpg"
                 alt="Oficina de cerâmica ministrada por Claudemir Oliveira"
                 fill
+                sizes="(max-width: 896px) 100vw, 896px"
                 className="object-cover"
               />
             </div>
@@ -128,6 +130,7 @@ export default function OMuseuContent() {
                 src="/sobre/museu1.jpg"
                 alt="Reinauguração do Museu Casa Borges"
                 fill
+                sizes="(max-width: 896px) 100vw, 896px"
                 className="object-cover"
               />
             </div>

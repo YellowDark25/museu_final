@@ -304,6 +304,7 @@ export default function SobrePage() {
           src="/images/fundo2.jpg"
           alt="Sobre o Museu Casa de Jorge Luis Borges"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />
