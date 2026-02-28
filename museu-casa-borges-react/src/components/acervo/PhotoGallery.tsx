@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ChevronLeft, ChevronRight, Download, Heart, Eye, Calendar } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Eye, Calendar } from 'lucide-react'
 
 // AIDEV-NOTE: Lista de fotos extraídas do arquivo INDEX/acervo.html
 const ACERVO_PHOTOS = [
@@ -423,17 +423,6 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
                     <p className="text-gray-300 text-sm md:text-base max-w-2xl">
                       {filteredPhotos[selectedPhoto].description}
                     </p>
-                  </div>
-                  
-                  <div className="flex items-center gap-3 shrink-0">
-                    <Button size="sm" variant="secondary" className="bg-white/10 hover:bg-white/20 text-white border-none">
-                      <Heart className="h-4 w-4 mr-2" />
-                      Favoritar
-                    </Button>
-                    <Button size="sm" variant="secondary" className="bg-white text-black hover:bg-gray-200 border-none">
-                      <Download className="h-4 w-4 mr-2" />
-                      Baixar Original
-                    </Button>
                   </div>
                 </div>
               </div>
