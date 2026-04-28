@@ -1,7 +1,8 @@
 import PhotoGallery from "@/components/acervo/PhotoGallery"
+import type { PublicAcervoPhotoDTO } from "@/features/acervo/dto/public-acervo.dto"
 
 type Props = {
-  /** Parâmetros de filtro vindos da barra de busca (page.tsx). */
+  photos: PublicAcervoPhotoDTO[]
   query?: {
     keyword?: string
     period?: "qualquer" | "antigo" | "moderno" | "recente"
@@ -16,10 +17,10 @@ type Props = {
  * FotografiasSection
  * Usa o componente PhotoGallery e permite receber filtros (keyword/period).
  */
-export default function FotografiasSection({ query }: Props) {
+export default function FotografiasSection({ photos, query }: Props) {
   return (
     <div>
-      <PhotoGallery pageSize={10} query={query} />
+      <PhotoGallery photos={photos} pageSize={10} query={query} />
     </div>
   )
 }

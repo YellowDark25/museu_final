@@ -262,11 +262,7 @@
   white-space: normal;
 }
 
-/* Focus visível melhorado */
-*:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
+/* Sem regra global *:focus — evita anel azul em todo clique; foco fica nos componentes (shadcn / navegador). */
 
 /* Melhor contraste para links */
 a {
@@ -315,7 +311,7 @@ th {
 }
 
 /* Navegação por teclado melhorada */
-.keyboard-navigation *:focus {
+.keyboard-navigation *:focus-visible {
   outline: 3px solid #fbbf24;
   outline-offset: 2px;
   z-index: 1;

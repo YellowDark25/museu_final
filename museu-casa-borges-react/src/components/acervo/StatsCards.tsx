@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { FileText, Image as ImageIcon, Film, Headphones } from "lucide-react"
-import type { AcervoStats } from "@/hooks/useAcervoStats"
+import type { PublicAcervoStatsDTO } from "@/features/acervo/dto/public-acervo.dto"
 
 type Props = {
-  stats: AcervoStats | null
+  stats: PublicAcervoStatsDTO | null
   loading?: boolean
 }
 

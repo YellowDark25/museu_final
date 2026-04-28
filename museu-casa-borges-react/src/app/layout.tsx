@@ -37,7 +37,7 @@ export default function RootLayout({
       <body className="font-sans antialiased min-h-screen flex flex-col bg-[var(--museu-white)]">
         <AccessibilityProvider>
           <Header />
-          <main className="flex-1" role="main" aria-label="Conteúdo principal">
+          <main className="flex min-h-0 flex-1 flex-col" role="main" aria-label="Conteúdo principal">
             {children}
           </main>
           <Footer />

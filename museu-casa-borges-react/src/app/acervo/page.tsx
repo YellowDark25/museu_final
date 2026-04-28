@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import AcervoClient from "./AcervoClient"
+import { getPublicAcervoOverview } from "@/features/acervo/server/public-acervo.service"
 
 /**
  * AcervoPage
@@ -14,10 +15,12 @@ import AcervoClient from "./AcervoClient"
  * AcervoPage
  * Componente server que encapsula o cliente em Suspense
  */
-export default function AcervoPage() {
+export default async function AcervoPage() {
+  const overview = await getPublicAcervoOverview()
+
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <AcervoClient />
+      <AcervoClient overview={overview} />
     </Suspense>
   )
 }

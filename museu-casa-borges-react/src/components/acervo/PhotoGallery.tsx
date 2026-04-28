@@ -7,198 +7,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, ChevronRight, Eye, Calendar } from 'lucide-react'
-
-// AIDEV-NOTE: Lista de fotos extraídas do arquivo INDEX/acervo.html
-const ACERVO_PHOTOS = [
-  {
-    src: '/acervo/fotos_acervo/acervo1.jpeg',
-    alt: 'Acervo 1',
-    title: 'Documento Histórico 1',
-    description: 'Fotografia histórica do acervo do Museu Casa Borges'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (3).jpeg',
-    alt: 'Acervo 2',
-    title: 'Documento Histórico 2',
-    description: 'Registro fotográfico de documento importante'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (4).jpeg',
-    alt: 'Acervo 3',
-    title: 'Documento Histórico 3',
-    description: 'Fotografia de manuscrito histórico'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (5).jpeg',
-    alt: 'Acervo 4',
-    title: 'Documento Histórico 4',
-    description: 'Registro fotográfico do acervo'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (6).jpeg',
-    alt: 'Acervo 5',
-    title: 'Documento Histórico 5',
-    description: 'Fotografia de documento do museu'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (7).jpeg',
-    alt: 'Acervo 6',
-    title: 'Documento Histórico 6',
-    description: 'Registro histórico em fotografia'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (8).jpeg',
-    alt: 'Acervo 7',
-    title: 'Documento Histórico 7',
-    description: 'Fotografia de manuscrito do acervo'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (9).jpeg',
-    alt: 'Acervo 8',
-    title: 'Documento Histórico 8',
-    description: 'Registro fotográfico histórico'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (11).jpeg',
-    alt: 'Acervo 9',
-    title: 'Documento Histórico 9',
-    description: 'Fotografia de documento importante'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (12).jpeg',
-    alt: 'Acervo 10',
-    title: 'Documento Histórico 10',
-    description: 'Registro do acervo em fotografia'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (13).jpeg',
-    alt: 'Acervo 11',
-    title: 'Documento Histórico 11',
-    description: 'Fotografia histórica do museu'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (14).jpeg',
-    alt: 'Acervo 12',
-    title: 'Documento Histórico 12',
-    description: 'Registro fotográfico de manuscrito'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (15).jpeg',
-    alt: 'Acervo 13',
-    title: 'Documento Histórico 13',
-    description: 'Fotografia de documento do acervo'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (16).jpeg',
-    alt: 'Acervo 14',
-    title: 'Documento Histórico 14',
-    description: 'Registro histórico em fotografia'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (17).jpeg',
-    alt: 'Acervo 15',
-    title: 'Documento Histórico 15',
-    description: 'Fotografia de manuscrito histórico'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (18).jpeg',
-    alt: 'Acervo 16',
-    title: 'Documento Histórico 16',
-    description: 'Registro fotográfico do museu'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (20).jpeg',
-    alt: 'Acervo 17',
-    title: 'Documento Histórico 17',
-    description: 'Fotografia de documento importante'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (21).jpeg',
-    alt: 'Acervo 18',
-    title: 'Documento Histórico 18',
-    description: 'Registro do acervo histórico'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (22).jpeg',
-    alt: 'Acervo 19',
-    title: 'Documento Histórico 19',
-    description: 'Fotografia histórica do museu'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (23).jpeg',
-    alt: 'Acervo 20',
-    title: 'Documento Histórico 20',
-    description: 'Registro fotográfico de manuscrito'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (24).jpeg',
-    alt: 'Acervo 21',
-    title: 'Documento Histórico 21',
-    description: 'Fotografia de documento do acervo'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (25).jpeg',
-    alt: 'Acervo 22',
-    title: 'Documento Histórico 22',
-    description: 'Registro histórico em fotografia'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (26).jpeg',
-    alt: 'Acervo 23',
-    title: 'Documento Histórico 23',
-    description: 'Fotografia de manuscrito histórico'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (27).jpeg',
-    alt: 'Acervo 24',
-    title: 'Documento Histórico 24',
-    description: 'Registro fotográfico do museu'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (29).jpeg',
-    alt: 'Acervo 25',
-    title: 'Documento Histórico 25',
-    description: 'Fotografia de documento importante'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.11.27 (30).jpeg',
-    alt: 'Acervo 26',
-    title: 'Documento Histórico 26',
-    description: 'Registro do acervo histórico'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.21.25 (1).jpeg',
-    alt: 'Acervo 27',
-    title: 'Documento Histórico 27',
-    description: 'Fotografia histórica do museu'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.21.25 (2).jpeg',
-    alt: 'Acervo 28',
-    title: 'Documento Histórico 28',
-    description: 'Registro fotográfico de manuscrito'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.21.25 (3).jpeg',
-    alt: 'Acervo 29',
-    title: 'Documento Histórico 29',
-    description: 'Fotografia de documento do acervo'
-  },
-  {
-    src: '/acervo/fotos_acervo/WhatsApp Image 2025-06-09 at 11.21.25 (4).jpeg',
-    alt: 'Acervo 30',
-    title: 'Documento Histórico 30',
-    description: 'Registro histórico em fotografia'
-  },
-  {
-    src: '/acervo/fotos_acervo/acervo1.jpeg',
-    alt: 'Acervo Principal',
-    title: 'Documento Principal do Acervo',
-    description: 'Fotografia principal do acervo do Museu Casa Borges'
-  }
-]
+import type { PublicAcervoPhotoDTO } from '@/features/acervo/dto/public-acervo.dto'
 
 interface PhotoGalleryProps {
+  photos: PublicAcervoPhotoDTO[]
   className?: string
   /** Quantidade de itens por página na grade (padrão: 10) */
   pageSize?: number
@@ -221,30 +33,30 @@ interface PhotoGalleryProps {
  * - A paginação opera sobre o resultado filtrado
  * - O modal navega dentro do conjunto filtrado
  */
-export default function PhotoGallery({ className = '', pageSize = 10, query }: PhotoGalleryProps) {
+export default function PhotoGallery({ photos, className = '', pageSize = 10, query }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   // Aplica filtros vindos da barra de busca
-  let filteredPhotos = ACERVO_PHOTOS
+  let filteredPhotos = photos
   // Filtro por palavra‑chave (title/description/alt)
   if (query?.keyword && query.keyword.trim() !== '') {
     const kw = query.keyword.trim().toLowerCase()
-    filteredPhotos = ACERVO_PHOTOS.filter((p) =>
+    filteredPhotos = photos.filter((p) =>
       [p.title, p.description, p.alt].some((t) => t?.toLowerCase().includes(kw))
     )
   }
-  // Filtro por período – como não há metadados de data nas fotos,
-  // utilizamos um agrupamento aproximado por terços do array original.
   if (query?.period && query.period !== 'qualquer') {
-    const len = filteredPhotos.length
-    const ancientCut = Math.floor(len / 3)
-    const modernCut = Math.floor((2 * len) / 3)
-    filteredPhotos = filteredPhotos.filter((_, idx) => {
-      if (query.period === 'antigo') return idx < ancientCut
-      if (query.period === 'moderno') return idx >= ancientCut && idx < modernCut
-      if (query.period === 'recente') return idx >= modernCut
+    filteredPhotos = filteredPhotos.filter((photo) => {
+      if (!photo.date) {
+        return query.period === 'qualquer'
+      }
+
+      const year = new Date(photo.date).getFullYear()
+      if (query.period === 'antigo') return year < 1950
+      if (query.period === 'moderno') return year >= 1950 && year < 2000
+      if (query.period === 'recente') return year >= 2000
       return true
     })
   }
@@ -289,7 +101,6 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* AIDEV-NOTE: Informações da galeria */}
       <div className="text-center">
         <h3 className="text-2xl font-bold mb-2">Fotografias do Acervo</h3>
         <p className="text-muted-foreground mb-4">
@@ -297,7 +108,15 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
         </p>
       </div>
 
-      {/* AIDEV-NOTE: Grid de fotos com animações (paginada) */}
+      {filteredPhotos.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+          <h3 className="text-lg font-medium text-gray-900">Nenhuma fotografia disponível</h3>
+          <p className="mt-2 text-sm text-gray-500">
+            Ajuste os filtros ou publique novas fotografias no painel administrativo.
+          </p>
+        </div>
+      ) : (
+        <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {visiblePhotos.map((photo, index) => (
           <motion.div
@@ -327,7 +146,6 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
         ))}
       </div>
 
-      {/* Controles de paginação */}
       <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
         <Button variant="outline" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>
           <ChevronLeft className="w-4 h-4 mr-1" /> Anterior
@@ -352,25 +170,22 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
           Próxima <ChevronRight className="w-4 h-4 ml-1" />
         </Button>
       </div>
+        </>
+      )}
 
-      {/* AIDEV-NOTE: Modal para visualização ampliada */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-[95vw] w-full h-[90vh] p-0 flex flex-col bg-black/95 border-none text-white overflow-hidden">
-          {/* Título acessível para leitores de tela */}
           <DialogTitle className="sr-only">
             {selectedPhoto !== null ? filteredPhotos[selectedPhoto].title : 'Visualização de foto'}
           </DialogTitle>
 
-          {/* Header minimalista com contador */}
           <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
              <Badge variant="secondary" className="bg-black/50 text-white border-white/20 hover:bg-black/70">
                 {selectedPhoto !== null ? selectedPhoto + 1 : 0} / {filteredPhotos.length}
              </Badge>
           </div>
 
-          {/* Área principal da imagem */}
           <div className="relative flex-1 flex items-center justify-center w-full h-full bg-black/50 group">
-            {/* Botão anterior */}
             <Button
               variant="ghost"
               size="icon"
@@ -383,7 +198,6 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
               <ChevronLeft className="h-8 w-8" />
             </Button>
 
-            {/* Imagem */}
             {selectedPhoto !== null && (
               <div className="relative w-full h-full flex items-center justify-center p-4">
                 <Image
@@ -397,7 +211,6 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
               </div>
             )}
 
-            {/* Botão próximo */}
             <Button
               variant="ghost"
               size="icon"
@@ -411,7 +224,6 @@ export default function PhotoGallery({ className = '', pageSize = 10, query }: P
             </Button>
           </div>
 
-          {/* Footer com informações */}
           {selectedPhoto !== null && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent p-6 pb-8 pt-12 z-10">
               <div className="container mx-auto max-w-5xl">

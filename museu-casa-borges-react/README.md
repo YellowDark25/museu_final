@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Museu Casa Borges
 
-## Getting Started
+Aplicação Next.js do Museu Casa Borges com foco em conteúdo institucional, acervo, biblioteca digital, exposições e futuras rotinas administrativas centralizadas.
 
-First, run the development server:
+## Desenvolvimento
+
+Execute o projeto com:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev -- --port 8080
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A aplicação ficará disponível em `http://localhost:8080`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estrutura inicial do CMS administrativo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O projeto agora possui uma fundação para um backoffice central em `/admin`, desenhado para evoluir como um CMS modular.
 
-## Learn More
+### Objetivos
 
-To learn more about Next.js, take a look at the following resources:
+- Centralizar a gestão de conteúdo do site em um único painel
+- Separar o domínio por módulos, sem criar uma tabela genérica para tudo
+- Usar DTOs como fronteira estável entre interface, serviços e persistência
+- Preparar a troca de dados estáticos por Prisma e storage sem reescrever a camada visual
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Módulos previstos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Acervo
+- Biblioteca
+- Exposições
+- Galerias
+- Páginas institucionais
+- Equipe
+- Configurações globais
 
-## Deploy on Vercel
+### Estrutura técnica
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `src/app/admin` concentra as rotas do painel
+- `src/features/admin/dto` contém os contratos DTO do backoffice
+- `src/features/admin/config` mantém o registry dos módulos e das coleções
+- `src/features/admin/server` expõe serviços preparados para futura integração com Prisma
+- `src/features/admin/components` concentra os componentes visuais do painel
+- `src/features/admin/auth` concentra DTOs, serviços e componentes de autenticação
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Princípios da implementação
+
+- O painel administrativo não depende diretamente do schema Prisma
+- Os contratos DTO definem o formato de entrada e saída esperado pela UI
+- Arquivos binários devem ir para storage; o banco deve guardar metadados e referências
+- Cada módulo evolui separadamente, mas compartilha navegação, layout e padrões editoriais
+
+### Login administrativo
+
+- A rota `/admin/login` valida credenciais no servidor
+- As rotas do painel são protegidas por verificação server-side no layout administrativo
+- A sessão é persistida em cookie `HttpOnly`
+- O login agora usa usuários persistidos no banco pela tabela `admin_users`
+
+#### Variáveis recomendadas
+
+```env
+ADMIN_SESSION_SECRET=defina-um-secret-forte
+ADMIN_SESSION_DURATION_HOURS=12
+ADMIN_BOOTSTRAP_NAME=Administrador Museu Casa Borges
+ADMIN_BOOTSTRAP_EMAIL=admin@seudominio.com
+ADMIN_BOOTSTRAP_PASSWORD=defina-uma-senha-forte
+```
+
+#### Bootstrap inicial
+
+- Sincronize o schema com o banco:
+
+```bash
+npm run prisma:push
+```
+
+- Crie ou atualize o primeiro usuário admin:
+
+```bash
+npm run admin:bootstrap
+```
+
+#### Fallback local de desenvolvimento
+
+- Em ambiente não produtivo, o bootstrap usa por padrão:
+- E-mail: `admin@museucasaborges.local`
+- Senha: `admin123`
+
+## Próximos passos recomendados
+
+- Implementar serviços reais com Prisma por módulo
+- Criar fluxo de upload com storage
+- Substituir dados estáticos da UI pública por leitura via banco
+- Adicionar formulários e ações administrativas para publicação, edição e exclusão

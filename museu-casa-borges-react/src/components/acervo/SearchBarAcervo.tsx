@@ -1,59 +1,81 @@
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-// Tipos para os valores de filtro
 export type AcervoFilterValues = {
   keyword: string
-  material: "todos" | "documentos" | "fotografias" | "audiovisual"
+  material: string
   period: "qualquer" | "antigo" | "moderno" | "recente"
 }
 
+export type AcervoMaterialOption = {
+  value: string
+  label: string
+}
+
 type Props = {
-  // Valores controlados dos filtros
   values: AcervoFilterValues
-  // Callback para mudança de algum filtro específico
+  materialOptions: AcervoMaterialOption[]
   onChange: (patch: Partial<AcervoFilterValues>) => void
-  // Callback opcional ao clicar em Pesquisar
   onSearch?: () => void
 }
 
-/**
- * SearchBarAcervo
- * Componente controlado de filtros do Acervo.
- * - Recebe os valores e callbacks via props para sincronizar com a página.
- * - Emite alterações nos selects e input para o container (page.tsx).
- */
-export default function SearchBarAcervo({ values, onChange, onSearch }: Props) {
+export default function SearchBarAcervo({
+  values,
+  materialOptions,
+  onChange,
+  onSearch,
+}: Props) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="rounded-2xl bg-white p-4 shadow-sm">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div>
-          <label className="text-sm text-slate-600 mb-1 block">Palavra-chave</label>
+          <label className="mb-1 block text-sm text-slate-600">
+            Palavra-chave
+          </label>
           <Input
             placeholder="Ex.: Barra do Bugres, artesanato, fotos"
             value={values.keyword}
-            onChange={(e) => onChange({ keyword: e.target.value })}
+            onChange={(event) => onChange({ keyword: event.target.value })}
           />
         </div>
+
         <div>
-          <label className="text-sm text-slate-600 mb-1 block">Tipo de material</label>
-          <Select value={values.material} onValueChange={(v) => onChange({ material: v as AcervoFilterValues["material"] })}>
+          <label className="mb-1 block text-sm text-slate-600">
+            Tipo de material
+          </label>
+          <Select
+            value={values.material}
+            onValueChange={(value) => onChange({ material: value })}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="todos">Todos</SelectItem>
-              <SelectItem value="documentos">Documentos</SelectItem>
-              <SelectItem value="fotografias">Fotografias</SelectItem>
-              <SelectItem value="audiovisual">Audiovisual</SelectItem>
+              {materialOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
+
         <div>
-          <label className="text-sm text-slate-600 mb-1 block">Período</label>
-          <Select value={values.period} onValueChange={(v) => onChange({ period: v as AcervoFilterValues["period"] })}>
+          <label className="mb-1 block text-sm text-slate-600">Período</label>
+          <Select
+            value={values.period}
+            onValueChange={(value) =>
+              onChange({ period: value as AcervoFilterValues["period"] })
+            }
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
@@ -66,8 +88,12 @@ export default function SearchBarAcervo({ values, onChange, onSearch }: Props) {
           </Select>
         </div>
       </div>
+
       <div className="mt-4 flex justify-end">
-        <Button className="gap-2" onClick={onSearch}><Search className="w-4 h-4" /> Pesquisar</Button>
+        <Button className="gap-2" onClick={onSearch}>
+          <Search className="h-4 w-4" />
+          Pesquisar
+        </Button>
       </div>
     </div>
   )

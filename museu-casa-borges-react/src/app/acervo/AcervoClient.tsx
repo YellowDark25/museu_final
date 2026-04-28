@@ -1,28 +1,35 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useSearchParams } from "next/navigation"
+import { useCallback, useEffect, useMemo, useState } from "react"
+
 import HeroAcervo from "@/components/acervo/HeroAcervo"
-import StatsCards from "@/components/acervo/StatsCards"
 import SearchBarAcervo, { AcervoFilterValues } from "@/components/acervo/SearchBarAcervo"
-import ManuscritosSection from "@/components/acervo/tabs/ManuscritosSection"
+import StatsCards from "@/components/acervo/StatsCards"
+import AcervoMediaSection from "@/components/acervo/tabs/AcervoMediaSection"
 import FotografiasSection from "@/components/acervo/tabs/FotografiasSection"
-import DocumentosSection from "@/components/acervo/tabs/DocumentosSection"
-import AudiovisualSection from "@/components/acervo/tabs/AudiovisualSection"
-import ColecoesSection from "@/components/acervo/tabs/ColecoesSection"
-import { useAcervoStats } from "@/hooks/useAcervoStats"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import type { PublicAcervoOverviewDTO } from "@/features/acervo/dto/public-acervo.dto"
 
-/**
- * AcervoClient
- * Componente client que gerencia filtros, tabs e renderização do acervo
- */
-export default function AcervoClient() {
-  const [activeTab, setActiveTab] = useState<string>("manuscritos")
+type Props = {
+  overview: PublicAcervoOverviewDTO
+}
+
+export default function AcervoClient({ overview }: Props) {
   const searchParams = useSearchParams()
-
-  const { stats, loading } = useAcervoStats()
+  const materialOptions = useMemo(
+    () => [
+      { value: "todos", label: "Todos" },
+      ...overview.tabs.map((tab) => ({
+        value: tab.slug,
+        label: tab.nome,
+      })),
+    ],
+    [overview.tabs]
+  )
+  const firstTabSlug = overview.tabs[0]?.slug ?? ""
+  const [activeTab, setActiveTab] = useState<string>(firstTabSlug)
 
   const [filters, setFilters] = useState<AcervoFilterValues>({
     keyword: "",
@@ -30,49 +37,47 @@ export default function AcervoClient() {
     period: "qualquer",
   })
 
-  const handleFilterChange = (patch: Partial<AcervoFilterValues>) => {
+  const availableTabSlugs = useMemo(
+    () => new Set(overview.tabs.map((tab) => tab.slug)),
+    [overview.tabs]
+  )
+
+  const handleFilterChange = useCallback((patch: Partial<AcervoFilterValues>) => {
     setFilters((prev) => {
       const next = { ...prev, ...patch }
-      if (patch.material && patch.material !== "todos") {
-        const map: Record<string, string> = {
-          documentos: "documentos",
-          fotografias: "fotografias",
-          audiovisual: "audiovisual",
-        }
-        const nextTab = map[patch.material]
-        if (nextTab) setActiveTab(nextTab)
+
+      if (patch.material && patch.material !== "todos" && availableTabSlugs.has(patch.material)) {
+        setActiveTab(patch.material)
       }
+
       return next
     })
-  }
+  }, [availableTabSlugs])
 
-  const onSearch = () => {
-    if (filters.material !== "todos") {
-      const map: Record<string, string> = {
-        documentos: "documentos",
-        fotografias: "fotografias",
-        audiovisual: "audiovisual",
-      }
-      const nextTab = map[filters.material]
-      if (nextTab) setActiveTab(nextTab)
+  const onSearch = useCallback(() => {
+    if (filters.material !== "todos" && availableTabSlugs.has(filters.material)) {
+      setActiveTab(filters.material)
     }
-  }
+  }, [availableTabSlugs, filters.material])
+
+  useEffect(() => {
+    if (!activeTab && firstTabSlug) {
+      setActiveTab(firstTabSlug)
+    }
+  }, [activeTab, firstTabSlug])
 
   useEffect(() => {
     const categoriaParam = searchParams.get("categoria")
-    if (!categoriaParam) return
-    const categoriaMap: Record<string, string> = {
-      obras: "manuscritos",
-      documentos: "documentos",
-      fotografias: "fotografias",
-      audiovisual: "audiovisual",
-      colecoes: "colecoes",
+
+    if (!categoriaParam) {
+      return
     }
-    const tab = categoriaMap[categoriaParam] || categoriaParam
-    if (["manuscritos", "fotografias", "documentos", "audiovisual", "colecoes"].includes(tab)) {
-      setActiveTab(tab)
+
+    if (availableTabSlugs.has(categoriaParam)) {
+      setActiveTab(categoriaParam)
+      setFilters((current) => ({ ...current, material: categoriaParam }))
     }
-  }, [searchParams])
+  }, [availableTabSlugs, searchParams])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -80,45 +85,68 @@ export default function AcervoClient() {
 
       <div className="container mx-auto px-4 py-12">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="mb-10">
-          <StatsCards stats={stats} loading={loading} />
+          <StatsCards stats={overview.stats} />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="mb-8">
-          <SearchBarAcervo values={filters} onChange={handleFilterChange} onSearch={onSearch} />
+          <SearchBarAcervo
+            values={filters}
+            materialOptions={materialOptions}
+            onChange={handleFilterChange}
+            onSearch={onSearch}
+          />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="flex h-auto w-full justify-start overflow-x-auto bg-muted p-1 md:grid md:grid-cols-5 md:justify-center md:overflow-visible">
-              <TabsTrigger value="manuscritos" className="min-w-[120px] md:min-w-0">Manuscritos</TabsTrigger>
-              <TabsTrigger value="fotografias" className="min-w-[120px] md:min-w-0">Fotografias</TabsTrigger>
-              <TabsTrigger value="documentos" className="min-w-[120px] md:min-w-0">Documentos</TabsTrigger>
-              <TabsTrigger value="audiovisual" className="min-w-[120px] md:min-w-0">Audiovisual</TabsTrigger>
-              <TabsTrigger value="colecoes" className="min-w-[120px] md:min-w-0">Coleções</TabsTrigger>
-            </TabsList>
+          {overview.tabs.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center shadow-sm">
+              <h3 className="text-xl font-semibold text-slate-950">
+                Nenhuma aba pública disponível
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Cadastre categorias ativas e marque a opção de exibição pública
+                no painel administrativo para liberar novas abas no acervo.
+              </p>
+            </div>
+          ) : (
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="flex h-auto w-full justify-start overflow-x-auto bg-muted p-1 md:grid md:auto-cols-fr md:grid-flow-col md:justify-center md:overflow-visible">
+                {overview.tabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.slug}
+                    className="min-w-[140px] md:min-w-0"
+                  >
+                    {tab.nome}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-            <TabsContent value="manuscritos" className="mt-6">
-              <ManuscritosSection />
-            </TabsContent>
-
-            <TabsContent value="fotografias" className="mt-6">
-              <FotografiasSection query={{ keyword: filters.keyword, period: filters.period }} />
-            </TabsContent>
-
-            <TabsContent value="documentos" className="mt-6">
-              <DocumentosSection />
-            </TabsContent>
-
-            <TabsContent value="audiovisual" className="mt-6">
-              <AudiovisualSection />
-            </TabsContent>
-
-            <TabsContent value="colecoes" className="mt-6">
-              <ColecoesSection stats={stats} loading={loading} />
-            </TabsContent>
-          </Tabs>
+              {overview.tabs.map((tab) => (
+                <TabsContent key={tab.id} value={tab.slug} className="mt-6">
+                  {tab.layout === "galeria" ? (
+                    <FotografiasSection
+                      photos={tab.photos}
+                      query={{ keyword: filters.keyword, period: filters.period }}
+                    />
+                  ) : (
+                    <AcervoMediaSection
+                      title={tab.nome}
+                      description={
+                        tab.descricao ||
+                        `Explore as mídias disponíveis na aba ${tab.nome}.`
+                      }
+                      emptyTitle={`Nenhuma mídia em ${tab.nome}`}
+                      emptyDescription="Cadastre arquivos nesta categoria para exibi-los ao público."
+                      media={tab.media}
+                      keyword={filters.keyword}
+                    />
+                  )}
+                </TabsContent>
+              ))}
+            </Tabs>
+          )}
         </motion.div>
-
       </div>
     </div>
   )
