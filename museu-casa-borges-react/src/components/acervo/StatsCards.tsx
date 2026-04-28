@@ -1,5 +1,12 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { FileText, Image as ImageIcon, Film, Headphones } from "lucide-react"
+"use client"
+
+import {
+  AudioOutlined,
+  FileTextOutlined,
+  PictureOutlined,
+  VideoCameraOutlined,
+} from "@ant-design/icons"
+import { Card, Col, Row, Statistic } from "antd"
 import type { PublicAcervoStatsDTO } from "@/features/acervo/dto/public-acervo.dto"
 
 type Props = {
@@ -7,33 +14,47 @@ type Props = {
   loading?: boolean
 }
 
-/**
- * StatsCards
- * Mostra cartões de estatísticas (Documentos, Fotografias, Vídeos, Áudios).
- */
+const iconStyle = { color: "var(--museu-red, #d12424)", fontSize: 22 }
+
 export default function StatsCards({ stats, loading }: Props) {
   const items = [
-    { label: "Documentos", value: stats?.documentos ?? 0, icon: FileText },
-    { label: "Fotografias", value: stats?.fotografias ?? 0, icon: ImageIcon },
-    { label: "Vídeos", value: stats?.videos ?? 0, icon: Film },
-    { label: "Áudios", value: stats?.audios ?? 0, icon: Headphones },
+    {
+      label: "Documentos",
+      value: stats?.documentos ?? 0,
+      icon: <FileTextOutlined style={iconStyle} />,
+    },
+    {
+      label: "Fotografias",
+      value: stats?.fotografias ?? 0,
+      icon: <PictureOutlined style={iconStyle} />,
+    },
+    {
+      label: "Vídeos",
+      value: stats?.videos ?? 0,
+      icon: <VideoCameraOutlined style={iconStyle} />,
+    },
+    {
+      label: "Áudios",
+      value: stats?.audios ?? 0,
+      icon: <AudioOutlined style={iconStyle} />,
+    },
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <Row gutter={[16, 16]}>
       {items.map((it) => (
-        <Card key={it.label} className="bg-white shadow-sm">
-          <CardContent className="p-6 flex items-center gap-4">
-            <it.icon className="w-6 h-6 text-[var(--museu-red)]" />
-            <div>
-              <div className="text-sm text-slate-500">{it.label}</div>
-              <div className="text-2xl font-bold">
-                {loading ? <span className="animate-pulse">...</span> : it.value.toLocaleString("pt-BR")}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <Col xs={24} sm={12} lg={6} key={it.label}>
+          <Card variant="borderless" className="shadow-sm" styles={{ body: { padding: "20px 22px" } }}>
+            <Statistic
+              title={it.label}
+              value={loading ? "…" : it.value}
+              loading={loading}
+              prefix={it.icon}
+              styles={{ content: { fontWeight: 700 } }}
+            />
+          </Card>
+        </Col>
       ))}
-    </div>
+    </Row>
   )
 }

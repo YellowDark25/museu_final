@@ -121,13 +121,13 @@ export async function getPublicAcervoOverview(): Promise<PublicAcervoOverviewDTO
     for (const image of mediaList.filter(isImageMedia)) {
       const title =
         image.nome?.trim() || image.legenda?.trim() || category.nome
+      const legendaTrim = image.legenda?.trim() ?? ""
       photos.push({
         id: image.id,
         src: image.url,
         alt: image.nome?.trim() || image.legenda || category.nome,
         title,
-        description:
-          image.legenda || "Mídia do acervo do Museu Casa Borges",
+        description: legendaTrim,
         date: null,
       })
     }

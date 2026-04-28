@@ -1,13 +1,7 @@
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Search } from "lucide-react"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+"use client"
+
+import { SearchOutlined } from "@ant-design/icons"
+import { Button, Card, Col, Input, Row, Select, Typography } from "antd"
 
 export type AcervoFilterValues = {
   keyword: string
@@ -33,68 +27,58 @@ export default function SearchBarAcervo({
   onChange,
   onSearch,
 }: Props) {
+  const periodOptions = [
+    { value: "qualquer" as const, label: "Qualquer período" },
+    { value: "antigo" as const, label: "Anterior a 1950" },
+    { value: "moderno" as const, label: "1950-2000" },
+    { value: "recente" as const, label: "2000 em diante" },
+  ]
+
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div>
-          <label className="mb-1 block text-sm text-slate-600">
+    <Card variant="borderless" className="shadow-sm" styles={{ body: { padding: 20 } }}>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} md={8}>
+          <Typography.Text className="mb-1 block text-slate-600">
             Palavra-chave
-          </label>
+          </Typography.Text>
           <Input
             placeholder="Ex.: Barra do Bugres, artesanato, fotos"
             value={values.keyword}
-            onChange={(event) => onChange({ keyword: event.target.value })}
+            onChange={(e) => onChange({ keyword: e.target.value })}
+            allowClear
           />
-        </div>
+        </Col>
 
-        <div>
-          <label className="mb-1 block text-sm text-slate-600">
+        <Col xs={24} md={8}>
+          <Typography.Text className="mb-1 block text-slate-600">
             Tipo de material
-          </label>
+          </Typography.Text>
           <Select
+            className="w-full"
             value={values.material}
-            onValueChange={(value) => onChange({ material: value })}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-              {materialOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+            onChange={(value) => onChange({ material: value })}
+            options={materialOptions}
+          />
+        </Col>
 
-        <div>
-          <label className="mb-1 block text-sm text-slate-600">Período</label>
+        <Col xs={24} md={8}>
+          <Typography.Text className="mb-1 block text-slate-600">Período</Typography.Text>
           <Select
+            className="w-full"
             value={values.period}
-            onValueChange={(value) =>
+            onChange={(value) =>
               onChange({ period: value as AcervoFilterValues["period"] })
             }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="qualquer">Qualquer período</SelectItem>
-              <SelectItem value="antigo">Anterior a 1950</SelectItem>
-              <SelectItem value="moderno">1950-2000</SelectItem>
-              <SelectItem value="recente">2000 em diante</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+            options={periodOptions}
+          />
+        </Col>
+      </Row>
 
       <div className="mt-4 flex justify-end">
-        <Button className="gap-2" onClick={onSearch}>
-          <Search className="h-4 w-4" />
+        <Button type="primary" icon={<SearchOutlined />} onClick={onSearch}>
           Pesquisar
         </Button>
       </div>
-    </div>
+    </Card>
   )
 }
