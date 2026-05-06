@@ -2,30 +2,52 @@ import { createClient } from "@supabase/supabase-js"
 
 import type { Database } from "@/lib/database.types"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+type SupabaseServerClient = ReturnType<typeof createClient<Database>>
 
-if (!supabaseUrl || !supabaseServiceKey) {
-  throw new Error(
-    "Defina NEXT_PUBLIC_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no arquivo .env"
-  )
-}
-
-// Singleton para evitar múltiplas instâncias em dev (hot reload).
-// Usa service_role para operações de servidor — nunca exponha ao browser.
 const globalForSupabase = globalThis as unknown as {
-  supabase: ReturnType<typeof createClient<Database>> | undefined
+  supabase: SupabaseServerClient | undefined
 }
 
-export const supabase =
-  globalForSupabase.supabase ??
-  createClient<Database>(supabaseUrl, supabaseServiceKey, {
+function assertEnvAndCreate(): SupabaseServerClient {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()
+
+  if (!url || !key) {
+    throw new Error(
+      "Defina NEXT_PUBLIC_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (ficheiro .env local ou variáveis de ambiente no painel Vercel → Settings → Environment Variables)."
+    )
+  }
+
+  return createClient<Database>(url, key, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
     },
   })
-
-if (process.env.NODE_ENV !== "production") {
-  globalForSupabase.supabase = supabase
 }
+
+/**
+ * Cliente servidor (service role). Só valida env na primeira utilização —
+ * evita falhar o `next build` quando o bundle analisa rotas sem secrets injetados.
+ */
+export function getSupabase(): SupabaseServerClient {
+  if (!globalForSupabase.supabase) {
+    globalForSupabase.supabase = assertEnvAndCreate()
+  }
+  return globalForSupabase.supabase
+}
+
+/**
+ * Proxy compatível com `import { supabase } from "@/lib/supabase"` existente.
+ * O primeiro `.from()` / método chamado dispara a criação do cliente.
+ */
+export const supabase = new Proxy({} as SupabaseServerClient, {
+  get(_target, prop) {
+    const client = getSupabase()
+    const value = Reflect.get(client as object, prop, client)
+    if (typeof value === "function") {
+      return value.bind(client)
+    }
+    return value
+  },
+})
