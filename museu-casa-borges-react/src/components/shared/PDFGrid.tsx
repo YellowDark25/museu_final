@@ -37,7 +37,13 @@ interface PDFGridProps {
 }
 
 // AIDEV-NOTE: Tipos para ordenação
-type SortOption = 'titulo' | 'autor' | 'ano' | 'visualizacoes' | 'rating'
+type SortOption =
+  | 'ordem'
+  | 'titulo'
+  | 'autor'
+  | 'ano'
+  | 'visualizacoes'
+  | 'rating'
 type SortDirection = 'asc' | 'desc'
 
 // AIDEV-NOTE: Componente de grid responsivo para exibir PDFs
@@ -55,7 +61,7 @@ export function PDFGrid({
   
   // AIDEV-NOTE: Estados para filtros e busca
   const [searchTerm, setSearchTerm] = useState('')
-  const [sortBy, setSortBy] = useState<SortOption>('titulo')
+  const [sortBy, setSortBy] = useState<SortOption>('ordem')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(defaultView)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -82,20 +88,37 @@ export function PDFGrid({
 
     // Ordenação
     filtered.sort((a, b) => {
-      let aValue: any = a[sortBy]
-      let bValue: any = b[sortBy]
-
-      // Tratamento especial para strings
-      if (typeof aValue === 'string') {
-        aValue = aValue.toLowerCase()
-        bValue = bValue.toLowerCase()
+      if (sortBy === 'ordem') {
+        const ao =
+          typeof (a as { ordem?: number }).ordem === 'number'
+            ? (a as { ordem?: number }).ordem!
+            : 999999
+        const bo =
+          typeof (b as { ordem?: number }).ordem === 'number'
+            ? (b as { ordem?: number }).ordem!
+            : 999999
+        const cmp = ao - bo
+        return sortDirection === 'asc' ? cmp : -cmp
       }
+
+      let aValue: unknown = (a as Record<string, unknown>)[sortBy]
+      let bValue: unknown = (b as Record<string, unknown>)[sortBy]
+
+      if (sortBy === 'ano') {
+        aValue = parseInt(String(aValue ?? ''), 10) || 0
+        bValue = parseInt(String(bValue ?? ''), 10) || 0
+      } else if (sortBy === 'titulo' || sortBy === 'autor') {
+        aValue = String(aValue ?? '').toLowerCase()
+        bValue = String(bValue ?? '').toLowerCase()
+      }
+
+      const av = aValue as number | string
+      const bv = bValue as number | string
 
       if (sortDirection === 'asc') {
-        return aValue > bValue ? 1 : -1
-      } else {
-        return aValue < bValue ? 1 : -1
+        return av > bv ? 1 : av < bv ? -1 : 0
       }
+      return av < bv ? 1 : av > bv ? -1 : 0
     })
 
     return filtered
@@ -180,6 +203,7 @@ export function PDFGrid({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="ordem">Ordem do site</SelectItem>
                       <SelectItem value="titulo">Título</SelectItem>
                       <SelectItem value="autor">Autor</SelectItem>
                       <SelectItem value="ano">Ano</SelectItem>

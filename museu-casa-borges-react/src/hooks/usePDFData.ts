@@ -5,7 +5,7 @@ import { useBibliotecaData } from './useBibliotecaData';
 import type { BibliotecaCategory, BibliotecaData } from './useBibliotecaData';
 
 // Tipos específicos para PDFs
-export interface PDFItem extends BibliotecaData {
+export type PDFItem = BibliotecaData & {
   /** URL completa do arquivo PDF */
   pdfUrl: string;
   /** Se o PDF está disponível para visualização */
@@ -14,7 +14,7 @@ export interface PDFItem extends BibliotecaData {
   fileSize?: number;
   /** Data de última modificação */
   lastModified?: Date;
-}
+};
 
 export interface PDFDataHookReturn {
   /** Dados filtrados dos PDFs */
@@ -46,6 +46,10 @@ export function usePDFData(): PDFDataHookReturn {
 
   // Função para determinar categoria do item baseado no arquivo
   const getCategoryFromItem = useCallback((item: BibliotecaData): BibliotecaCategory | null => {
+    if ('bibliotecaTab' in item && item.bibliotecaTab) {
+      return item.bibliotecaTab;
+    }
+
     const filePath = item.arquivo.toLowerCase();
     
     if (filePath.includes('/publicações/') || filePath.includes('/publicacoes/')) {
@@ -156,8 +160,8 @@ export function usePDFData(): PDFDataHookReturn {
 
 // Hook específico para uma categoria
 export function usePDFDataByCategory(category: BibliotecaCategory) {
-  const { dataByCategory, ...rest } = usePDFData();
-  
+  const { dataByCategory, pdfData: _omitPdfData, ...rest } = usePDFData();
+
   return {
     pdfData: dataByCategory?.[category] || [],
     ...rest,

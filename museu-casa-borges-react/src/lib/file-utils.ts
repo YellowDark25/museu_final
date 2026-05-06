@@ -1,6 +1,13 @@
 // AIDEV-NOTE: Utilitário para carregar dados dos arquivos PDF das pastas INDEX
 // Este arquivo gerencia a integração com os arquivos reais do site antigo
 
+/** Quando definido, agrupa o item na aba correspondente da biblioteca digital (inclui registros do banco). */
+export type BibliotecaTabSlug =
+  | "publicacoes"
+  | "pesquisas"
+  | "artigos"
+  | "tcc";
+
 export interface PublicacaoData {
   id: string;
   titulo: string;
@@ -12,6 +19,9 @@ export interface PublicacaoData {
   tags?: string[];
   visualizacoes?: number;
   rating?: number;
+  bibliotecaTab?: BibliotecaTabSlug;
+  /** Ordem definida no admin (biblioteca no banco). */
+  ordem?: number;
 }
 
 export interface ArtigoData {
@@ -25,6 +35,7 @@ export interface ArtigoData {
   tags?: string[];
   visualizacoes?: number;
   rating?: number;
+  bibliotecaTab?: BibliotecaTabSlug;
 }
 
 export interface TCCData {
@@ -38,6 +49,7 @@ export interface TCCData {
   tags?: string[];
   visualizacoes?: number;
   rating?: number;
+  bibliotecaTab?: BibliotecaTabSlug;
 }
 
 export interface PesquisaData {
@@ -51,6 +63,7 @@ export interface PesquisaData {
   tags?: string[];
   visualizacoes?: number;
   rating?: number;
+  bibliotecaTab?: BibliotecaTabSlug;
 }
 
 // AIDEV-NOTE: Dados das publicações baseados nos arquivos reais da pasta Publicações

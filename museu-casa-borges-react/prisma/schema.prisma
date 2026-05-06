@@ -63,13 +63,19 @@ model Exposicao {
 }
 
 model Publicacao {
-  id         Int     @id @default(autoincrement())
-  titulo     String
-  autor      String?
-  descricao  String?
-  urlArquivo String? @map("url_arquivo")
-  ano        Int?
-  tipo       String?
+  id             Int       @id @default(autoincrement())
+  titulo         String
+  autor          String?
+  descricao      String?
+  urlArquivo     String?   @map("url_arquivo")
+  ano            Int?
+  /// Aba da biblioteca no site: publicacoes | pesquisas | artigos | tcc
+  tipo           String?
+  dataPublicacao DateTime? @map("data_publicacao") @db.Date
+  topicos        String[]  @default([])
+  visualizacoes  Int       @default(0)
+  rating         Int       @default(5)
+  ordem          Int       @default(0)
 
   @@map("publicacoes")
 }

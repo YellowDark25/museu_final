@@ -7,6 +7,9 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "docker:db": "docker compose up -d",
+    "docker:db:down": "docker compose down",
+    "docker:db:logs": "docker compose logs -f postgres",
     "prisma:push": "prisma db push",
     "admin:bootstrap": "node ./scripts/bootstrap-admin.mjs"
   },

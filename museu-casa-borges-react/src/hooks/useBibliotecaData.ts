@@ -1,20 +1,16 @@
-// AIDEV-NOTE: Hook para gerenciar dados da biblioteca com integração aos arquivos reais
-// Este hook fornece acesso aos dados dos arquivos PDF das pastas INDEX
+// AIDEV-NOTE: Biblioteca pública — lista apenas documentos da API (PostgreSQL).
+// Recarrega ao voltar para a aba do navegador para refletir alterações feitas no admin.
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
-  publicacoesData, 
-  artigosData, 
-  tccData, 
-  pesquisasData,
-  getDataByCategory,
-  getFileById,
   getDownloadUrl,
   type PublicacaoData,
   type ArtigoData,
   type TCCData,
   type PesquisaData
 } from '@/lib/file-utils';
+import { mapDocumentoPublicDtoToItem } from '@/lib/biblioteca-map-public';
+import type { AdminBibliotecaDocumentoDTO } from '@/features/admin/biblioteca/dto/admin-biblioteca.dto';
 
 export type BibliotecaCategory = 'publicacoes' | 'artigos' | 'tcc' | 'pesquisas';
 export type BibliotecaData = PublicacaoData | ArtigoData | TCCData | PesquisaData;
@@ -22,40 +18,82 @@ export type BibliotecaData = PublicacaoData | ArtigoData | TCCData | PesquisaDat
 interface UseBibliotecaDataProps {
   categoria?: BibliotecaCategory;
   searchTerm?: string;
-  sortBy?: 'titulo' | 'autor' | 'ano' | 'visualizacoes' | 'rating';
+  sortBy?: 'titulo' | 'autor' | 'ano' | 'visualizacoes' | 'rating' | 'ordem';
   sortOrder?: 'asc' | 'desc';
   filterBy?: string;
 }
 
 export function useBibliotecaData({
   categoria,
-  searchTerm = '',
-  sortBy = 'ano',
-  sortOrder = 'desc',
-  filterBy
+  searchTerm: searchTermProp,
+  sortBy = 'ordem',
+  sortOrder = 'asc',
+  filterBy,
 }: UseBibliotecaDataProps = {}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dbItems, setDbItems] = useState<PublicacaoData[]>([]);
+  const [searchUi, setSearchUi] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<
+    BibliotecaCategory | 'todos'
+  >('todos');
 
-  // AIDEV-NOTE: Dados filtrados e ordenados
-  const filteredData = useMemo(() => {
-    let data: BibliotecaData[] = [];
+  const effectiveSearchTerm =
+    searchTermProp !== undefined && String(searchTermProp).trim().length > 0
+      ? String(searchTermProp).trim()
+      : searchUi;
 
-    // Obter dados por categoria ou todos
-    if (categoria) {
-      data = getDataByCategory(categoria);
-    } else {
-      data = [
-        ...publicacoesData,
-        ...artigosData,
-        ...tccData,
-        ...pesquisasData
-      ];
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFromApi() {
+      setIsLoading(true);
+      try {
+        const res = await fetch('/api/biblioteca/documentos', { cache: 'no-store' });
+        if (!res.ok) {
+          throw new Error('Falha ao carregar documentos');
+        }
+        const body = (await res.json()) as { documentos: AdminBibliotecaDocumentoDTO[] };
+        if (!cancelled) {
+          setDbItems(
+            (body.documentos ?? []).map((d) => mapDocumentoPublicDtoToItem(d))
+          );
+        }
+      } catch {
+        if (!cancelled) {
+          setDbItems([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
     }
 
+    loadFromApi();
+
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        loadFromApi();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      cancelled = true;
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
+
+  // AIDEV-NOTE: Somente documentos persistidos no banco (API pública).
+  const filteredData = useMemo(() => {
+    let data: BibliotecaData[] = categoria
+      ? dbItems.filter((item) => item.bibliotecaTab === categoria)
+      : [...dbItems];
+
     // Filtrar por termo de busca
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
+    if (effectiveSearchTerm) {
+      const term = effectiveSearchTerm.toLowerCase();
       data = data.filter(item => 
         item.titulo.toLowerCase().includes(term) ||
         item.autor.toLowerCase().includes(term) ||
@@ -73,50 +111,69 @@ export function useBibliotecaData({
 
     // Ordenar dados
     data.sort((a, b) => {
-      let aValue: any = a[sortBy];
-      let bValue: any = b[sortBy];
+      if (sortBy === 'ordem') {
+        const ao =
+          'ordem' in a && typeof (a as PublicacaoData).ordem === 'number'
+            ? (a as PublicacaoData).ordem!
+            : 0;
+        const bo =
+          'ordem' in b && typeof (b as PublicacaoData).ordem === 'number'
+            ? (b as PublicacaoData).ordem!
+            : 0;
+        const cmp = ao - bo;
+        return sortOrder === 'asc' ? cmp : -cmp;
+      }
 
-      // Converter ano para número para ordenação correta
+      let aValue: number | string =
+        (a as BibliotecaData)[sortBy as keyof BibliotecaData] as number | string;
+      let bValue: number | string =
+        (b as BibliotecaData)[sortBy as keyof BibliotecaData] as number | string;
+
       if (sortBy === 'ano') {
-        aValue = parseInt(aValue);
-        bValue = parseInt(bValue);
+        aValue = parseInt(String(aValue ?? ''), 10) || 0;
+        bValue = parseInt(String(bValue ?? ''), 10) || 0;
+      } else if (sortBy === 'titulo' || sortBy === 'autor') {
+        aValue = String(aValue ?? '').toLowerCase();
+        bValue = String(bValue ?? '').toLowerCase();
       }
 
       if (sortOrder === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
+        return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
       }
+      return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
     });
 
     return data;
-  }, [categoria, searchTerm, sortBy, sortOrder, filterBy]);
+  }, [categoria, effectiveSearchTerm, sortBy, sortOrder, filterBy, dbItems]);
 
   // AIDEV-NOTE: Estatísticas dos dados
   const stats = useMemo(() => {
+    const len = (tab: 'publicacoes' | 'pesquisas' | 'artigos' | 'tcc') =>
+      dbItems.filter((i) => i.bibliotecaTab === tab).length;
+
     return {
       total: filteredData.length,
-      publicacoes: publicacoesData.length,
-      artigos: artigosData.length,
-      tcc: tccData.length,
-      pesquisas: pesquisasData.length,
+      publicacoes: len('publicacoes'),
+      artigos: len('artigos'),
+      tcc: len('tcc'),
+      pesquisas: len('pesquisas'),
       totalVisualizacoes: filteredData.reduce((sum, item) => sum + (item.visualizacoes || 0), 0),
-      mediaRating: filteredData.reduce((sum, item) => sum + (item.rating || 0), 0) / filteredData.length
+      mediaRating: filteredData.length
+        ? filteredData.reduce((sum, item) => sum + (item.rating || 0), 0) / filteredData.length
+        : 0
     };
-  }, [filteredData]);
+  }, [filteredData, dbItems]);
 
   // AIDEV-NOTE: Categorias disponíveis
   const categorias = useMemo(() => {
     const allCategorias = new Set<string>();
-    
-    [...publicacoesData, ...artigosData, ...pesquisasData].forEach(item => {
-      if ('categoria' in item && item.categoria) {
+    dbItems.forEach((item) => {
+      if (item.categoria) {
         allCategorias.add(item.categoria);
       }
     });
-
     return Array.from(allCategorias).sort();
-  }, []);
+  }, [dbItems]);
 
   // AIDEV-NOTE: Tags disponíveis
   const tags = useMemo(() => {
@@ -155,6 +212,10 @@ export function useBibliotecaData({
     console.log(`Incrementando visualizações para item ${id}`);
   };
 
+  const setSearchTerm = useCallback((term: string) => {
+    setSearchUi(term);
+  }, []);
+
   return {
     data: filteredData,
     stats,
@@ -165,7 +226,11 @@ export function useBibliotecaData({
     getItemById,
     getItemDownloadUrl,
     checkFileExists,
-    incrementViews
+    incrementViews,
+    searchTerm: effectiveSearchTerm,
+    setSearchTerm,
+    selectedCategory,
+    setSelectedCategory,
   };
 }
 
