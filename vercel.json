@@ -1,9 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "museu-casa-borges-react/package.json", "use": "@vercel/next" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "museu-casa-borges-react/$1" }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install --prefix museu-casa-borges-react",
+  "buildCommand": "npm run build --prefix museu-casa-borges-react"
 }

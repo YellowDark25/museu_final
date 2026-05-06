@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /** Sharp em rotas API / compressão de upload — bundle estável no Vercel */
+  serverExternalPackages: ["sharp"],
+
   // AIDEV-NOTE: Configurações de otimização de imagens
   images: {
     // Formatos de imagem otimizados
