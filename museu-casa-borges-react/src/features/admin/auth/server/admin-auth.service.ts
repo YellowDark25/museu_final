@@ -2,7 +2,7 @@ import { createHmac, scryptSync, timingSafeEqual } from "node:crypto"
 
 import { cookies } from "next/headers"
 
-import { prisma } from "@/lib/prisma"
+import { supabase } from "@/lib/supabase"
 import type {
   AdminAuthResponseDTO,
   AdminLoginInputDTO,
@@ -173,19 +173,11 @@ export async function authenticateAdmin(
     }
   }
 
-  const user = await prisma.adminUser.findUnique({
-    where: {
-      email,
-    },
-    select: {
-      id: true,
-      nome: true,
-      email: true,
-      passwordHash: true,
-      passwordSalt: true,
-      ativo: true,
-    },
-  })
+  const { data: user } = await supabase
+    .from("admin_users")
+    .select("id, nome, email, password_hash, password_salt, ativo")
+    .eq("email", email)
+    .maybeSingle()
 
   if (!user || !user.ativo) {
     return {
@@ -195,9 +187,9 @@ export async function authenticateAdmin(
     }
   }
 
-  const receivedHash = hashPassword(password, user.passwordSalt)
+  const receivedHash = hashPassword(password, user.password_salt)
   const isValidEmail = safeCompare(email, user.email.toLowerCase())
-  const isValidPassword = safeCompare(receivedHash, user.passwordHash)
+  const isValidPassword = safeCompare(receivedHash, user.password_hash)
 
   if (!isValidEmail || !isValidPassword) {
     return {
@@ -207,14 +199,13 @@ export async function authenticateAdmin(
     }
   }
 
-  await prisma.adminUser.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      ultimoLoginEm: new Date(),
-    },
-  })
+  await supabase
+    .from("admin_users")
+    .update({
+      ultimo_login_em: new Date().toISOString(),
+      atualizado_em: new Date().toISOString(),
+    })
+    .eq("id", user.id)
 
   const session = createSession(user)
 
@@ -240,17 +231,11 @@ export async function getAdminSession(): Promise<AdminSessionDTO | null> {
     return null
   }
 
-  const user = await prisma.adminUser.findUnique({
-    where: {
-      id: payload.sub,
-    },
-    select: {
-      id: true,
-      nome: true,
-      email: true,
-      ativo: true,
-    },
-  })
+  const { data: user } = await supabase
+    .from("admin_users")
+    .select("id, nome, email, ativo")
+    .eq("id", payload.sub)
+    .maybeSingle()
 
   if (
     !user ||

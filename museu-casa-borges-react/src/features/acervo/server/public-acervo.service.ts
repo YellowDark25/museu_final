@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma"
+import { supabase } from "@/lib/supabase"
 import type {
   PublicAcervoMediaDTO,
   PublicAcervoOverviewDTO,
@@ -6,6 +6,24 @@ import type {
   PublicAcervoStatsDTO,
   PublicAcervoTabDTO,
 } from "@/features/acervo/dto/public-acervo.dto"
+
+type MidiaRow = {
+  id: number
+  nome: string | null
+  url: string
+  tipo: string | null
+  legenda: string | null
+  ordem: number | null
+}
+
+type CategoriaRow = {
+  id: number
+  nome: string
+  slug: string | null
+  descricao: string | null
+  layout_publico: string
+  midias: MidiaRow[]
+}
 
 function buildCategorySlug(slug: string | null, nome: string, id: number) {
   const normalizedSlug = slug?.trim()
@@ -26,14 +44,7 @@ function buildCategorySlug(slug: string | null, nome: string, id: number) {
 }
 
 function serializeMedia(
-  media: {
-    id: number
-    nome: string | null
-    url: string
-    tipo: string | null
-    legenda: string | null
-    ordem: number | null
-  },
+  media: MidiaRow,
   categoriaNome: string
 ): PublicAcervoMediaDTO {
   return {
@@ -64,31 +75,17 @@ function isAudioMedia(media: PublicAcervoMediaDTO) {
 }
 
 export async function getPublicAcervoOverview(): Promise<PublicAcervoOverviewDTO> {
-  const categories = await prisma.categoria.findMany({
-    where: {
-      ativa: true,
-      exibirComoAba: true,
-    },
-    select: {
-      id: true,
-      nome: true,
-      slug: true,
-      descricao: true,
-      layoutPublico: true,
-      midias: {
-        select: {
-          id: true,
-          nome: true,
-          url: true,
-          tipo: true,
-          legenda: true,
-          ordem: true,
-        },
-        orderBy: [{ ordem: "asc" }, { id: "asc" }],
-      },
-    },
-    orderBy: [{ ordem: "asc" }, { nome: "asc" }],
-  })
+  const { data: categories, error } = await supabase
+    .from("categorias")
+    .select(
+      "id, nome, slug, descricao, layout_publico, midias(id, nome, url, tipo, legenda, ordem)"
+    )
+    .eq("ativa", true)
+    .eq("exibir_como_aba", true)
+    .order("ordem", { ascending: true })
+    .order("nome", { ascending: true })
+
+  if (error) throw error
 
   const tabs: PublicAcervoTabDTO[] = []
   let documentos = 0
@@ -96,26 +93,21 @@ export async function getPublicAcervoOverview(): Promise<PublicAcervoOverviewDTO
   let videos = 0
   let audios = 0
 
-  for (const category of categories) {
+  for (const category of (categories as CategoriaRow[])) {
     const slug = buildCategorySlug(category.slug, category.nome, category.id)
-    const mediaList = category.midias.map((m) =>
-      serializeMedia(m, category.nome)
+
+    const sortedMidias = [...(category.midias ?? [])].sort(
+      (a, b) => (a.ordem ?? 0) - (b.ordem ?? 0) || a.id - b.id
     )
+
+    const mediaList = sortedMidias.map((m) => serializeMedia(m, category.nome))
     const photos: PublicAcervoPhotoDTO[] = []
 
     for (const m of mediaList) {
-      if (isImageMedia(m)) {
-        fotografias += 1
-      }
-      if (isDocumentMedia(m)) {
-        documentos += 1
-      }
-      if (isVideoMedia(m)) {
-        videos += 1
-      }
-      if (isAudioMedia(m)) {
-        audios += 1
-      }
+      if (isImageMedia(m)) fotografias += 1
+      if (isDocumentMedia(m)) documentos += 1
+      if (isVideoMedia(m)) videos += 1
+      if (isAudioMedia(m)) audios += 1
     }
 
     for (const image of mediaList.filter(isImageMedia)) {
@@ -137,7 +129,7 @@ export async function getPublicAcervoOverview(): Promise<PublicAcervoOverviewDTO
       slug,
       nome: category.nome,
       descricao: category.descricao,
-      layout: category.layoutPublico === "galeria" ? "galeria" : "lista",
+      layout: category.layout_publico === "galeria" ? "galeria" : "lista",
       mediaCount: mediaList.length,
       media: mediaList,
       photos,

@@ -1,23 +1,16 @@
-import { mkdir, unlink, writeFile } from "node:fs/promises"
 import path from "node:path"
-import { randomUUID } from "node:crypto"
 
-import { prisma } from "@/lib/prisma"
+import { supabase } from "@/lib/supabase"
+import {
+  removeUploadedObject,
+  uploadPublicObject,
+} from "@/lib/storage/object-storage"
 import type {
   AdminBibliotecaDocumentoDTO,
   AdminBibliotecaDocumentoInputDTO,
   AdminBibliotecaOverviewDTO,
   AdminBibliotecaTabDTO,
 } from "@/features/admin/biblioteca/dto/admin-biblioteca.dto"
-
-const BIBLIOTECA_UPLOAD_DIRECTORY = path.join(
-  process.cwd(),
-  "public",
-  "uploads",
-  "biblioteca"
-)
-
-const BIBLIOTECA_UPLOAD_URL_PREFIX = "/uploads/biblioteca"
 
 const ALLOWED_BIBLIOTECA_TABS = new Set<AdminBibliotecaTabDTO>([
   "publicacoes",
@@ -30,49 +23,36 @@ const ALLOWED_UPLOAD_EXTENSIONS = new Set([".pdf"])
 
 const MAX_UPLOAD_SIZE_IN_BYTES = 40 * 1024 * 1024
 
-function serializeDocument(row: {
+type PublicacaoRow = {
   id: number
   titulo: string
   autor: string | null
   descricao: string | null
-  urlArquivo: string | null
+  url_arquivo: string | null
   ano: number | null
   tipo: string | null
-  dataPublicacao: Date | null
+  data_publicacao: string | null
   topicos: string[]
   visualizacoes: number
   rating: number
-  ordem?: number
-}): AdminBibliotecaDocumentoDTO {
+  ordem: number
+}
+
+function serializeDocument(row: PublicacaoRow): AdminBibliotecaDocumentoDTO {
   return {
     id: row.id,
     titulo: row.titulo,
     autor: row.autor,
     descricao: row.descricao,
-    urlArquivo: row.urlArquivo,
+    urlArquivo: row.url_arquivo,
     ano: row.ano,
     tipo: (row.tipo as AdminBibliotecaTabDTO) ?? null,
-    dataPublicacao: row.dataPublicacao?.toISOString().slice(0, 10) ?? null,
+    dataPublicacao: row.data_publicacao?.slice(0, 10) ?? null,
     topicos: row.topicos ?? [],
     visualizacoes: row.visualizacoes,
     rating: row.rating,
     ordem: row.ordem ?? 0,
   }
-}
-
-function getBibliotecaUploadPathFromUrl(url: string | null): string | null {
-  if (!url || !url.startsWith(`${BIBLIOTECA_UPLOAD_URL_PREFIX}/`)) {
-    return null
-  }
-
-  const relative = url.slice(BIBLIOTECA_UPLOAD_URL_PREFIX.length + 1)
-  const resolved = path.join(BIBLIOTECA_UPLOAD_DIRECTORY, relative)
-
-  if (!resolved.startsWith(BIBLIOTECA_UPLOAD_DIRECTORY)) {
-    return null
-  }
-
-  return resolved
 }
 
 async function saveBibliotecaUpload(file: File): Promise<string> {
@@ -87,31 +67,31 @@ async function saveBibliotecaUpload(file: File): Promise<string> {
     throw new Error("O PDF excede o tamanho máximo permitido (40 MB).")
   }
 
-  await mkdir(BIBLIOTECA_UPLOAD_DIRECTORY, { recursive: true })
-
   const safeBase = path
     .basename(originalName, extension)
     .replace(/[^\w\-]+/g, "_")
     .slice(0, 80)
 
-  const finalName = `${Date.now()}-${safeBase}-${randomUUID().slice(0, 8)}${extension}`
-  const diskPath = path.join(BIBLIOTECA_UPLOAD_DIRECTORY, finalName)
   const buffer = Buffer.from(await file.arrayBuffer())
 
-  await writeFile(diskPath, buffer)
-
-  return `${BIBLIOTECA_UPLOAD_URL_PREFIX}/${finalName}`
+  return uploadPublicObject({
+    prefix: "biblioteca",
+    extension,
+    buffer,
+    originalBaseName: safeBase || "documento",
+    contentType: "application/pdf",
+  })
 }
 
 function parseDataPublicacao(
   value: string | null | undefined
-): Date | null {
+): string | null {
   if (!value || !String(value).trim()) {
     return null
   }
 
   const d = new Date(`${value}T12:00:00`)
-  return Number.isNaN(d.getTime()) ? null : d
+  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10)
 }
 
 function yearFromInput(input: AdminBibliotecaDocumentoInputDTO): number | null {
@@ -119,9 +99,9 @@ function yearFromInput(input: AdminBibliotecaDocumentoInputDTO): number | null {
     return Math.trunc(input.ano)
   }
 
-  const d = parseDataPublicacao(input.dataPublicacao)
-  if (d) {
-    return d.getFullYear()
+  const dateStr = parseDataPublicacao(input.dataPublicacao)
+  if (dateStr) {
+    return new Date(dateStr).getFullYear()
   }
 
   return null
@@ -135,7 +115,7 @@ async function validateInput(
   autor: string | null
   descricao: string | null
   tipo: AdminBibliotecaTabDTO
-  dataPublicacao: Date | null
+  data_publicacao: string | null
   topicos: string[]
   ano: number | null
   visualizacoes: number
@@ -163,7 +143,7 @@ async function validateInput(
     autor: input.autor?.trim() ? input.autor.trim() : null,
     descricao: input.descricao?.trim() ? input.descricao.trim() : null,
     tipo: input.tipo,
-    dataPublicacao: parseDataPublicacao(input.dataPublicacao),
+    data_publicacao: parseDataPublicacao(input.dataPublicacao),
     topicos,
     ano: yearFromInput(input),
     visualizacoes: Math.max(0, Math.trunc(input.visualizacoes ?? 0)),
@@ -172,12 +152,7 @@ async function validateInput(
   }
 }
 
-function sortDocumentsForAdmin<
-  T extends {
-    id: number
-    ordem?: number
-  },
->(rows: T[]): T[] {
+function sortDocumentsForAdmin(rows: PublicacaoRow[]): PublicacaoRow[] {
   return [...rows].sort((a, b) => {
     const ao = typeof a.ordem === "number" ? a.ordem : 0
     const bo = typeof b.ordem === "number" ? b.ordem : 0
@@ -189,17 +164,20 @@ function sortDocumentsForAdmin<
 }
 
 export async function getAdminBibliotecaOverview(): Promise<AdminBibliotecaOverviewDTO> {
-  // orderBy apenas por `id`: compatível com cliente Prisma antigo em cache (sem campo `ordem`).
-  const rows = await prisma.publicacao.findMany({
-    orderBy: { id: "desc" },
-  })
+  const { data: rows, error } = await supabase
+    .from("publicacoes")
+    .select(
+      "id, titulo, autor, descricao, url_arquivo, ano, tipo, data_publicacao, topicos, visualizacoes, rating, ordem"
+    )
+    .order("id", { ascending: false })
+
+  if (error) throw error
 
   return {
-    documentos: sortDocumentsForAdmin(rows).map(serializeDocument),
+    documentos: sortDocumentsForAdmin(rows as PublicacaoRow[]).map(serializeDocument),
   }
 }
 
-/** Lista pública para o site — mesmos dados serializados. */
 export async function listPublicBibliotecaDocumentos(): Promise<
   AdminBibliotecaDocumentoDTO[]
 > {
@@ -212,33 +190,34 @@ export async function createAdminBibliotecaDocument(
   file: File
 ): Promise<AdminBibliotecaDocumentoDTO> {
   const data = await validateInput(input, { requireTitulo: true })
-  const url = await saveBibliotecaUpload(file)
+  const url_arquivo = await saveBibliotecaUpload(file)
 
   try {
-    const row = await prisma.publicacao.create({
-      data: {
+    const { data: row, error } = await supabase
+      .from("publicacoes")
+      .insert({
         titulo: data.titulo,
         autor: data.autor,
         descricao: data.descricao,
-        urlArquivo: url,
+        url_arquivo,
         ano: data.ano,
         tipo: data.tipo,
-        dataPublicacao: data.dataPublicacao,
+        data_publicacao: data.data_publicacao,
         topicos: data.topicos,
         visualizacoes: data.visualizacoes,
         rating: data.rating,
         ordem: data.ordem,
-      },
-    })
+      })
+      .select(
+        "id, titulo, autor, descricao, url_arquivo, ano, tipo, data_publicacao, topicos, visualizacoes, rating, ordem"
+      )
+      .single()
 
-    return serializeDocument(row)
+    if (error) throw error
+
+    return serializeDocument(row as PublicacaoRow)
   } catch (error) {
-    const filePath = getBibliotecaUploadPathFromUrl(url)
-
-    if (filePath) {
-      await unlink(filePath).catch(() => undefined)
-    }
-
+    await removeUploadedObject(url_arquivo)
     throw error
   }
 }
@@ -248,9 +227,11 @@ export async function updateAdminBibliotecaDocument(
   input: AdminBibliotecaDocumentoInputDTO,
   file?: File
 ): Promise<AdminBibliotecaDocumentoDTO> {
-  const existing = await prisma.publicacao.findUnique({
-    where: { id: documentId },
-  })
+  const { data: existing } = await supabase
+    .from("publicacoes")
+    .select("id, url_arquivo")
+    .eq("id", documentId)
+    .maybeSingle()
 
   if (!existing) {
     throw new Error("Documento não encontrado.")
@@ -258,48 +239,49 @@ export async function updateAdminBibliotecaDocument(
 
   const data = await validateInput(input, { requireTitulo: true })
 
-  let urlArquivo = existing.urlArquivo
+  let url_arquivo = existing.url_arquivo
 
   if (file) {
     const nextUrl = await saveBibliotecaUpload(file)
-    const oldPath = getBibliotecaUploadPathFromUrl(existing.urlArquivo)
-
-    urlArquivo = nextUrl
-
-    if (oldPath) {
-      await unlink(oldPath).catch(() => undefined)
-    }
+    url_arquivo = nextUrl
+    await removeUploadedObject(existing.url_arquivo)
   }
 
-  const row = await prisma.publicacao.update({
-    where: { id: documentId },
-    data: {
+  const { data: row, error } = await supabase
+    .from("publicacoes")
+    .update({
       titulo: data.titulo,
       autor: data.autor,
       descricao: data.descricao,
-      urlArquivo,
+      url_arquivo,
       ano: data.ano,
       tipo: data.tipo,
-      dataPublicacao: data.dataPublicacao,
+      data_publicacao: data.data_publicacao,
       topicos: data.topicos,
       visualizacoes: data.visualizacoes,
       rating: data.rating,
       ordem: data.ordem,
-    },
-  })
+    })
+    .eq("id", documentId)
+    .select(
+      "id, titulo, autor, descricao, url_arquivo, ano, tipo, data_publicacao, topicos, visualizacoes, rating, ordem"
+    )
+    .single()
 
-  return serializeDocument(row)
+  if (error) throw error
+
+  return serializeDocument(row as PublicacaoRow)
 }
 
 export async function deleteAdminBibliotecaDocument(documentId: number) {
-  const row = await prisma.publicacao.delete({
-    where: { id: documentId },
-    select: { urlArquivo: true },
-  })
+  const { data: row, error } = await supabase
+    .from("publicacoes")
+    .delete()
+    .eq("id", documentId)
+    .select("url_arquivo")
+    .single()
 
-  const filePath = getBibliotecaUploadPathFromUrl(row.urlArquivo)
+  if (error) throw error
 
-  if (filePath) {
-    await unlink(filePath).catch(() => undefined)
-  }
+  await removeUploadedObject(row.url_arquivo)
 }

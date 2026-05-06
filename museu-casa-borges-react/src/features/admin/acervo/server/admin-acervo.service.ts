@@ -1,8 +1,10 @@
-import { mkdir, unlink, writeFile } from "node:fs/promises"
 import path from "node:path"
-import { randomUUID } from "node:crypto"
 
-import { prisma } from "@/lib/prisma"
+import { supabase } from "@/lib/supabase"
+import {
+  removeUploadedObject,
+  uploadPublicObject,
+} from "@/lib/storage/object-storage"
 import type {
   AdminAcervoCategoryDTO,
   AdminAcervoCategoryInputDTO,
@@ -10,15 +12,6 @@ import type {
   AdminAcervoMediaInputDTO,
   AdminAcervoOverviewDTO,
 } from "@/features/admin/acervo/dto/admin-acervo.dto"
-
-const ACERVO_UPLOAD_DIRECTORY = path.join(
-  process.cwd(),
-  "public",
-  "uploads",
-  "acervo"
-)
-
-const ACERVO_UPLOAD_URL_PREFIX = "/uploads/acervo"
 
 const ALLOWED_UPLOAD_EXTENSIONS = new Set([
   ".jpg",
@@ -37,7 +30,7 @@ const ALLOWED_UPLOAD_EXTENSIONS = new Set([
 
 const MAX_UPLOAD_SIZE_IN_BYTES = 20 * 1024 * 1024
 
-function serializeCategory(category: {
+type CategoryRow = {
   id: number
   nome: string
   slug: string | null
@@ -45,13 +38,24 @@ function serializeCategory(category: {
   descricao: string | null
   ordem: number
   ativa: boolean
-  exibirComoAba: boolean
-  layoutPublico: string
-  criadoEm: Date | null
-  _count: {
-    midias: number
-  }
-}): AdminAcervoCategoryDTO {
+  exibir_como_aba: boolean
+  layout_publico: string
+  criado_em: string | null
+  midias: { count: number }[]
+}
+
+type MediaRow = {
+  id: number
+  categoria_id: number
+  nome: string | null
+  url: string
+  tipo: string | null
+  legenda: string | null
+  ordem: number | null
+  categorias: { nome: string } | null
+}
+
+function serializeCategory(category: CategoryRow): AdminAcervoCategoryDTO {
   return {
     id: category.id,
     nome: category.nome,
@@ -60,29 +64,18 @@ function serializeCategory(category: {
     descricao: category.descricao,
     ordem: category.ordem,
     ativa: category.ativa,
-    exibirComoAba: category.exibirComoAba,
-    layoutPublico: category.layoutPublico === "galeria" ? "galeria" : "lista",
-    mediaCount: category._count.midias,
-    criadoEm: category.criadoEm?.toISOString() ?? null,
+    exibirComoAba: category.exibir_como_aba,
+    layoutPublico: category.layout_publico === "galeria" ? "galeria" : "lista",
+    mediaCount: Number(category.midias?.[0]?.count ?? 0),
+    criadoEm: category.criado_em ?? null,
   }
 }
 
-function serializeMedia(media: {
-  id: number
-  categoriaId: number
-  nome: string | null
-  url: string
-  tipo: string | null
-  legenda: string | null
-  ordem: number | null
-  categoria: {
-    nome: string
-  }
-}): AdminAcervoMediaDTO {
+function serializeMedia(media: MediaRow): AdminAcervoMediaDTO {
   return {
     id: media.id,
-    categoriaId: media.categoriaId,
-    categoriaNome: media.categoria.nome,
+    categoriaId: media.categoria_id,
+    categoriaNome: media.categorias?.nome ?? null,
     nome: media.nome,
     url: media.url,
     tipo: media.tipo,
@@ -114,17 +107,18 @@ async function ensureCategorySlugAvailable(
   slug: string,
   currentCategoryId?: number
 ) {
-  const existingCategory = await prisma.categoria.findFirst({
-    where: {
-      slug,
-      ...(currentCategoryId ? { id: { not: currentCategoryId } } : {}),
-    },
-    select: {
-      id: true,
-    },
-  })
+  let query = supabase
+    .from("categorias")
+    .select("id")
+    .eq("slug", slug)
 
-  if (existingCategory) {
+  if (currentCategoryId) {
+    query = query.neq("id", currentCategoryId)
+  }
+
+  const { data } = await query.maybeSingle()
+
+  if (data) {
     throw new Error("Já existe uma categoria usando este slug público.")
   }
 }
@@ -154,8 +148,8 @@ async function validateCategoryInput(
     descricao: normalizeNullableString(input.descricao),
     ordem: Number.isFinite(input.ordem) ? input.ordem : 0,
     ativa: Boolean(input.ativa),
-    exibirComoAba: Boolean(input.exibirComoAba),
-    layoutPublico: normalizeCategoryLayout(input.layoutPublico),
+    exibir_como_aba: Boolean(input.exibirComoAba),
+    layout_publico: normalizeCategoryLayout(input.layoutPublico),
   }
 }
 
@@ -171,14 +165,11 @@ async function validateMediaInput(input: AdminAcervoMediaInputDTO) {
     throw new Error("Selecione uma categoria para vincular a mídia.")
   }
 
-  const category = await prisma.categoria.findUnique({
-    where: {
-      id: categoriaId,
-    },
-    select: {
-      id: true,
-    },
-  })
+  const { data: category } = await supabase
+    .from("categorias")
+    .select("id")
+    .eq("id", categoriaId)
+    .maybeSingle()
 
   if (!category) {
     throw new Error("A categoria selecionada não existe mais.")
@@ -213,71 +204,43 @@ function validateUploadFile(file: File) {
 
 async function saveAcervoUpload(file: File) {
   const extension = validateUploadFile(file)
-  await mkdir(ACERVO_UPLOAD_DIRECTORY, { recursive: true })
+  const buffer = Buffer.from(await file.arrayBuffer())
+  const baseName = path.basename(file.name, extension).trim() || "midia"
 
-  const fileName = `${Date.now()}-${randomUUID()}${extension}`
-  const filePath = path.join(ACERVO_UPLOAD_DIRECTORY, fileName)
-  const arrayBuffer = await file.arrayBuffer()
-  const buffer = Buffer.from(arrayBuffer)
-
-  await writeFile(filePath, buffer)
-
-  return `${ACERVO_UPLOAD_URL_PREFIX}/${fileName}`
+  return uploadPublicObject({
+    prefix: "acervo",
+    extension,
+    buffer,
+    originalBaseName: baseName,
+  })
 }
 
-function getAcervoUploadPathFromUrl(url: string) {
-  if (!url.startsWith(`${ACERVO_UPLOAD_URL_PREFIX}/`)) {
-    return null
-  }
+const CATEGORY_SELECT =
+  "id, nome, slug, tipo, descricao, ordem, ativa, exibir_como_aba, layout_publico, criado_em, midias(count)"
 
-  const relativePath = url.replace(ACERVO_UPLOAD_URL_PREFIX, "")
-  return path.join(ACERVO_UPLOAD_DIRECTORY, relativePath)
-}
+const MEDIA_SELECT =
+  "id, categoria_id, nome, url, tipo, legenda, ordem, categorias!midias_categoria_id_fkey(nome)"
 
 export async function getAdminAcervoOverview(): Promise<AdminAcervoOverviewDTO> {
-  const [categories, media] = await Promise.all([
-    prisma.categoria.findMany({
-      select: {
-        id: true,
-        nome: true,
-        slug: true,
-        tipo: true,
-        descricao: true,
-        ordem: true,
-        ativa: true,
-        exibirComoAba: true,
-        layoutPublico: true,
-        criadoEm: true,
-        _count: {
-          select: {
-            midias: true,
-          },
-        },
-      },
-      orderBy: [{ ordem: "asc" }, { nome: "asc" }],
-    }),
-    prisma.midia.findMany({
-      select: {
-        id: true,
-        categoriaId: true,
-        nome: true,
-        url: true,
-        tipo: true,
-        legenda: true,
-        ordem: true,
-        categoria: {
-          select: {
-            nome: true,
-          },
-        },
-      },
-      orderBy: [{ ordem: "asc" }, { id: "desc" }],
-    }),
+  const [categoriesRes, mediaRes] = await Promise.all([
+    supabase
+      .from("categorias")
+      .select(CATEGORY_SELECT)
+      .order("ordem", { ascending: true })
+      .order("nome", { ascending: true }),
+    supabase
+      .from("midias")
+      .select(MEDIA_SELECT)
+      .order("ordem", { ascending: true })
+      .order("id", { ascending: false }),
   ])
 
+  if (categoriesRes.error) throw categoriesRes.error
+  if (mediaRes.error) throw mediaRes.error
+
   return {
-    categories: categories.map(serializeCategory),
-    media: media.map(serializeMedia),
+    categories: (categoriesRes.data as CategoryRow[]).map(serializeCategory),
+    media: (mediaRes.data as MediaRow[]).map(serializeMedia),
   }
 }
 
@@ -285,28 +248,16 @@ export async function createAdminAcervoCategory(
   input: AdminAcervoCategoryInputDTO
 ): Promise<AdminAcervoCategoryDTO> {
   const data = await validateCategoryInput(input)
-  const category = await prisma.categoria.create({
-    data,
-    select: {
-      id: true,
-      nome: true,
-      slug: true,
-      tipo: true,
-      descricao: true,
-      ordem: true,
-      ativa: true,
-      exibirComoAba: true,
-      layoutPublico: true,
-      criadoEm: true,
-      _count: {
-        select: {
-          midias: true,
-        },
-      },
-    },
-  })
 
-  return serializeCategory(category)
+  const { data: category, error } = await supabase
+    .from("categorias")
+    .insert(data)
+    .select(CATEGORY_SELECT)
+    .single()
+
+  if (error) throw error
+
+  return serializeCategory({ ...(category as CategoryRow), midias: [{ count: 0 }] })
 }
 
 export async function updateAdminAcervoCategory(
@@ -314,60 +265,59 @@ export async function updateAdminAcervoCategory(
   input: AdminAcervoCategoryInputDTO
 ): Promise<AdminAcervoCategoryDTO> {
   const data = await validateCategoryInput(input, categoryId)
-  const category = await prisma.categoria.update({
-    where: {
-      id: categoryId,
-    },
-    data,
-    select: {
-      id: true,
-      nome: true,
-      slug: true,
-      tipo: true,
-      descricao: true,
-      ordem: true,
-      ativa: true,
-      exibirComoAba: true,
-      layoutPublico: true,
-      criadoEm: true,
-      _count: {
-        select: {
-          midias: true,
-        },
-      },
-    },
-  })
 
-  return serializeCategory(category)
+  const [updateRes, countRes] = await Promise.all([
+    supabase
+      .from("categorias")
+      .update(data)
+      .eq("id", categoryId)
+      .select(
+        "id, nome, slug, tipo, descricao, ordem, ativa, exibir_como_aba, layout_publico, criado_em"
+      )
+      .single(),
+    supabase
+      .from("midias")
+      .select("id", { count: "exact", head: true })
+      .eq("categoria_id", categoryId),
+  ])
+
+  if (updateRes.error) throw updateRes.error
+
+  const category = updateRes.data
+  const mediaCount = countRes.count ?? 0
+
+  return serializeCategory({
+    ...(category as Omit<CategoryRow, "midias">),
+    midias: [{ count: mediaCount }],
+  })
 }
 
 export async function deleteAdminAcervoCategory(categoryId: number) {
-  const category = await prisma.categoria.findUnique({
-    where: {
-      id: categoryId,
-    },
-    select: {
-      _count: {
-        select: {
-          midias: true,
-        },
-      },
-    },
-  })
+  const { data: category } = await supabase
+    .from("categorias")
+    .select("id")
+    .eq("id", categoryId)
+    .maybeSingle()
 
   if (!category) {
     throw new Error("Categoria não encontrada.")
   }
 
-  if (category._count.midias > 0) {
+  const { count: midiaCount } = await supabase
+    .from("midias")
+    .select("id", { count: "exact", head: true })
+    .eq("categoria_id", categoryId)
+
+  if ((midiaCount ?? 0) > 0) {
     throw new Error("Remova as mídias vinculadas antes de excluir a categoria.")
   }
 
-  await prisma.categoria.delete({
-    where: {
-      id: categoryId,
-    },
-  })
+  const { error } = await supabase
+    .from("categorias")
+    .delete()
+    .eq("id", categoryId)
+
+  if (error) throw error
 }
 
 export async function createAdminAcervoMedia(
@@ -378,39 +328,24 @@ export async function createAdminAcervoMedia(
   const url = await saveAcervoUpload(file)
 
   try {
-    const media = await prisma.midia.create({
-      data: {
-        categoriaId: data.categoriaId,
+    const { data: media, error } = await supabase
+      .from("midias")
+      .insert({
+        categoria_id: data.categoriaId,
         nome: data.nome,
         url,
         tipo: data.tipo,
         legenda: data.legenda,
         ordem: data.ordem,
-      },
-      select: {
-        id: true,
-        categoriaId: true,
-        nome: true,
-        url: true,
-        tipo: true,
-        legenda: true,
-        ordem: true,
-        categoria: {
-          select: {
-            nome: true,
-          },
-        },
-      },
-    })
+      })
+      .select(MEDIA_SELECT)
+      .single()
 
-    return serializeMedia(media)
+    if (error) throw error
+
+    return serializeMedia(media as MediaRow)
   } catch (error) {
-    const filePath = getAcervoUploadPathFromUrl(url)
-
-    if (filePath) {
-      await unlink(filePath).catch(() => undefined)
-    }
-
+    await removeUploadedObject(url)
     throw error
   }
 }
@@ -420,49 +355,34 @@ export async function updateAdminAcervoMedia(
   input: AdminAcervoMediaInputDTO
 ): Promise<AdminAcervoMediaDTO> {
   const data = await validateMediaInput(input)
-  const media = await prisma.midia.update({
-    where: {
-      id: mediaId,
-    },
-    data: {
-      categoriaId: data.categoriaId,
+
+  const { data: media, error } = await supabase
+    .from("midias")
+    .update({
+      categoria_id: data.categoriaId,
       nome: data.nome,
       tipo: data.tipo,
       legenda: data.legenda,
       ordem: data.ordem,
-    },
-    select: {
-      id: true,
-      categoriaId: true,
-      nome: true,
-      url: true,
-      tipo: true,
-      legenda: true,
-      ordem: true,
-      categoria: {
-        select: {
-          nome: true,
-        },
-      },
-    },
-  })
+    })
+    .eq("id", mediaId)
+    .select(MEDIA_SELECT)
+    .single()
 
-  return serializeMedia(media)
+  if (error) throw error
+
+  return serializeMedia(media as MediaRow)
 }
 
 export async function deleteAdminAcervoMedia(mediaId: number) {
-  const media = await prisma.midia.delete({
-    where: {
-      id: mediaId,
-    },
-    select: {
-      url: true,
-    },
-  })
+  const { data: media, error } = await supabase
+    .from("midias")
+    .delete()
+    .eq("id", mediaId)
+    .select("url")
+    .single()
 
-  const filePath = getAcervoUploadPathFromUrl(media.url)
+  if (error) throw error
 
-  if (filePath) {
-    await unlink(filePath).catch(() => undefined)
-  }
+  await removeUploadedObject(media.url)
 }
