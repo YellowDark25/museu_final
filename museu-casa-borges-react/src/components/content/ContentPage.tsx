@@ -4,7 +4,6 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Card, CardContent } from '@/components/ui/card'
 
 interface ImageFigureProps {
   src: string
@@ -74,64 +73,63 @@ export function ImageFigure({
    *
    * AIDEV-NOTE: Ajuste para imagens remotas
    * Quando o src for uma URL externa (http/https), usamos <img> padrão para evitar
-   * restrições de domínio do next/image. Para caminhos locais (/public), usamos next/image
-   * com otimização.
+   * restrições de domínio do next/image. Para caminhos relativos do site, usamos next/image.
    */
   const isRemote = src.startsWith('http://') || src.startsWith('https://')
   const FigureContent = (
     <motion.figure
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.98 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.5 }}
       viewport={{ once: true }}
-      className={`imagem-paginas my-8 ${className}`}
+      className={`imagem-paginas my-8 mx-auto w-fit max-w-full ${className}`}
     >
-      <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <CardContent className="p-0">
-          <div className="relative overflow-hidden group">
-            {isRemote ? (
-              // Renderização de imagens externas sem next/image
-              <img
-                src={src}
-                alt={alt}
-                width={width}
-                height={height}
-                className="img-fluid w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-            ) : (
-              // Renderização otimizada para assets locais via next/image
-              <Image
-                src={src}
-                alt={alt}
-                width={width}
-                height={height}
-                className="img-fluid w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-              />
-            )}
-            {caption && (
-              <motion.figcaption
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="text-center text-sm text-gray-600 p-4 bg-gray-50"
-              >
-                {caption}
-              </motion.figcaption>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col items-center gap-2">
+        <div className="relative overflow-hidden rounded-lg group">
+          {isRemote ? (
+            <img
+              src={src}
+              alt={alt}
+              width={width}
+              height={height}
+              className="img-fluid mx-auto block h-auto max-h-[min(52vh,420px)] w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+              loading="lazy"
+            />
+          ) : (
+            <Image
+              src={src}
+              alt={alt}
+              width={width}
+              height={height}
+              className="img-fluid mx-auto block h-auto max-h-[min(52vh,420px)] w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+            />
+          )}
+        </div>
+        {caption ? (
+          <motion.figcaption
+            initial={{ opacity: 0, y: 6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="w-full text-center text-sm text-gray-600 px-1 leading-snug"
+          >
+            {caption}
+          </motion.figcaption>
+        ) : null}
+      </div>
     </motion.figure>
   )
 
-  // Se houver href, torna a figura clicável com Link
   return href ? (
-    <Link href={href} prefetch={false} aria-label={alt} className="block">
+    <Link
+      href={href}
+      prefetch={false}
+      aria-label={alt}
+      className="mx-auto block w-fit max-w-full"
+    >
       {FigureContent}
     </Link>
   ) : (

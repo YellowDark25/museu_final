@@ -16,7 +16,7 @@ export type AdminIconKey =
   | "sparkles"
   | "users"
 
-export type AdminModuleReadiness = "fundacao" | "em_planejamento" | "pronto_para_integracao"
+export type AdminModuleReadiness = "fundacao" | "em_planejamento" | "pronto_para_integracao" | "funcional"
 
 export type AdminRecordStatus = "rascunho" | "publicado" | "arquivado"
 

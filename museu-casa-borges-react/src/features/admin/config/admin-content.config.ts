@@ -44,12 +44,12 @@ const modules: AdminModuleSummaryDTO[] = [
   {
     slug: "exposicoes",
     title: "Exposições",
-    description: "Organiza exposições virtuais, artistas, obras e textos curatoriais com publicação incremental por seções.",
+    description: "Gerencia exposições virtuais, artistas, obras e textos curatoriais com editor de blocos e publicação dinâmica.",
     iconKey: "sparkles",
     href: "/admin/exposicoes",
-    readiness: "em_planejamento",
-    collections: ["Exposições", "Artistas", "Seções curatoriais", "Mídias"],
-    primaryAction: { label: "Abrir módulo", href: "/admin/exposicoes", tone: "primaria" },
+    readiness: "funcional",
+    collections: ["Exposições Virtuais", "Artistas", "Exposições Permanentes", "Exposições Temporárias"],
+    primaryAction: { label: "Gerenciar exposições", href: "/admin/exposicoes", tone: "primaria" },
     secondaryAction: { label: "Ver arquitetura", href: "/admin/exposicoes", tone: "secundaria" },
   },
   {
@@ -252,9 +252,9 @@ const moduleKpis: Record<AdminModuleSlug, AdminModulePageDTO["kpis"]> = {
     { label: "Origem atual", value: "Arquivos públicos", description: "Acervo digital ainda é lido do diretório public." },
   ],
   exposicoes: [
-    { label: "Modelo principal", value: "ExposicaoDTO", description: "DTO base para hero, descrição e status de publicação." },
-    { label: "Relacionados", value: "Artistas", description: "Módulo prevê relacionamento com artistas e obras." },
-    { label: "Origem atual", value: "Arrays locais", description: "Conteúdo curatorial ainda está no código." },
+    { label: "Modelo principal", value: "ExposicaoVirtualDTO", description: "DTO com título, slug, capa, seções JSONB e controle de publicação." },
+    { label: "Artistas", value: "ArtistaExposicaoDTO", description: "Entidade separada com seções próprias, vinculada a uma exposição virtual." },
+    { label: "Origem", value: "Supabase", description: "Dados migrados do código para tabelas dinâmicas no banco de dados." },
   ],
   galerias: [
     { label: "Modelo principal", value: "GaleriaAlbumDTO", description: "Contrato para álbum, capa e mídias internas." },

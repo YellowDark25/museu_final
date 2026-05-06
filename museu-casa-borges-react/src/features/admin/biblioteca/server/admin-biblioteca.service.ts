@@ -2,9 +2,10 @@ import path from "node:path"
 
 import { supabase } from "@/lib/supabase"
 import {
-  removeUploadedObject,
-  uploadPublicObject,
-} from "@/lib/storage/object-storage"
+  removePublicStoredFile,
+  SUPABASE_BUCKET_BIBLIOTECA,
+  uploadBufferToSupabasePublicBucket,
+} from "@/lib/storage/supabase-public-buckets"
 import type {
   AdminBibliotecaDocumentoDTO,
   AdminBibliotecaDocumentoInputDTO,
@@ -74,10 +75,11 @@ async function saveBibliotecaUpload(file: File): Promise<string> {
 
   const buffer = Buffer.from(await file.arrayBuffer())
 
-  return uploadPublicObject({
-    prefix: "biblioteca",
-    extension,
+  return uploadBufferToSupabasePublicBucket({
+    bucket: SUPABASE_BUCKET_BIBLIOTECA,
     buffer,
+    extension,
+    subfolder: "documentos",
     originalBaseName: safeBase || "documento",
     contentType: "application/pdf",
   })
@@ -217,7 +219,7 @@ export async function createAdminBibliotecaDocument(
 
     return serializeDocument(row as PublicacaoRow)
   } catch (error) {
-    await removeUploadedObject(url_arquivo)
+    await removePublicStoredFile(url_arquivo)
     throw error
   }
 }
@@ -244,7 +246,7 @@ export async function updateAdminBibliotecaDocument(
   if (file) {
     const nextUrl = await saveBibliotecaUpload(file)
     url_arquivo = nextUrl
-    await removeUploadedObject(existing.url_arquivo)
+    await removePublicStoredFile(existing.url_arquivo)
   }
 
   const { data: row, error } = await supabase
@@ -283,5 +285,5 @@ export async function deleteAdminBibliotecaDocument(documentId: number) {
 
   if (error) throw error
 
-  await removeUploadedObject(row.url_arquivo)
+  await removePublicStoredFile(row.url_arquivo)
 }

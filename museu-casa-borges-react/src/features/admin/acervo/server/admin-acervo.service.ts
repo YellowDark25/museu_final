@@ -2,9 +2,10 @@ import path from "node:path"
 
 import { supabase } from "@/lib/supabase"
 import {
-  removeUploadedObject,
-  uploadPublicObject,
-} from "@/lib/storage/object-storage"
+  removePublicStoredFile,
+  SUPABASE_BUCKET_ACERVO,
+  uploadBufferToSupabasePublicBucket,
+} from "@/lib/storage/supabase-public-buckets"
 import type {
   AdminAcervoCategoryDTO,
   AdminAcervoCategoryInputDTO,
@@ -207,10 +208,11 @@ async function saveAcervoUpload(file: File) {
   const buffer = Buffer.from(await file.arrayBuffer())
   const baseName = path.basename(file.name, extension).trim() || "midia"
 
-  return uploadPublicObject({
-    prefix: "acervo",
-    extension,
+  return uploadBufferToSupabasePublicBucket({
+    bucket: SUPABASE_BUCKET_ACERVO,
     buffer,
+    extension,
+    subfolder: "midias",
     originalBaseName: baseName,
   })
 }
@@ -345,7 +347,7 @@ export async function createAdminAcervoMedia(
 
     return serializeMedia(media as MediaRow)
   } catch (error) {
-    await removeUploadedObject(url)
+    await removePublicStoredFile(url)
     throw error
   }
 }
@@ -384,5 +386,5 @@ export async function deleteAdminAcervoMedia(mediaId: number) {
 
   if (error) throw error
 
-  await removeUploadedObject(media.url)
+  await removePublicStoredFile(media.url)
 }

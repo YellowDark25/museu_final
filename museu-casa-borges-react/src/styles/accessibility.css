@@ -283,9 +283,7 @@ input:invalid {
   box-shadow: 0 0 0 1px #dc2626;
 }
 
-input:valid {
-  border-color: #16a34a;
-}
+/* Sem estilo para `input:valid` — campos com texto são sempre :valid e ficavam com borda verde em todo o site (Tailwind era sobrescrito). */
 
 label {
   font-weight: 500;

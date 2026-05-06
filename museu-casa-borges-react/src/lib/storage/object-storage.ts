@@ -1,15 +1,12 @@
 /**
- * Uploads públicos: S3-compatible (AWS, Cloudflare R2, MinIO na VPS, etc.)
- * ou disco local em `public/uploads/...` quando o modo S3 não está configurado.
+ * Uploads via API compatível com S3 (AWS, Cloudflare R2, MinIO, etc.).
  *
- * Variáveis (modo objeto): STORAGE_DRIVER=s3, S3_BUCKET, S3_ACCESS_KEY_ID,
- * S3_SECRET_ACCESS_KEY, S3_PUBLIC_BASE_URL, opcionalmente S3_ENDPOINT, S3_REGION,
- * S3_FORCE_PATH_STYLE=true (MinIO).
+ * Variáveis: STORAGE_DRIVER=s3 (opcional se credenciais completas),
+ * S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_PUBLIC_BASE_URL,
+ * opcionalmente S3_ENDPOINT, S3_REGION, S3_FORCE_PATH_STYLE=true (MinIO).
+ *
+ * Não há fallback para disco local — configure armazenamento objeto para uploads de acervo/biblioteca.
  */
-
-import { mkdir, unlink, writeFile } from "node:fs/promises"
-import path from "node:path"
-import { randomUUID } from "node:crypto"
 
 import {
   DeleteObjectCommand,
@@ -17,24 +14,17 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3"
 
-const LOCAL_PUBLIC_ROOT = path.join(process.cwd(), "public")
-
-export type UploadPrefix = "acervo" | "biblioteca"
-
-const LOCAL_URL_PREFIX: Record<UploadPrefix, string> = {
-  acervo: "/uploads/acervo",
-  biblioteca: "/uploads/biblioteca",
-}
-
 function envFlag(name: string): boolean {
   return process.env[name]?.toLowerCase() === "true" || process.env[name] === "1"
 }
 
-/** Usa S3 quando explicitamente pedido ou quando credenciais + bucket + URL pública existem. */
-export function useObjectStorage(): boolean {
+/** True quando credenciais S3 e URL pública estão definidas. */
+export function isObjectStorageConfigured(): boolean {
   const driver = process.env.STORAGE_DRIVER?.toLowerCase()
   if (driver === "local") {
-    return false
+    throw new Error(
+      "STORAGE_DRIVER=local não é mais suportado. Remova a variável ou use armazenamento objeto (S3/R2/MinIO)."
+    )
   }
   if (driver === "s3") {
     return true
@@ -85,32 +75,32 @@ function normalizeExtension(extension: string): string {
   return extension.startsWith(".") ? extension.toLowerCase() : `.${extension.toLowerCase()}`
 }
 
+export type UploadPrefix = "acervo" | "biblioteca"
+
 /**
- * Envia bytes para o armazenamento configurado e devolve a URL pública a gravar no banco.
+ * Envia bytes para o bucket S3 configurado e devolve a URL pública a gravar no banco.
  */
 export async function uploadPublicObject(options: {
   prefix: UploadPrefix
   extension: string
   buffer: Buffer
-  /** Nome base seguro para o arquivo (sem path); opcional */
   originalBaseName?: string
   contentType?: string
 }): Promise<string> {
+  if (!isObjectStorageConfigured()) {
+    throw new Error(
+      "Armazenamento de objetos não configurado. Para acervo/biblioteca, defina S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY e S3_PUBLIC_BASE_URL (ou STORAGE_DRIVER=s3)."
+    )
+  }
+
   const ext = normalizeExtension(options.extension)
   const safeBase = (options.originalBaseName ?? "file")
     .replace(/[^\w\-]+/g, "_")
     .slice(0, 80)
 
+  const { randomUUID } = await import("node:crypto")
   const keyName = `${Date.now()}-${safeBase}-${randomUUID().slice(0, 8)}${ext}`
   const objectKey = `${options.prefix}/${keyName}`
-
-  if (!useObjectStorage()) {
-    const uploadDir = path.join(LOCAL_PUBLIC_ROOT, "uploads", options.prefix)
-    await mkdir(uploadDir, { recursive: true })
-    const diskPath = path.join(uploadDir, keyName)
-    await writeFile(diskPath, options.buffer)
-    return `${LOCAL_URL_PREFIX[options.prefix]}/${keyName}`
-  }
 
   const bucket = process.env.S3_BUCKET!.trim()
   const publicBase = process.env.S3_PUBLIC_BASE_URL!.trim().replace(/\/$/, "")
@@ -132,24 +122,14 @@ export async function uploadPublicObject(options: {
 }
 
 /**
- * Remove arquivo local ou objeto S3 a partir da mesma URL guardada no banco.
+ * Remove objeto S3 a partir da URL pública guardada no banco.
  */
 export async function removeUploadedObject(url: string | null): Promise<void> {
   if (!url?.trim()) {
     return
   }
 
-  if (url.startsWith("/uploads/")) {
-    const relative = url.replace(/^\/+/, "")
-    const fullPath = path.join(LOCAL_PUBLIC_ROOT, relative)
-    if (!fullPath.startsWith(LOCAL_PUBLIC_ROOT)) {
-      return
-    }
-    await unlink(fullPath).catch(() => undefined)
-    return
-  }
-
-  if (!useObjectStorage()) {
+  if (!isObjectStorageConfigured()) {
     return
   }
 

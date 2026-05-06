@@ -48,6 +48,79 @@ export type Database = {
         }
         Relationships: []
       }
+      artistas_exposicao: {
+        Row: {
+          created_at: string | null
+          exposicao_id: number
+          foto_url: string | null
+          id: number
+          nome: string
+          ordem: number | null
+          publicado: boolean | null
+          slug: string
+        }
+        Insert: {
+          created_at?: string | null
+          exposicao_id: number
+          foto_url?: string | null
+          id?: number
+          nome: string
+          ordem?: number | null
+          publicado?: boolean | null
+          slug: string
+        }
+        Update: {
+          created_at?: string | null
+          exposicao_id?: number
+          foto_url?: string | null
+          id?: number
+          nome?: string
+          ordem?: number | null
+          publicado?: boolean | null
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artistas_exposicao_exposicao_id_fkey"
+            columns: ["exposicao_id"]
+            isOneToOne: false
+            referencedRelation: "exposicoes_virtuais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      artistas_exposicao_secoes: {
+        Row: {
+          artista_id: number
+          dados: Json
+          id: number
+          ordem: number | null
+          tipo: string
+        }
+        Insert: {
+          artista_id: number
+          dados?: Json
+          id?: number
+          ordem?: number | null
+          tipo: string
+        }
+        Update: {
+          artista_id?: number
+          dados?: Json
+          id?: number
+          ordem?: number | null
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artistas_exposicao_secoes_artista_id_fkey"
+            columns: ["artista_id"]
+            isOneToOne: false
+            referencedRelation: "artistas_exposicao"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categorias: {
         Row: {
           ativa: boolean
@@ -116,6 +189,146 @@ export type Database = {
           titulo?: string
         }
         Relationships: []
+      }
+      exposicoes_permanentes: {
+        Row: {
+          created_at: string | null
+          descricao: string | null
+          id: number
+          imagem_capa: string | null
+          ordem: number | null
+          publicado: boolean | null
+          slug: string
+          titulo: string
+        }
+        Insert: {
+          created_at?: string | null
+          descricao?: string | null
+          id?: number
+          imagem_capa?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          slug: string
+          titulo: string
+        }
+        Update: {
+          created_at?: string | null
+          descricao?: string | null
+          id?: number
+          imagem_capa?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          slug?: string
+          titulo?: string
+        }
+        Relationships: []
+      }
+      exposicoes_temporarias: {
+        Row: {
+          created_at: string | null
+          data_fim: string | null
+          data_inicio: string | null
+          descricao: string | null
+          id: number
+          imagem_capa: string | null
+          ordem: number | null
+          publicado: boolean | null
+          slug: string
+          titulo: string
+        }
+        Insert: {
+          created_at?: string | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          descricao?: string | null
+          id?: number
+          imagem_capa?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          slug: string
+          titulo: string
+        }
+        Update: {
+          created_at?: string | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          descricao?: string | null
+          id?: number
+          imagem_capa?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          slug?: string
+          titulo?: string
+        }
+        Relationships: []
+      }
+      exposicoes_virtuais: {
+        Row: {
+          autor: string | null
+          created_at: string | null
+          descricao_curta: string | null
+          id: number
+          imagem_capa: string | null
+          ordem: number | null
+          publicado: boolean | null
+          slug: string
+          titulo: string
+        }
+        Insert: {
+          autor?: string | null
+          created_at?: string | null
+          descricao_curta?: string | null
+          id?: number
+          imagem_capa?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          slug: string
+          titulo: string
+        }
+        Update: {
+          autor?: string | null
+          created_at?: string | null
+          descricao_curta?: string | null
+          id?: number
+          imagem_capa?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          slug?: string
+          titulo?: string
+        }
+        Relationships: []
+      }
+      exposicoes_virtuais_secoes: {
+        Row: {
+          dados: Json
+          exposicao_id: number
+          id: number
+          ordem: number | null
+          tipo: string
+        }
+        Insert: {
+          dados?: Json
+          exposicao_id: number
+          id?: number
+          ordem?: number | null
+          tipo: string
+        }
+        Update: {
+          dados?: Json
+          exposicao_id?: number
+          id?: number
+          ordem?: number | null
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exposicoes_virtuais_secoes_exposicao_id_fkey"
+            columns: ["exposicao_id"]
+            isOneToOne: false
+            referencedRelation: "exposicoes_virtuais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       galeria_fotos: {
         Row: {
@@ -324,3 +537,43 @@ export type TablesUpdate<
       ? U
       : never
     : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {},
+  },
+} as const

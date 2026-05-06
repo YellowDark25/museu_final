@@ -13,9 +13,6 @@
 # testing
 /coverage
 
-# uploads locais (modo STORAGE_DRIVER=local / fallback)
-/public/uploads/
-
 # next.js
 /.next/
 /out/

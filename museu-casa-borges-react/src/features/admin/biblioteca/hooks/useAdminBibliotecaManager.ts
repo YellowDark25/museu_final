@@ -5,18 +5,9 @@ import { useCallback, useMemo, useState } from "react"
 import type {
   AdminBibliotecaDocumentoDTO,
   AdminBibliotecaDocumentoInputDTO,
-  AdminBibliotecaMutationErrorDTO,
   AdminBibliotecaOverviewDTO,
 } from "@/features/admin/biblioteca/dto/admin-biblioteca.dto"
-
-async function readErrorMessage(response: Response) {
-  try {
-    const body = (await response.json()) as AdminBibliotecaMutationErrorDTO
-    return body.message
-  } catch {
-    return "Não foi possível concluir a operação."
-  }
-}
+import { readAdminApiError } from "@/features/admin/utils/read-admin-api-error"
 
 function appendDocumentFormData(
   fd: FormData,
@@ -69,7 +60,7 @@ export function useAdminBibliotecaManager(initialData: AdminBibliotecaOverviewDT
         })
 
         if (!response.ok) {
-          throw new Error(await readErrorMessage(response))
+          throw new Error(await readAdminApiError(response))
         }
 
         const doc = (await response.json()) as AdminBibliotecaDocumentoDTO
@@ -122,7 +113,7 @@ export function useAdminBibliotecaManager(initialData: AdminBibliotecaOverviewDT
         }
 
         if (!response.ok) {
-          throw new Error(await readErrorMessage(response))
+          throw new Error(await readAdminApiError(response))
         }
 
         const doc = (await response.json()) as AdminBibliotecaDocumentoDTO
@@ -151,7 +142,7 @@ export function useAdminBibliotecaManager(initialData: AdminBibliotecaOverviewDT
       })
 
       if (!response.ok) {
-        throw new Error(await readErrorMessage(response))
+        throw new Error(await readAdminApiError(response))
       }
 
       setDocumentos((current) => current.filter((d) => d.id !== documentId))

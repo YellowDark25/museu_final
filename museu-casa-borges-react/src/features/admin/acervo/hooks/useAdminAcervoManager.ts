@@ -7,18 +7,9 @@ import type {
   AdminAcervoCategoryInputDTO,
   AdminAcervoMediaDTO,
   AdminAcervoMediaInputDTO,
-  AdminAcervoMutationErrorDTO,
   AdminAcervoOverviewDTO,
 } from "@/features/admin/acervo/dto/admin-acervo.dto"
-
-async function readErrorMessage(response: Response) {
-  try {
-    const body = (await response.json()) as AdminAcervoMutationErrorDTO
-    return body.message
-  } catch {
-    return "Não foi possível concluir a operação."
-  }
-}
+import { readAdminApiError } from "@/features/admin/utils/read-admin-api-error"
 
 function syncCategoryCounts(
   categories: AdminAcervoCategoryDTO[],
@@ -66,7 +57,7 @@ export function useAdminAcervoManager(initialData: AdminAcervoOverviewDTO) {
       })
 
       if (!response.ok) {
-        throw new Error(await readErrorMessage(response))
+        throw new Error(await readAdminApiError(response))
       }
 
       const category = (await response.json()) as AdminAcervoCategoryDTO
@@ -104,7 +95,7 @@ export function useAdminAcervoManager(initialData: AdminAcervoOverviewDTO) {
         })
 
         if (!response.ok) {
-          throw new Error(await readErrorMessage(response))
+          throw new Error(await readAdminApiError(response))
         }
 
         const category = (await response.json()) as AdminAcervoCategoryDTO
@@ -145,7 +136,7 @@ export function useAdminAcervoManager(initialData: AdminAcervoOverviewDTO) {
       })
 
       if (!response.ok) {
-        throw new Error(await readErrorMessage(response))
+        throw new Error(await readAdminApiError(response))
       }
 
       setCategories((current) =>
@@ -189,7 +180,7 @@ export function useAdminAcervoManager(initialData: AdminAcervoOverviewDTO) {
         })
 
         if (!response.ok) {
-          throw new Error(await readErrorMessage(response))
+          throw new Error(await readAdminApiError(response))
         }
 
         const entry = (await response.json()) as AdminAcervoMediaDTO
@@ -231,7 +222,7 @@ export function useAdminAcervoManager(initialData: AdminAcervoOverviewDTO) {
         })
 
         if (!response.ok) {
-          throw new Error(await readErrorMessage(response))
+          throw new Error(await readAdminApiError(response))
         }
 
         const entry = (await response.json()) as AdminAcervoMediaDTO
@@ -268,7 +259,7 @@ export function useAdminAcervoManager(initialData: AdminAcervoOverviewDTO) {
       })
 
       if (!response.ok) {
-        throw new Error(await readErrorMessage(response))
+        throw new Error(await readAdminApiError(response))
       }
 
       setMedia((currentMedia) => {
