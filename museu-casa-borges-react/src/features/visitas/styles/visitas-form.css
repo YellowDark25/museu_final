@@ -1,0 +1,42 @@
+.visitas-agendamento-modal .ant-modal {
+  max-width: min(760px, 94vw) !important;
+}
+
+.visitas-agendamento-modal .ant-modal-content {
+  overflow: hidden;
+}
+
+.visitas-agendamento-modal .ant-modal-body {
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-x: hidden !important;
+}
+
+.visitas-agendamento-modal input:invalid,
+.visitas-agendamento-modal textarea:invalid {
+  border-color: #d9d9d9 !important;
+  box-shadow: none !important;
+}
+
+.visitas-agendamento-modal .ant-form-item-explain-error {
+  margin-top: 4px;
+}
+
+.visitas-agendamento-modal .ant-picker,
+.visitas-agendamento-modal .ant-input-affix-wrapper,
+.visitas-agendamento-modal .ant-input {
+  width: 100%;
+  max-width: 100%;
+}
+
+.visitas-form-datetime-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+@media (max-width: 520px) {
+  .visitas-form-datetime-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,4 +1,23 @@
 /** @type {import('next').NextConfig} */
+
+function supabaseStorageRemotePatterns() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!url) return []
+
+  try {
+    const { hostname } = new URL(url)
+    return [
+      {
+        protocol: "https",
+        hostname,
+        pathname: "/storage/v1/object/public/**",
+      },
+    ]
+  } catch {
+    return []
+  }
+}
+
 const nextConfig = {
   /** Sharp em rotas API / compressão de upload — bundle estável no Vercel */
   serverExternalPackages: ["sharp"],
@@ -14,8 +33,8 @@ const nextConfig = {
     // Tamanhos de imagem para diferentes breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     
-    // Domínios externos permitidos (se necessário)
-    domains: [],
+    // Storage público do Supabase (acervo, exposições, biblioteca, etc.)
+    remotePatterns: supabaseStorageRemotePatterns(),
     
     // Configurações de cache
     minimumCacheTTL: 60 * 60 * 24 * 365, // 1 ano

@@ -3,6 +3,7 @@ export type AdminModuleSlug =
   | "biblioteca"
   | "exposicoes"
   | "galerias"
+  | "visitas"
   | "paginas"
   | "equipe"
   | "configuracoes"
@@ -10,6 +11,7 @@ export type AdminModuleSlug =
 export type AdminIconKey =
   | "archive"
   | "book-open"
+  | "calendar"
   | "images"
   | "layout-panel-top"
   | "settings"

@@ -41,6 +41,10 @@ export default function Header() {
       ]
     },
     {
+      title: 'Calendário',
+      href: '/eventos'
+    },
+    {
       title: 'Acervo',
       href: '/acervo'
     },
@@ -128,6 +132,15 @@ export default function Header() {
                     </li>
                   </ul>
                 </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className="bg-transparent hover:bg-white/10 text-white font-medium text-base px-4 py-2 rounded-md transition-all duration-200 inline-flex items-center justify-center whitespace-nowrap no-underline"
+                >
+                  <Link href="/eventos">Calendário</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
