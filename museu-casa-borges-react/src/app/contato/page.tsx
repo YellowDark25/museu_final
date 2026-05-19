@@ -1,19 +1,30 @@
 'use client'
 
 import { useState } from 'react'
-import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
+import { getMuseumGoogleMapsUrl } from '@/config/museum-location'
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
   Send,
   Instagram,
-  Facebook
+  Facebook,
+  ExternalLink,
 } from 'lucide-react'
+
+const LocationMap = dynamic(() => import('@/components/maps/LocationMap'), {
+  ssr: false,
+  loading: () => (
+    <motion.div className="flex h-96 animate-pulse items-center justify-center rounded-lg bg-gray-200">
+      <p className="text-gray-600">Carregando mapa...</p>
+    </motion.div>
+  ),
+})
 
 /**
  * AIDEV-NOTE: Página de Contato do Museu Casa Borges
@@ -273,9 +284,9 @@ export default function ContatoPage() {
                       <div>
                         <h4 className="font-semibold text-gray-800 mb-1">Endereço</h4>
                         <p className="text-gray-600">
-                          Rua Voluntários da Pátria, n° 80<br />
-                          São Sebastiao<br />
-                          Barra do Bugres, MT 78390-000
+                          R. Voluntários da Pátria, 80<br />
+                          São Sebastião<br />
+                          Barra do Bugres - MT, 78390-000
                         </p>
                       </div>
                     </div>
@@ -369,13 +380,36 @@ export default function ContatoPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="bg-gray-300 rounded-lg h-96 flex items-center justify-center"
+              className="space-y-4"
             >
-              <div className="text-center text-gray-600">
-                <MapPin className="w-16 h-16 mx-auto mb-4" />
-                <p className="text-lg font-medium">Mapa Interativo</p>
-                <p className="text-sm">Integração com Google Maps em breve</p>
-              </div>
+              <LocationMap />
+              <motion.div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                <p className="text-sm text-gray-500">
+                  Mapa por{' '}
+                  <a
+                    href="https://www.openstreetmap.org/copyright"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-gray-700"
+                  >
+                    OpenStreetMap
+                  </a>
+                </p>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-[var(--museu-red)] text-[var(--museu-red)] hover:bg-[var(--museu-red)] hover:text-white"
+                >
+                  <a
+                    href={getMuseumGoogleMapsUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Abrir no Google Maps
+                  </a>
+                </Button>
+              </motion.div>
             </motion.div>
           </div>
         </section>

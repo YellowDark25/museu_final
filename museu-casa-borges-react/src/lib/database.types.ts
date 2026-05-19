@@ -160,6 +160,123 @@ export type Database = {
         }
         Relationships: []
       }
+      solicitacoes_visita: {
+        Row: {
+          comentarios: string | null
+          created_at: string
+          data_visita: string
+          email: string
+          endereco: string | null
+          horario_visita: string
+          id: number
+          nome_instituicao: string
+          numero_pessoas: string | null
+          objetivo_visita: string | null
+          observacao_admin: string | null
+          respondido_em: string | null
+          status: string
+          telefone: string
+          updated_at: string
+        }
+        Insert: {
+          comentarios?: string | null
+          created_at?: string
+          data_visita: string
+          email: string
+          endereco?: string | null
+          horario_visita: string
+          id?: number
+          nome_instituicao: string
+          numero_pessoas?: string | null
+          objetivo_visita?: string | null
+          observacao_admin?: string | null
+          respondido_em?: string | null
+          status?: string
+          telefone: string
+          updated_at?: string
+        }
+        Update: {
+          comentarios?: string | null
+          created_at?: string
+          data_visita?: string
+          email?: string
+          endereco?: string | null
+          horario_visita?: string
+          id?: number
+          nome_instituicao?: string
+          numero_pessoas?: string | null
+          objetivo_visita?: string | null
+          observacao_admin?: string | null
+          respondido_em?: string | null
+          status?: string
+          telefone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      eventos: {
+        Row: {
+          categoria: string
+          cor: string
+          created_at: string
+          data_fim: string | null
+          data_inicio: string
+          descricao: string | null
+          gratuito: boolean
+          id: number
+          local: string | null
+          ordem: number
+          publicado: boolean
+          slug: string
+          status: string
+          tipo: string
+          titulo: string
+          updated_at: string
+          vagas: number | null
+          valor_ingresso: number | null
+        }
+        Insert: {
+          categoria?: string
+          cor?: string
+          created_at?: string
+          data_fim?: string | null
+          data_inicio: string
+          descricao?: string | null
+          gratuito?: boolean
+          id?: number
+          local?: string | null
+          ordem?: number
+          publicado?: boolean
+          slug: string
+          status?: string
+          tipo?: string
+          titulo: string
+          updated_at?: string
+          vagas?: number | null
+          valor_ingresso?: number | null
+        }
+        Update: {
+          categoria?: string
+          cor?: string
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string
+          descricao?: string | null
+          gratuito?: boolean
+          id?: number
+          local?: string | null
+          ordem?: number
+          publicado?: boolean
+          slug?: string
+          status?: string
+          tipo?: string
+          titulo?: string
+          updated_at?: string
+          vagas?: number | null
+          valor_ingresso?: number | null
+        }
+        Relationships: []
+      }
       exposicoes: {
         Row: {
           data_fim: string | null

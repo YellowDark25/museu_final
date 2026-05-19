@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, Calendar, MapPin, Users, BookOpen } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { AgendarVisitaButton } from '@/components/visitas/AgendarVisitaButton'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useSEO } from '@/hooks/useSEO'
 import { Badge } from '@/components/ui/badge'
@@ -341,15 +342,10 @@ export default function Home() {
               Venha conhecer pessoalmente nossa coleção e mergulhar na história de Mato Grosso
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                asChild
+              <AgendarVisitaButton
                 size="lg"
-                className="bg-white text-[var(--museu-red)] visited:text-[var(--museu-red)] hover:bg-gray-100 border-white text-base px-6 py-3 rounded-full font-semibold no-underline"
-              >
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfyxS5SWiUlpznLfsuc3tUWKtePX_s4luBRK1RObfPocQTMcg/viewform">
-                  Agendar Visita
-                </a>
-              </Button>
+                className="bg-white text-[var(--museu-red)] hover:bg-gray-100 border-white text-base px-6 py-3 rounded-full font-semibold"
+              />
             </div>
           </motion.div>
         </div>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { AgendarVisitaButton } from '@/components/visitas/AgendarVisitaButton'
 import { 
   Building, 
   Users, 
@@ -233,10 +234,10 @@ export default function OMuseuContent() {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-amber-600 hover:bg-amber-700">
+            <AgendarVisitaButton size="lg" className="bg-amber-600 hover:bg-amber-700">
               <Calendar className="w-5 h-5 mr-2" />
               Agendar Visita
-            </Button>
+            </AgendarVisitaButton>
             <Button size="lg" variant="outline" className="border-amber-600 text-amber-600 hover:bg-amber-50">
               <BookOpen className="w-5 h-5 mr-2" />
               Exposições Atuais

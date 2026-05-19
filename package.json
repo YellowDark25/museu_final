@@ -1,0 +1,13 @@
+{
+  "name": "museu-final",
+  "private": true,
+  "description": "Wrapper para deploy na Vercel. O app Next.js fica em museu-casa-borges-react/.",
+  "scripts": {
+    "build": "npm run build --prefix museu-casa-borges-react",
+    "dev": "npm run dev --prefix museu-casa-borges-react",
+    "start": "npm run start --prefix museu-casa-borges-react"
+  },
+  "dependencies": {
+    "next": "15.5.12"
+  }
+}

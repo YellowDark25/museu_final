@@ -1,0 +1,74 @@
+.eventos-calendario {
+  --cal-primary: #ea580c;
+  --cal-primary-hover: #c2410c;
+  --cal-border: #e5e7eb;
+  --cal-muted: #6b7280;
+  --cal-bg: #f9fafb;
+}
+
+.eventos-calendario .fc {
+  font-family: inherit;
+}
+
+.eventos-calendario .fc .fc-toolbar-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.eventos-calendario .fc .fc-button {
+  background: #fff;
+  border: 1px solid var(--cal-border);
+  color: #374151;
+  font-weight: 500;
+  box-shadow: none;
+  text-transform: capitalize;
+}
+
+.eventos-calendario .fc .fc-button:hover {
+  background: #f3f4f6;
+}
+
+.eventos-calendario .fc .fc-button-primary:not(:disabled).fc-button-active,
+.eventos-calendario .fc .fc-button-primary:not(:disabled):active {
+  background: var(--cal-primary);
+  border-color: var(--cal-primary);
+  color: #fff;
+}
+
+.eventos-calendario .fc .fc-daygrid-day-number,
+.eventos-calendario .fc .fc-col-header-cell-cushion {
+  color: #374151;
+  text-decoration: none;
+}
+
+.eventos-calendario .fc .fc-daygrid-day.fc-day-other {
+  background: #f3f4f6;
+}
+
+.eventos-calendario .fc .fc-daygrid-day.fc-day-today {
+  background: #fff7ed;
+}
+
+.eventos-calendario .fc .fc-event {
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.eventos-calendario .fc .fc-list-event:hover td {
+  background: #fff7ed;
+}
+
+.eventos-calendario .fc .fc-list-day-cushion {
+  background: #f9fafb;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.eventos-calendario .fc .fc-timegrid-slot-label,
+.eventos-calendario .fc .fc-timegrid-axis-cushion {
+  font-size: 0.75rem;
+}

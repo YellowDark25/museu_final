@@ -3,6 +3,7 @@
 import {
   Archive,
   BookOpen,
+  Calendar,
   Images,
   LayoutPanelTop,
   Settings,
@@ -16,6 +17,7 @@ import type { AdminIconKey } from "@/features/admin/dto/admin.dto"
 const iconMap: Record<AdminIconKey, LucideIcon> = {
   archive: Archive,
   "book-open": BookOpen,
+  calendar: Calendar,
   images: Images,
   "layout-panel-top": LayoutPanelTop,
   settings: Settings,

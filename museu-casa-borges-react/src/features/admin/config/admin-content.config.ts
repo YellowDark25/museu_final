@@ -12,6 +12,7 @@ const navigation: AdminNavigationItemDTO[] = [
   { label: "Acervo", href: "/admin/acervo", iconKey: "archive", module: "acervo" },
   { label: "Biblioteca", href: "/admin/biblioteca", iconKey: "book-open", module: "biblioteca" },
   { label: "Exposições", href: "/admin/exposicoes", iconKey: "sparkles", module: "exposicoes" },
+  { label: "Visitas", href: "/admin/visitas", iconKey: "calendar", module: "visitas" },
   { label: "Galerias", href: "/admin/galerias", iconKey: "images", module: "galerias" },
   { label: "Páginas", href: "/admin/paginas", iconKey: "layout-panel-top", module: "paginas" },
   { label: "Equipe", href: "/admin/equipe", iconKey: "users", module: "equipe" },
@@ -51,6 +52,17 @@ const modules: AdminModuleSummaryDTO[] = [
     collections: ["Exposições Virtuais", "Artistas", "Exposições Permanentes", "Exposições Temporárias"],
     primaryAction: { label: "Gerenciar exposições", href: "/admin/exposicoes", tone: "primaria" },
     secondaryAction: { label: "Ver arquitetura", href: "/admin/exposicoes", tone: "secundaria" },
+  },
+  {
+    slug: "visitas",
+    title: "Visitas",
+    description: "Gerencia solicitações de visitação guiada enviadas pelo formulário do site.",
+    iconKey: "calendar",
+    href: "/admin/visitas",
+    readiness: "funcional",
+    collections: ["Solicitações", "Aceites", "Recusas"],
+    primaryAction: { label: "Ver solicitações", href: "/admin/visitas", tone: "primaria" },
+    secondaryAction: { label: "Abrir módulo", href: "/admin/visitas", tone: "secundaria" },
   },
   {
     slug: "galerias",
@@ -179,6 +191,24 @@ const collectionsByModule: Record<AdminModuleSlug, AdminCollectionDefinitionDTO[
       ],
     },
   ],
+  visitas: [
+    {
+      key: "solicitacoes-visita",
+      title: "Solicitações de visita",
+      description: "Pedidos enviados pelo formulário público de agendamento.",
+      dtoName: "SolicitacaoVisitaDTO",
+      fields: [
+        { name: "email", label: "E-mail", type: "texto", required: true, helpText: "Contato do solicitante." },
+        { name: "nomeInstituicao", label: "Nome / Instituição", type: "texto", required: true, helpText: "Identificação do grupo visitante." },
+        { name: "dataVisita", label: "Data", type: "data", required: true, helpText: "Data desejada para a visita." },
+        { name: "status", label: "Status", type: "select", required: true, helpText: "Pendente, aceita ou recusada.", options: [
+          { value: "pendente", label: "Pendente" },
+          { value: "aceita", label: "Aceita" },
+          { value: "recusada", label: "Recusada" },
+        ] },
+      ],
+    },
+  ],
   galerias: [
     {
       key: "galerias",
@@ -256,6 +286,11 @@ const moduleKpis: Record<AdminModuleSlug, AdminModulePageDTO["kpis"]> = {
     { label: "Artistas", value: "ArtistaExposicaoDTO", description: "Entidade separada com seções próprias, vinculada a uma exposição virtual." },
     { label: "Origem", value: "Supabase", description: "Dados migrados do código para tabelas dinâmicas no banco de dados." },
   ],
+  visitas: [
+    { label: "Modelo principal", value: "SolicitacaoVisitaDTO", description: "Pedidos de visitação guiada com fluxo de aprovação." },
+    { label: "Status", value: "3 estados", description: "Pendente, aceita e recusada." },
+    { label: "Origem", value: "Formulário do site", description: "Substitui o Google Forms de agendamento." },
+  ],
   galerias: [
     { label: "Modelo principal", value: "GaleriaAlbumDTO", description: "Contrato para álbum, capa e mídias internas." },
     { label: "Conteúdo", value: "Visual-first", description: "Estrutura orientada por capa, data e itens." },
@@ -294,6 +329,11 @@ const moduleWorkflows: Record<AdminModuleSlug, AdminModulePageDTO["workflows"]> 
     { title: "Relacionar artistas", description: "Vincular artistas, obras e seções curatoriais em fluxo incremental." },
     { title: "Publicar por etapas", description: "Liberar seções conforme a curadoria aprovar o conteúdo." },
   ],
+  visitas: [
+    { title: "Receber solicitação", description: "Visitante preenche o formulário no site." },
+    { title: "Analisar pedido", description: "Equipe revisa data, horário e número de pessoas." },
+    { title: "Aceitar ou recusar", description: "Confirma ou declina a visita pelo painel administrativo." },
+  ],
   galerias: [
     { title: "Criar álbum", description: "Definir título, slug, capa e metadados principais." },
     { title: "Ordenar mídias", description: "Organizar a sequência visual de cada item com ordenação manual." },
@@ -328,6 +368,10 @@ const moduleArchitectureNotes: Record<AdminModuleSlug, AdminModulePageDTO["archi
   exposicoes: [
     { title: "Curadoria modular", description: "Exposição, artistas e mídias devem ter contratos separados para permitir publicação progressiva." },
     { title: "Slug estável", description: "O slug precisa ser imutável ou controlado por versionamento para não quebrar links curatoriais." },
+  ],
+  visitas: [
+    { title: "Fluxo de aprovação", description: "Solicitações entram como pendentes e só mudam de status por ação explícita do admin." },
+    { title: "Dados completos", description: "O formulário replica os campos do Google Forms para não perder contexto na triagem." },
   ],
   galerias: [
     { title: "Ordenação explícita", description: "Galerias são sensíveis a ordem, então o contrato precisa manter prioridade visual como dado de primeira classe." },
