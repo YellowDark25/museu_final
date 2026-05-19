@@ -37,11 +37,13 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.20",
     "framer-motion": "^12.23.22",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.544.0",
     "next": "15.5.12",
     "pdfjs-dist": "^5.4.296",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-leaflet": "^5.0.0",
     "react-pdf": "^10.2.0",
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.3.1"
@@ -49,6 +51,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/leaflet": "^1.9.21",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
