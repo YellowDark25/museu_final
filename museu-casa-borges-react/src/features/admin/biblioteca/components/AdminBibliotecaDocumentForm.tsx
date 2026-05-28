@@ -5,11 +5,11 @@ import { useCallback, useEffect, useState } from "react"
 
 import type { RcFile, UploadFile } from "antd/es/upload/interface"
 import {
-  App,
   Button,
   Form,
   Input,
   InputNumber,
+  message,
   Select,
   Space,
   Typography,
@@ -91,7 +91,6 @@ export function AdminBibliotecaDocumentForm({
   onUpdate,
   onCancel,
 }: Props) {
-  const { message } = App.useApp()
   const [form] = Form.useForm<FormValues>()
   const [file, setFile] = useState<File | null>(null)
   const [uploadList, setUploadList] = useState<UploadFile[]>([])

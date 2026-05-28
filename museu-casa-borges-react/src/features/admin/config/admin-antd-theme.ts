@@ -6,6 +6,10 @@ const MUSEU_RED_HOVER = "#b01e1e"
 const MUSEU_RED_ACTIVE = "#941a1a"
 
 export const adminAntdTheme: ThemeConfig = {
+  hashed: false,
+  cssVar: {
+    key: "museu-admin",
+  },
   token: {
     colorPrimary: MUSEU_RED,
     colorLink: MUSEU_RED,

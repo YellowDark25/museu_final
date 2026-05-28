@@ -12,6 +12,7 @@ import { AgendarVisitaButton } from '@/components/visitas/AgendarVisitaButton'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useSEO } from '@/hooks/useSEO'
 import { Badge } from '@/components/ui/badge'
+import { NoticiaPopup } from '@/components/noticias/NoticiaPopup'
 
 /**
  * Hook de carrossel de imagens de fundo com troca automática.
@@ -352,6 +353,8 @@ export default function Home() {
       </section>
 
       {/* Newsletter Section removida conforme solicitação */}
+
+      <NoticiaPopup />
     </>
   )
 }

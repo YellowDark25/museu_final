@@ -14,9 +14,7 @@ const navigation: AdminNavigationItemDTO[] = [
   { label: "Exposições", href: "/admin/exposicoes", iconKey: "sparkles", module: "exposicoes" },
   { label: "Visitas", href: "/admin/visitas", iconKey: "calendar", module: "visitas" },
   { label: "Galerias", href: "/admin/galerias", iconKey: "images", module: "galerias" },
-  { label: "Páginas", href: "/admin/paginas", iconKey: "layout-panel-top", module: "paginas" },
-  { label: "Equipe", href: "/admin/equipe", iconKey: "users", module: "equipe" },
-  { label: "Configurações", href: "/admin/configuracoes", iconKey: "settings", module: "configuracoes" },
+  { label: "Notícias", href: "/admin/noticias", iconKey: "newspaper", module: "noticias" },
 ]
 
 const modules: AdminModuleSummaryDTO[] = [
@@ -76,37 +74,15 @@ const modules: AdminModuleSummaryDTO[] = [
     secondaryAction: { label: "Ver arquitetura", href: "/admin/galerias", tone: "secundaria" },
   },
   {
-    slug: "paginas",
-    title: "Páginas institucionais",
-    description: "Controla textos, hero, blocos, CTA e SEO das páginas do museu sem espalhar conteúdo pelo código.",
-    iconKey: "layout-panel-top",
-    href: "/admin/paginas",
-    readiness: "em_planejamento",
-    collections: ["Páginas", "Blocos", "Hero", "SEO"],
-    primaryAction: { label: "Abrir módulo", href: "/admin/paginas", tone: "primaria" },
-    secondaryAction: { label: "Ver arquitetura", href: "/admin/paginas", tone: "secundaria" },
-  },
-  {
-    slug: "equipe",
-    title: "Equipe",
-    description: "Mantém nomes, cargos, biografias, fotos e ordem de exibição de membros e colaboradores.",
-    iconKey: "users",
-    href: "/admin/equipe",
-    readiness: "em_planejamento",
-    collections: ["Membros", "Cargos", "Fotos", "Ordem de destaque"],
-    primaryAction: { label: "Abrir módulo", href: "/admin/equipe", tone: "primaria" },
-    secondaryAction: { label: "Ver arquitetura", href: "/admin/equipe", tone: "secundaria" },
-  },
-  {
-    slug: "configuracoes",
-    title: "Configurações",
-    description: "Concentra dados globais do site, como contato, horários, redes sociais, banners e identidade institucional.",
-    iconKey: "settings",
-    href: "/admin/configuracoes",
-    readiness: "fundacao",
-    collections: ["Contato", "Horários", "Redes sociais", "Identidade visual"],
-    primaryAction: { label: "Abrir módulo", href: "/admin/configuracoes", tone: "primaria" },
-    secondaryAction: { label: "Ver arquitetura", href: "/admin/configuracoes", tone: "secundaria" },
+    slug: "noticias",
+    title: "Notícias",
+    description: "Cadastra avisos visuais exibidos em popup na página inicial para divulgar eventos e comunicados.",
+    iconKey: "newspaper",
+    href: "/admin/noticias",
+    readiness: "funcional",
+    collections: ["Popup inicial", "Imagem", "Período", "Publicação"],
+    primaryAction: { label: "Gerenciar notícias", href: "/admin/noticias", tone: "primaria" },
+    secondaryAction: { label: "Abrir módulo", href: "/admin/noticias", tone: "secundaria" },
   },
 ]
 
@@ -223,6 +199,20 @@ const collectionsByModule: Record<AdminModuleSlug, AdminCollectionDefinitionDTO[
       ],
     },
   ],
+  noticias: [
+    {
+      key: "noticias-popup",
+      title: "Popup da página inicial",
+      description: "Aviso visual exibido ao abrir a homepage para divulgar eventos e comunicados.",
+      dtoName: "NoticiaDTO",
+      fields: [
+        { name: "titulo", label: "Título", type: "texto", required: true, helpText: "Nome interno da notícia." },
+        { name: "imagemUrl", label: "Imagem", type: "imagem", required: true, helpText: "Arte exibida no popup.", accept: [".jpg", ".jpeg", ".png", ".webp"] },
+        { name: "linkDestino", label: "Link", type: "url", required: false, helpText: "Destino ao clicar na imagem." },
+        { name: "publicado", label: "Publicada", type: "booleano", required: true, helpText: "Controla visibilidade pública." },
+      ],
+    },
+  ],
   paginas: [
     {
       key: "paginas",
@@ -296,6 +286,11 @@ const moduleKpis: Record<AdminModuleSlug, AdminModulePageDTO["kpis"]> = {
     { label: "Conteúdo", value: "Visual-first", description: "Estrutura orientada por capa, data e itens." },
     { label: "Origem atual", value: "Rotas estáticas", description: "Cada galeria ainda depende de página própria." },
   ],
+  noticias: [
+    { label: "Modelo principal", value: "NoticiaDTO", description: "Contrato para popup visual na homepage." },
+    { label: "Exibição", value: "Automática", description: "Abre ao carregar a página inicial quando publicada." },
+    { label: "Origem", value: "Supabase", description: "Imagem em storage e metadados na tabela noticias." },
+  ],
   paginas: [
     { label: "Modelo principal", value: "PaginaInstitucionalDTO", description: "Contrato genérico para páginas institucionais." },
     { label: "Estratégia", value: "Blocos", description: "Permite reutilização de hero, CTA e conteúdo rico." },
@@ -339,6 +334,11 @@ const moduleWorkflows: Record<AdminModuleSlug, AdminModulePageDTO["workflows"]> 
     { title: "Ordenar mídias", description: "Organizar a sequência visual de cada item com ordenação manual." },
     { title: "Publicar", description: "Exibir o álbum na página pública sem criar nova rota manual." },
   ],
+  noticias: [
+    { title: "Enviar imagem", description: "Fazer upload da arte do aviso ou evento." },
+    { title: "Definir período", description: "Opcionalmente limitar quando o popup deve aparecer." },
+    { title: "Publicar", description: "Ativar exibição automática na página inicial." },
+  ],
   paginas: [
     { title: "Selecionar página", description: "Mapear o slug institucional correspondente ao módulo público." },
     { title: "Editar blocos", description: "Atualizar hero, textos, CTA e SEO sem tocar no código." },
@@ -377,6 +377,10 @@ const moduleArchitectureNotes: Record<AdminModuleSlug, AdminModulePageDTO["archi
     { title: "Ordenação explícita", description: "Galerias são sensíveis a ordem, então o contrato precisa manter prioridade visual como dado de primeira classe." },
     { title: "Capa desacoplada", description: "A imagem de capa deve ser um campo próprio para evitar inferência a partir do primeiro item." },
   ],
+  noticias: [
+    { title: "Popup único", description: "Apenas uma notícia ativa como popup por vez evita sobreposição de avisos na homepage." },
+    { title: "Agendamento opcional", description: "Datas de início e fim permitem campanhas temporárias sem intervenção manual." },
+  ],
   paginas: [
     { title: "Páginas como conteúdo", description: "Separar texto institucional do código reduz retrabalho e permite operação editorial sem deploy." },
     { title: "Blocos reutilizáveis", description: "A modelagem por blocos evita DTOs gigantes e amplia reuso entre páginas." },
@@ -395,7 +399,7 @@ export const adminDashboardSeed: AdminDashboardDTO = {
   title: "CMS Administrativo do Museu",
   description: "Base inicial do backoffice para gerenciar conteúdo orientado a DTOs, módulos de domínio e futura integração com Prisma e storage.",
   kpis: [
-    { label: "Módulos planejados", value: "7", description: "Admin único com domínios separados por responsabilidade." },
+    { label: "Módulos planejados", value: "6", description: "Admin único com domínios separados por responsabilidade." },
     { label: "Contratos DTO iniciais", value: "8", description: "Cada módulo já nasce com contratos e coleções sugeridas." },
     { label: "Estratégia", value: "CMS modular", description: "Prisma como persistência e storage para arquivos." },
   ],
@@ -404,7 +408,6 @@ export const adminDashboardSeed: AdminDashboardDTO = {
   recentActivity: [
     { module: "Arquitetura", title: "Backoffice unificado definido", description: "A estrutura administrativa passa a ser orientada por módulos em vez de páginas isoladas.", status: "publicado", timestampLabel: "Agora" },
     { module: "Acervo", title: "DTOs do módulo mapeados", description: "Itens e mídias do acervo já possuem contratos de referência para futuras rotas e formulários.", status: "rascunho", timestampLabel: "Planejamento" },
-    { module: "Configurações", title: "Fonte única global proposta", description: "Contato, horários e dados institucionais foram consolidados como domínio próprio.", status: "rascunho", timestampLabel: "Planejamento" },
   ],
   architectureNotes: [
     { title: "Camada DTO", description: "O painel deve trabalhar com DTOs como fronteira estável entre UI, serviços e persistência." },

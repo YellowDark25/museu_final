@@ -4,6 +4,7 @@ export type AdminModuleSlug =
   | "exposicoes"
   | "galerias"
   | "visitas"
+  | "noticias"
   | "paginas"
   | "equipe"
   | "configuracoes"
@@ -16,6 +17,7 @@ export type AdminIconKey =
   | "layout-panel-top"
   | "settings"
   | "sparkles"
+  | "newspaper"
   | "users"
 
 export type AdminModuleReadiness = "fundacao" | "em_planejamento" | "pronto_para_integracao" | "funcional"

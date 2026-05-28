@@ -6,6 +6,7 @@ import {
   Calendar,
   Images,
   LayoutPanelTop,
+  Newspaper,
   Settings,
   Sparkles,
   Users,
@@ -22,6 +23,7 @@ const iconMap: Record<AdminIconKey, LucideIcon> = {
   "layout-panel-top": LayoutPanelTop,
   settings: Settings,
   sparkles: Sparkles,
+  newspaper: Newspaper,
   users: Users,
 }
 

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { App, Modal, Button } from "antd"
+import { Modal, Button, message } from "antd"
 
 import type {
   ExposicaoVirtualDTO,
@@ -24,7 +24,6 @@ export function AdminExposicaoVirtualForm({
   onCancel,
   loading,
 }: Props) {
-  const { message } = App.useApp()
   const [titulo, setTitulo] = useState(editing?.titulo ?? "")
   const [descricaoCurta, setDescricaoCurta] = useState(editing?.descricaoCurta ?? "")
   const [imagemCapa, setImagemCapa] = useState(editing?.imagemCapa ?? "")

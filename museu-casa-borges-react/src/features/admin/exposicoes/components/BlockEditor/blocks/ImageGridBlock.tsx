@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { App } from "antd"
+import { message } from "antd"
 
 import type {
   SectionDados,
@@ -22,7 +22,6 @@ interface GridItemData {
 }
 
 export function ImageGridBlock({ dados, onUpdate }: ImageGridBlockProps) {
-  const { message } = App.useApp()
   const gridDados = dados as SectionDadosImageGrid
   const items = gridDados.items ?? []
   const [uploading, setUploading] = useState<number | null>(null)

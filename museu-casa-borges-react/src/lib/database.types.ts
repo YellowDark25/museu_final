@@ -277,6 +277,45 @@ export type Database = {
         }
         Relationships: []
       }
+      noticias: {
+        Row: {
+          id: number
+          titulo: string
+          imagem_url: string
+          link_destino: string | null
+          publicado: boolean
+          exibir_popup: boolean
+          data_inicio: string | null
+          data_fim: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          titulo: string
+          imagem_url: string
+          link_destino?: string | null
+          publicado?: boolean
+          exibir_popup?: boolean
+          data_inicio?: string | null
+          data_fim?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          titulo?: string
+          imagem_url?: string
+          link_destino?: string | null
+          publicado?: boolean
+          exibir_popup?: boolean
+          data_inicio?: string | null
+          data_fim?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       exposicoes: {
         Row: {
           data_fim: string | null
