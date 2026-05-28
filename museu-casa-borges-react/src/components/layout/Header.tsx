@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Instagram, Facebook, Menu, X} from 'lucide-react'
+import { Instagram, Facebook, Menu, User, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { GlobalSearch } from '@/components/search/GlobalSearch'
 import { useGlobalSearch } from '@/hooks/useGlobalSearch'
@@ -233,6 +233,15 @@ export default function Header() {
 
             {/* Social Links */}
             <div className="hidden sm:flex items-center space-x-2">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Link
+                  href="/admin/login"
+                  className="p-2 rounded-full hover:bg-red-700 transition-colors flex"
+                  aria-label="Área administrativa"
+                >
+                  <User size={20} />
+                </Link>
+              </motion.div>
               <motion.a
                 href="https://instagram.com/museucasaborges"
                 target="_blank"
@@ -319,6 +328,14 @@ export default function Header() {
               
               {/* Mobile Social Links */}
               <div className="flex items-center justify-center space-x-4 pt-4 border-t border-red-600">
+                <Link
+                  href="/admin/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-full hover:bg-red-700 transition-colors"
+                  aria-label="Área administrativa"
+                >
+                  <User size={20} />
+                </Link>
                 <a
                   href="https://instagram.com/museucasaborges"
                   target="_blank"

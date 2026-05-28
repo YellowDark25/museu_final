@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { App } from "antd"
+import { message } from "antd"
 
 import type {
   SectionDados,
@@ -15,7 +15,6 @@ interface ImageBlockProps {
 }
 
 export function ImageBlock({ dados, onUpdate }: ImageBlockProps) {
-  const { message } = App.useApp()
   const imgDados = dados as SectionDadosImage
   const [uploading, setUploading] = useState(false)
 

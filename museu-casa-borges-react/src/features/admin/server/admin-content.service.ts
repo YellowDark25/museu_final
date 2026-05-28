@@ -8,8 +8,26 @@ import type {
   AdminModuleSlug,
 } from "@/features/admin/dto/admin.dto"
 
+const hiddenAdminModules = new Set<AdminModuleSlug>([
+  "paginas",
+  "equipe",
+  "configuracoes",
+])
+
+function getVisibleAdminDashboardData(): AdminDashboardDTO {
+  return {
+    ...adminDashboardSeed,
+    navigation: adminDashboardSeed.navigation.filter(
+      (item) => !item.module || !hiddenAdminModules.has(item.module)
+    ),
+    modules: adminDashboardSeed.modules.filter(
+      (module) => !hiddenAdminModules.has(module.slug)
+    ),
+  }
+}
+
 export async function getAdminDashboardData(): Promise<AdminDashboardDTO> {
-  return adminDashboardSeed
+  return getVisibleAdminDashboardData()
 }
 
 export async function getAdminModuleData(

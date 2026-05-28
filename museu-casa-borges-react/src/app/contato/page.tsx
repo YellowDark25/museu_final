@@ -261,7 +261,7 @@ export default function ContatoPage() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-800 mb-1">Telefone</h4>
-                        <p className="text-gray-600">(11) 1234-5678</p>
+                        <p className="text-gray-600">(65) 3123-4567</p>
                         <p className="text-sm text-gray-500">Terça a Sexta, 8h - 11:30h e 13:30h - 17h</p>
                       </div>
                     </div>
@@ -272,7 +272,7 @@ export default function ContatoPage() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-800 mb-1">E-mail</h4>
-                        <p className="text-gray-600">contato@museucasaborges.com.br</p>
+                        <p className="text-gray-600">museucasaborges@unemat.br</p>
                         <p className="text-sm text-gray-500">Respondemos em até 24 horas</p>
                       </div>
                     </div>
