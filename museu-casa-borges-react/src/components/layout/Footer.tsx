@@ -87,6 +87,7 @@ export default function Footer() {
                 width={40}
                 height={40}
                 className="rounded-full object-cover"
+                style={{ width: 40, height: 40 }}
               />
               <span className="font-semibold text-lg">MUSEU CASA BORGES</span>
             </div>

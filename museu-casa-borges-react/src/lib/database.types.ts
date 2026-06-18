@@ -12,6 +12,116 @@ export type Database = {
   }
   public: {
     Tables: {
+      galeria_albuns: {
+        Row: {
+          id: number
+          titulo: string
+          slug: string
+          descricao: string | null
+          capa_url: string | null
+          data_evento: string | null
+          categoria: string | null
+          publicado: boolean
+          ordem: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          titulo: string
+          slug: string
+          descricao?: string | null
+          capa_url?: string | null
+          data_evento?: string | null
+          categoria?: string | null
+          publicado?: boolean
+          ordem?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          titulo?: string
+          slug?: string
+          descricao?: string | null
+          capa_url?: string | null
+          data_evento?: string | null
+          categoria?: string | null
+          publicado?: boolean
+          ordem?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      galeria_itens: {
+        Row: {
+          id: number
+          album_id: number
+          url: string
+          titulo: string | null
+          legenda: string | null
+          categoria_item: string | null
+          ordem: number
+          created_at: string
+        }
+        Insert: {
+          id?: number
+          album_id: number
+          url: string
+          titulo?: string | null
+          legenda?: string | null
+          categoria_item?: string | null
+          ordem?: number
+          created_at?: string
+        }
+        Update: {
+          id?: number
+          album_id?: number
+          url?: string
+          titulo?: string | null
+          legenda?: string | null
+          categoria_item?: string | null
+          ordem?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "galeria_itens_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "galeria_albuns"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      analytics_page_views: {
+        Row: {
+          id: number
+          path: string
+          section: string | null
+          session_id: string
+          referrer: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: number
+          path: string
+          section?: string | null
+          session_id: string
+          referrer?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: number
+          path?: string
+          section?: string | null
+          session_id?: string
+          referrer?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
       admin_users: {
         Row: {
           ativo: boolean

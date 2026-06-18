@@ -90,6 +90,7 @@ export default function Header() {
                 height={50}
                 priority
                 className="rounded-full object-cover"
+                style={{ width: 50, height: 50 }}
               />
 
             </Link>
