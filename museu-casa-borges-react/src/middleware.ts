@@ -1,6 +1,7 @@
+import { createServerClient } from "@supabase/ssr"
 import { NextRequest, NextResponse } from "next/server"
 
-const SESSION_COOKIE = "museu_analytics_sid"
+const ANALYTICS_SESSION_COOKIE = "museu_analytics_sid"
 
 const IGNORED_PREFIXES = [
   "/admin",
@@ -23,18 +24,48 @@ function generateSessionId(): string {
   return crypto.randomUUID()
 }
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
-  const response = NextResponse.next()
 
+  // Supabase Auth: renova o token de sessão em todas as rotas do admin
+  // para que o access token (1h) seja atualizado sem precisar re-login.
+  let response = NextResponse.next({ request: req })
+
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return req.cookies.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              req.cookies.set(name, value)
+            )
+            response = NextResponse.next({ request: req })
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            )
+          },
+        },
+      }
+    )
+
+    await supabase.auth.getUser()
+    return response
+  }
+
+  // Analytics: rastreia pageviews do site público
   if (!shouldTrack(pathname)) {
     return response
   }
 
-  let sessionId = req.cookies.get(SESSION_COOKIE)?.value
+  let sessionId = req.cookies.get(ANALYTICS_SESSION_COOKIE)?.value
   if (!sessionId) {
     sessionId = generateSessionId()
-    response.cookies.set(SESSION_COOKIE, sessionId, {
+    response.cookies.set(ANALYTICS_SESSION_COOKIE, sessionId, {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
       httpOnly: true,
@@ -45,7 +76,6 @@ export function middleware(req: NextRequest) {
   const baseUrl = req.nextUrl.origin
   const referrer = req.headers.get("referer") ?? undefined
 
-  // fire-and-forget: não bloqueia a resposta ao visitante
   fetch(`${baseUrl}/api/analytics/pageview`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
