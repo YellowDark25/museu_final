@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { getMuseumGoogleMapsUrl } from '@/config/museum-location'
@@ -11,7 +10,6 @@ import {
   Mail,
   MapPin,
   Clock,
-  Send,
   Instagram,
   Facebook,
   ExternalLink,
@@ -32,42 +30,6 @@ const LocationMap = dynamic(() => import('@/components/maps/LocationMap'), {
  * Formulário com validação básica e animações
  */
 export default function ContatoPage() {
-  const [formData, setFormData] = useState({
-    nome: '',
-    email: '',
-    telefone: '',
-    assunto: '',
-    mensagem: ''
-  })
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    // Simular envio do formulário
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    alert('Mensagem enviada com sucesso! Entraremos em contato em breve.')
-    setFormData({
-      nome: '',
-      email: '',
-      telefone: '',
-      assunto: '',
-      mensagem: ''
-    })
-    setIsSubmitting(false)
-  }
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -117,138 +79,15 @@ export default function ContatoPage() {
         {/* Conteúdo Principal */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <motion.div 
-              className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+            <motion.div
+              className="grid grid-cols-1 lg:grid-cols-3 gap-8"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              {/* Formulário de Contato */}
+              {/* Informações de Contato */}
               <motion.div variants={cardVariants}>
                 <Card className="h-full">
-                  <CardHeader>
-                    <CardTitle className="text-2xl text-gray-800">
-                      Envie sua Mensagem
-                    </CardTitle>
-                    <CardDescription>
-                      Preencha o formulário abaixo e entraremos em contato em breve
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">
-                            Nome Completo *
-                          </label>
-                          <input
-                            type="text"
-                            id="nome"
-                            name="nome"
-                            value={formData.nome}
-                            onChange={handleInputChange}
-                            required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--museu-red)] focus:border-transparent transition-all duration-200"
-                            placeholder="Seu nome completo"
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                            E-mail *
-                          </label>
-                          <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--museu-red)] focus:border-transparent transition-all duration-200"
-                            placeholder="seu@email.com"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label htmlFor="telefone" className="block text-sm font-medium text-gray-700 mb-2">
-                            Telefone
-                          </label>
-                          <input
-                            type="tel"
-                            id="telefone"
-                            name="telefone"
-                            value={formData.telefone}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--museu-red)] focus:border-transparent transition-all duration-200"
-                            placeholder="(11) 99999-9999"
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="assunto" className="block text-sm font-medium text-gray-700 mb-2">
-                            Assunto *
-                          </label>
-                          <select
-                            id="assunto"
-                            name="assunto"
-                            value={formData.assunto}
-                            onChange={handleInputChange}
-                            required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--museu-red)] focus:border-transparent transition-all duration-200"
-                          >
-                            <option value="">Selecione um assunto</option>
-                            <option value="visita">Informações sobre Visita</option>
-                            <option value="agendamento">Agendamento de Grupo</option>
-                            <option value="exposicoes">Exposições</option>
-                            <option value="educativo">Programa Educativo</option>
-                            <option value="eventos">Eventos</option>
-                            <option value="outros">Outros</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="mensagem" className="block text-sm font-medium text-gray-700 mb-2">
-                          Mensagem *
-                        </label>
-                        <textarea
-                          id="mensagem"
-                          name="mensagem"
-                          value={formData.mensagem}
-                          onChange={handleInputChange}
-                          required
-                          rows={6}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--museu-red)] focus:border-transparent transition-all duration-200 resize-vertical"
-                          placeholder="Digite sua mensagem aqui..."
-                        />
-                      </div>
-
-                      <Button 
-                        type="submit" 
-                        disabled={isSubmitting}
-                        className="w-full bg-[var(--museu-red)] hover:bg-red-700 disabled:opacity-50"
-                      >
-                        {isSubmitting ? (
-                          <div className="flex items-center">
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                            Enviando...
-                          </div>
-                        ) : (
-                          <div className="flex items-center">
-                            <Send className="w-4 h-4 mr-2" />
-                            Enviar Mensagem
-                          </div>
-                        )}
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Informações de Contato */}
-              <motion.div variants={cardVariants} className="space-y-6">
-                {/* Informações Gerais */}
-                <Card>
                   <CardHeader>
                     <CardTitle className="text-2xl text-gray-800">
                       Informações de Contato
@@ -292,9 +131,11 @@ export default function ContatoPage() {
                     </div>
                   </CardContent>
                 </Card>
+              </motion.div>
 
-                {/* Horários */}
-                <Card>
+              {/* Horários */}
+              <motion.div variants={cardVariants}>
+                <Card className="h-full">
                   <CardHeader>
                     <CardTitle className="flex items-center text-xl text-gray-800">
                       <Clock className="w-6 h-6 mr-3 text-[var(--museu-red)]" />
@@ -322,9 +163,11 @@ export default function ContatoPage() {
                     </div>
                   </CardContent>
                 </Card>
+              </motion.div>
 
-                {/* Redes Sociais */}
-                <Card>
+              {/* Redes Sociais */}
+              <motion.div variants={cardVariants}>
+                <Card className="h-full">
                   <CardHeader>
                     <CardTitle className="text-xl text-gray-800">
                       Siga-nos nas Redes Sociais
@@ -332,17 +175,17 @@ export default function ContatoPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex space-x-4">
-                      <a 
-                        href="https://instagram.com/museucasaborges" 
-                        target="_blank" 
+                      <a
+                        href="https://instagram.com/museucasaborges"
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:scale-110 transition-transform duration-200"
                       >
                         <Instagram className="w-6 h-6" />
                       </a>
-                      <a 
-                        href="https://facebook.com/museucasaborges" 
-                        target="_blank" 
+                      <a
+                        href="https://facebook.com/museucasaborges"
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full hover:scale-110 transition-transform duration-200"
                       >

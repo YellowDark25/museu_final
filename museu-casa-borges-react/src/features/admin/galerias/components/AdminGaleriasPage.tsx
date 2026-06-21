@@ -175,7 +175,7 @@ export function AdminGaleriasPage({ initialData }: Props) {
         </Col>
         <Col span={8}>
           <Card>
-            <Statistic title="Publicados" value={data.publicadas} valueStyle={{ color: "#52c41a" }} />
+            <Statistic title="Publicados" value={data.publicadas} styles={{ content: { color: "#52c41a" } }} />
           </Card>
         </Col>
         <Col span={8}>

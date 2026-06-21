@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { listGaleriasPublicas } from '@/features/galerias/server/public-galerias.service'
 import type { GaleriaAlbumDTO } from '@/features/galerias/dto/galerias.dto'
+import { AgendarVisitaButton } from '@/components/visitas/AgendarVisitaButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -190,11 +191,12 @@ export default async function GaleriasPage() {
                   Ver Próximos Eventos
                 </Button>
               </Link>
-              <Link href="/contato">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                  Entre em Contato
-                </Button>
-              </Link>
+              <AgendarVisitaButton
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+                label="Entre em Contato"
+              />
             </div>
           </div>
         </div>

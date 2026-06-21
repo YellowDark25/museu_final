@@ -151,6 +151,7 @@ export function BlockEditor({ blocks, onBlocksChange }: BlockEditorProps) {
   return (
     <div className="space-y-3">
       <DndContext
+        id="block-editor-dnd"
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}

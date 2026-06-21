@@ -106,7 +106,7 @@ export function AdminBibliotecaPage({ initialData }: Props) {
             className="shadow-sm"
           >
             {error ? (
-              <Alert type="error" message={error} showIcon className="mb-4" />
+              <Alert type="error" title={error} showIcon className="mb-4" />
             ) : null}
             <AdminBibliotecaDocumentForm
               pending={pending}

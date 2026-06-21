@@ -1,10 +1,6 @@
-import path from "node:path"
-
 import { supabase } from "@/lib/supabase"
 import {
   removePublicStoredFile,
-  SUPABASE_BUCKET_BIBLIOTECA,
-  uploadBufferToSupabasePublicBucket,
 } from "@/lib/storage/supabase-public-buckets"
 import type {
   AdminBibliotecaDocumentoDTO,
@@ -19,10 +15,6 @@ const ALLOWED_BIBLIOTECA_TABS = new Set<AdminBibliotecaTabDTO>([
   "artigos",
   "tcc",
 ])
-
-const ALLOWED_UPLOAD_EXTENSIONS = new Set([".pdf"])
-
-const MAX_UPLOAD_SIZE_IN_BYTES = 40 * 1024 * 1024
 
 type PublicacaoRow = {
   id: number
@@ -54,35 +46,6 @@ function serializeDocument(row: PublicacaoRow): AdminBibliotecaDocumentoDTO {
     rating: row.rating,
     ordem: row.ordem ?? 0,
   }
-}
-
-async function saveBibliotecaUpload(file: File): Promise<string> {
-  const originalName = file.name.trim() || "documento.pdf"
-  const extension = path.extname(originalName).toLowerCase()
-
-  if (!ALLOWED_UPLOAD_EXTENSIONS.has(extension)) {
-    throw new Error("Envie um arquivo PDF.")
-  }
-
-  if (file.size > MAX_UPLOAD_SIZE_IN_BYTES) {
-    throw new Error("O PDF excede o tamanho máximo permitido (40 MB).")
-  }
-
-  const safeBase = path
-    .basename(originalName, extension)
-    .replace(/[^\w\-]+/g, "_")
-    .slice(0, 80)
-
-  const buffer = Buffer.from(await file.arrayBuffer())
-
-  return uploadBufferToSupabasePublicBucket({
-    bucket: SUPABASE_BUCKET_BIBLIOTECA,
-    buffer,
-    extension,
-    subfolder: "documentos",
-    originalBaseName: safeBase || "documento",
-    contentType: "application/pdf",
-  })
 }
 
 function parseDataPublicacao(
@@ -188,46 +151,44 @@ export async function listPublicBibliotecaDocumentos(): Promise<
 }
 
 export async function createAdminBibliotecaDocument(
-  input: AdminBibliotecaDocumentoInputDTO,
-  file: File
+  input: AdminBibliotecaDocumentoInputDTO
 ): Promise<AdminBibliotecaDocumentoDTO> {
   const data = await validateInput(input, { requireTitulo: true })
-  const url_arquivo = await saveBibliotecaUpload(file)
 
-  try {
-    const { data: row, error } = await supabase
-      .from("publicacoes")
-      .insert({
-        titulo: data.titulo,
-        autor: data.autor,
-        descricao: data.descricao,
-        url_arquivo,
-        ano: data.ano,
-        tipo: data.tipo,
-        data_publicacao: data.data_publicacao,
-        topicos: data.topicos,
-        visualizacoes: data.visualizacoes,
-        rating: data.rating,
-        ordem: data.ordem,
-      })
-      .select(
-        "id, titulo, autor, descricao, url_arquivo, ano, tipo, data_publicacao, topicos, visualizacoes, rating, ordem"
-      )
-      .single()
+  const url_arquivo = input.urlArquivo?.trim() || null
 
-    if (error) throw error
-
-    return serializeDocument(row as PublicacaoRow)
-  } catch (error) {
-    await removePublicStoredFile(url_arquivo)
-    throw error
+  if (!url_arquivo) {
+    throw new Error("Selecione um arquivo PDF.")
   }
+
+  const { data: row, error } = await supabase
+    .from("publicacoes")
+    .insert({
+      titulo: data.titulo,
+      autor: data.autor,
+      descricao: data.descricao,
+      url_arquivo,
+      ano: data.ano,
+      tipo: data.tipo,
+      data_publicacao: data.data_publicacao,
+      topicos: data.topicos,
+      visualizacoes: data.visualizacoes,
+      rating: data.rating,
+      ordem: data.ordem,
+    })
+    .select(
+      "id, titulo, autor, descricao, url_arquivo, ano, tipo, data_publicacao, topicos, visualizacoes, rating, ordem"
+    )
+    .single()
+
+  if (error) throw error
+
+  return serializeDocument(row as PublicacaoRow)
 }
 
 export async function updateAdminBibliotecaDocument(
   documentId: number,
-  input: AdminBibliotecaDocumentoInputDTO,
-  file?: File
+  input: AdminBibliotecaDocumentoInputDTO
 ): Promise<AdminBibliotecaDocumentoDTO> {
   const { data: existing } = await supabase
     .from("publicacoes")
@@ -241,11 +202,10 @@ export async function updateAdminBibliotecaDocument(
 
   const data = await validateInput(input, { requireTitulo: true })
 
-  let url_arquivo = existing.url_arquivo
+  const newUrl = input.urlArquivo?.trim() || null
+  const url_arquivo = newUrl ?? existing.url_arquivo
 
-  if (file) {
-    const nextUrl = await saveBibliotecaUpload(file)
-    url_arquivo = nextUrl
+  if (newUrl && newUrl !== existing.url_arquivo) {
     await removePublicStoredFile(existing.url_arquivo)
   }
 
