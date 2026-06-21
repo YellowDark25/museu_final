@@ -9,7 +9,7 @@ export interface AdminLoginFieldErrorsDTO {
 }
 
 export interface AdminSessionDTO {
-  userId: number
+  userId: string
   name: string
   email: string
   role: "admin"
@@ -20,7 +20,6 @@ export interface AdminAuthSuccessDTO {
   ok: true
   message: string
   redirectTo: string
-  session: AdminSessionDTO
 }
 
 export interface AdminAuthErrorDTO {

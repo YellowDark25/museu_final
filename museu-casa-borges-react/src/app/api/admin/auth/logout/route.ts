@@ -1,22 +1,14 @@
 import { NextResponse } from "next/server"
 
-import {
-  getAdminCookieOptions,
-  getAdminSessionCookieName,
-} from "@/features/admin/auth/server/admin-auth.service"
+import { createSupabaseAuthClient } from "@/lib/supabase-auth"
 
 export async function POST() {
-  const response = NextResponse.json({
+  const supabase = await createSupabaseAuthClient()
+  await supabase.auth.signOut()
+
+  return NextResponse.json({
     ok: true,
     message: "Sessão encerrada.",
     redirectTo: "/admin/login",
   })
-
-  response.cookies.set(
-    getAdminSessionCookieName(),
-    "",
-    getAdminCookieOptions()
-  )
-
-  return response
 }
