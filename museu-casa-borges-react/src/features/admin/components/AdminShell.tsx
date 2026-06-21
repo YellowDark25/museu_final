@@ -36,7 +36,7 @@ export function AdminShell({ navigation, session, children }: Props) {
               </div>
 
               <Button asChild variant="outline" className="w-full sm:w-auto">
-                <Link href="/acervo">Ver site público</Link>
+                <Link href="/acervo">Ver site</Link>
               </Button>
 
               <AdminLogoutButton />

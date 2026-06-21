@@ -1,20 +1,14 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Input } from '@/components/ui/input'
-import { 
-  Search, 
-  BookOpen, 
-  Library,
-  FileText,
-  GraduationCap
-} from 'lucide-react'
+import { Search } from 'lucide-react'
 import { usePDFData, usePDFDataByCategory } from '@/hooks/usePDFData'
 import { PDFGrid } from '@/components/shared/PDFGrid'
 import Image from 'next/image'
@@ -29,24 +23,6 @@ export default function BibliotecaClient() {
   const searchParams = useSearchParams()
 
   const { pdfData, dataByCategory, isLoading, openPDF, downloadPDF } = usePDFData()
-
-  const stats = useMemo(() => {
-    if (!dataByCategory) {
-      return {
-        publicacoes: 0,
-        pesquisas: 0,
-        artigos: 0,
-        tcc: 0
-      }
-    }
-
-    return {
-      publicacoes: dataByCategory.publicacoes?.length || 0,
-      pesquisas: dataByCategory.pesquisas?.length || 0,
-      artigos: dataByCategory.artigos?.length || 0,
-      tcc: dataByCategory.tcc?.length || 0
-    }
-  }, [dataByCategory])
 
   const categoryData = usePDFDataByCategory(activeTab as 'publicacoes' | 'pesquisas' | 'artigos' | 'tcc')
 
@@ -102,61 +78,6 @@ export default function BibliotecaClient() {
       </section>
 
       <div className="container mx-auto px-4 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12"
-        >
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <BookOpen className="h-8 w-8 mx-auto mb-2 text-amber-600" />
-              <p className="font-semibold">Publicações</p>
-              <p className="text-2xl font-bold text-amber-600">{stats.publicacoes}</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <Search className="h-8 w-8 mx-auto mb-2 text-amber-600" />
-              <p className="font-semibold">Pesquisas</p>
-              <p className="text-2xl font-bold text-amber-600">{stats.pesquisas}</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <FileText className="h-8 w-8 mx-auto mb-2 text-amber-600" />
-              <p className="font-semibold">Artigos</p>
-              <p className="text-2xl font-bold text-amber-600">{stats.artigos}</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <GraduationCap className="h-8 w-8 mx-auto mb-2 text-amber-600" />
-              <p className="font-semibold">TCCs</p>
-              <p className="text-2xl font-bold text-amber-600">{stats.tcc}</p>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-8"
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Library className="h-5 w-5" />
-                Biblioteca Digital
-              </CardTitle>
-              <CardDescription>
-                Explore nossa coleção de publicações, pesquisas, artigos e trabalhos acadêmicos sobre a história e cultura de Barra do Bugres e Região
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </motion.div>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

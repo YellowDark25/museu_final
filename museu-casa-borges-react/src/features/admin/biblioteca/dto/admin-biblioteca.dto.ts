@@ -30,6 +30,7 @@ export interface AdminBibliotecaDocumentoInputDTO {
   visualizacoes: number
   rating: number
   ordem: number
+  urlArquivo?: string | null
 }
 
 export interface AdminBibliotecaOverviewDTO {

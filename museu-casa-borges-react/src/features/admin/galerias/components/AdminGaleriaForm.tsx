@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { App, Modal, Button, Input, Select, Switch, Upload } from "antd"
+import { App, Modal, Button, Input, Select, Space, Switch, Upload } from "antd"
 import { UploadOutlined } from "@ant-design/icons"
 import Image from "next/image"
 import type { GaleriaAlbumDTO, GaleriaAlbumInputDTO } from "@/features/galerias/dto/galerias.dto"
@@ -139,16 +139,22 @@ function AdminGaleriaFormContent({ open, editing, onSave, onCancel, loading }: P
 
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Slug (URL) *</label>
-          <Input
-            value={slug}
-            onChange={(e) => {
-              slugTouched.current = true
-              setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))
-            }}
-            placeholder="visita-ufmt"
-            maxLength={120}
-            addonBefore="/galerias/"
-          />
+          <Space.Compact className="w-full">
+            <Input
+              value="/galerias/"
+              disabled
+              style={{ width: "auto", flexShrink: 0, color: "rgba(0,0,0,0.45)" }}
+            />
+            <Input
+              value={slug}
+              onChange={(e) => {
+                slugTouched.current = true
+                setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))
+              }}
+              placeholder="visita-ufmt"
+              maxLength={120}
+            />
+          </Space.Compact>
         </div>
 
         <div>

@@ -9,23 +9,34 @@ import type {
 } from "@/features/admin/biblioteca/dto/admin-biblioteca.dto"
 import { readAdminApiError } from "@/features/admin/utils/read-admin-api-error"
 
-function appendDocumentFormData(
-  fd: FormData,
-  input: AdminBibliotecaDocumentoInputDTO
-) {
-  fd.append("titulo", input.titulo)
-  fd.append("autor", input.autor ?? "")
-  fd.append("descricao", input.descricao ?? "")
-  fd.append("tipo", input.tipo)
-  fd.append(
-    "dataPublicacao",
-    input.dataPublicacao ?? ""
-  )
-  fd.append("topicos", input.topicos.join(", "))
-  fd.append("ano", input.ano != null ? String(input.ano) : "")
-  fd.append("visualizacoes", String(input.visualizacoes ?? 0))
-  fd.append("rating", String(input.rating ?? 5))
-  fd.append("ordem", String(input.ordem ?? 0))
+async function uploadPdfDirect(file: File): Promise<string> {
+  const params = new URLSearchParams({
+    filename: file.name,
+    size: String(file.size),
+  })
+
+  const urlRes = await fetch(`/api/admin/biblioteca/upload-url?${params}`)
+
+  if (!urlRes.ok) {
+    throw new Error(await readAdminApiError(urlRes))
+  }
+
+  const { signedUrl, publicUrl } = (await urlRes.json()) as {
+    signedUrl: string
+    publicUrl: string
+  }
+
+  const uploadRes = await fetch(signedUrl, {
+    method: "PUT",
+    body: file,
+    headers: { "Content-Type": "application/pdf" },
+  })
+
+  if (!uploadRes.ok) {
+    throw new Error("Falha ao enviar o arquivo para o armazenamento.")
+  }
+
+  return publicUrl
 }
 
 export function useAdminBibliotecaManager(initialData: AdminBibliotecaOverviewDTO) {
@@ -50,13 +61,12 @@ export function useAdminBibliotecaManager(initialData: AdminBibliotecaOverviewDT
       setError(null)
 
       try {
-        const fd = new FormData()
-        appendDocumentFormData(fd, input)
-        fd.append("file", file)
+        const urlArquivo = await uploadPdfDirect(file)
 
         const response = await fetch("/api/admin/biblioteca/documentos", {
           method: "POST",
-          body: fd,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...input, urlArquivo }),
         })
 
         if (!response.ok) {
@@ -65,9 +75,7 @@ export function useAdminBibliotecaManager(initialData: AdminBibliotecaOverviewDT
 
         const doc = (await response.json()) as AdminBibliotecaDocumentoDTO
         setDocumentos((current) =>
-          [doc, ...current].sort(
-            (a, b) => a.ordem - b.ordem || b.id - a.id
-          )
+          [doc, ...current].sort((a, b) => a.ordem - b.ordem || b.id - a.id)
         )
       } catch (err) {
         setError(
@@ -91,26 +99,17 @@ export function useAdminBibliotecaManager(initialData: AdminBibliotecaOverviewDT
       setError(null)
 
       try {
-        let response: Response
+        let urlArquivo: string | undefined
 
         if (file) {
-          const fd = new FormData()
-          appendDocumentFormData(fd, input)
-          fd.append("file", file)
-
-          response = await fetch(`/api/admin/biblioteca/documentos/${documentId}`, {
-            method: "PATCH",
-            body: fd,
-          })
-        } else {
-          response = await fetch(`/api/admin/biblioteca/documentos/${documentId}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(input),
-          })
+          urlArquivo = await uploadPdfDirect(file)
         }
+
+        const response = await fetch(`/api/admin/biblioteca/documentos/${documentId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...input, urlArquivo }),
+        })
 
         if (!response.ok) {
           throw new Error(await readAdminApiError(response))
