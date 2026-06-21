@@ -68,7 +68,7 @@ const modules: AdminModuleSummaryDTO[] = [
     description: "Gerencia álbuns, capas, itens de galeria e ordenação para páginas visuais orientadas por mídia.",
     iconKey: "images",
     href: "/admin/galerias",
-    readiness: "pronto_para_integracao",
+    readiness: "funcional",
     collections: ["Álbuns", "Itens de galeria", "Capa", "Ordenação"],
     primaryAction: { label: "Abrir módulo", href: "/admin/galerias", tone: "primaria" },
     secondaryAction: { label: "Ver arquitetura", href: "/admin/galerias", tone: "secundaria" },
@@ -284,7 +284,7 @@ const moduleKpis: Record<AdminModuleSlug, AdminModulePageDTO["kpis"]> = {
   galerias: [
     { label: "Modelo principal", value: "GaleriaAlbumDTO", description: "Contrato para álbum, capa e mídias internas." },
     { label: "Conteúdo", value: "Visual-first", description: "Estrutura orientada por capa, data e itens." },
-    { label: "Origem atual", value: "Rotas estáticas", description: "Cada galeria ainda depende de página própria." },
+    { label: "Origem atual", value: "Supabase", description: "Álbuns e itens gerenciados no banco de dados via admin." },
   ],
   noticias: [
     { label: "Modelo principal", value: "NoticiaDTO", description: "Contrato para popup visual na homepage." },

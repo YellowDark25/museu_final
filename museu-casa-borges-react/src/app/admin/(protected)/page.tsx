@@ -1,8 +1,9 @@
 import { AdminDashboard } from "@/features/admin/components/AdminDashboard"
-import { getAdminDashboardData } from "@/features/admin/server/admin-content.service"
+import { getAdminAnalyticsOverview } from "@/features/analytics/server/analytics.service"
 
 export default async function AdminPage() {
-  const data = await getAdminDashboardData()
+  const month = new Date().toISOString().slice(0, 7)
+  const data = await getAdminAnalyticsOverview(month)
 
   return <AdminDashboard data={data} />
 }

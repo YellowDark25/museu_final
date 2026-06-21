@@ -81,12 +81,14 @@ export default function ImageGallery({
 
   // AIDEV-NOTE: Filtrar imagens baseado na busca e categoria selecionada
   const filteredImages = images.filter(image => {
-    const matchesSearch = image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         image.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    
+    const matchesSearch = !searchTerm || (
+      (image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+      (image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+      (image.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ?? false)
+    )
+
     const matchesCategory = selectedCategory === 'all' || image.category === selectedCategory
-    
+
     return matchesSearch && matchesCategory
   })
 
