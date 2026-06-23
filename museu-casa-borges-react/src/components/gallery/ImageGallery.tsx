@@ -154,10 +154,10 @@ export default function ImageGallery({
 
   // AIDEV-NOTE: Configuração de colunas responsivas
   const gridCols = {
-    2: 'grid-cols-1 md:grid-cols-2',
-    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-    5: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+    2: 'grid-cols-2 md:grid-cols-2',
+    3: 'grid-cols-2 md:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    5: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5'
   }
 
   return (
@@ -186,10 +186,10 @@ export default function ImageGallery({
           transition={{ delay: 0.1 }}
           className="mb-8 space-y-4"
         >
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            {/* AIDEV-NOTE: Barra de busca */}
+          <div className="flex flex-col gap-3">
+            {/* Busca — ocupa largura total */}
             {showSearch && (
-              <div className="relative flex-1 max-w-md">
+              <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <input
                   type="text"
@@ -201,14 +201,13 @@ export default function ImageGallery({
               </div>
             )}
 
-            {/* AIDEV-NOTE: Controles de visualização e filtros */}
-            <div className="flex items-center gap-4">
-              {/* AIDEV-NOTE: Filtro por categoria */}
+            {/* Filtros e toggle — linha com wrap */}
+            <div className="flex flex-wrap items-center gap-3">
               {showFilters && categories.length > 1 && (
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm"
                 >
                   {categories.map(category => (
                     <option key={category} value={category}>
@@ -218,8 +217,7 @@ export default function ImageGallery({
                 </select>
               )}
 
-              {/* AIDEV-NOTE: Alternador de modo de visualização */}
-              <div className="flex border border-gray-300 rounded-lg overflow-hidden">
+              <div className="flex border border-gray-300 rounded-lg overflow-hidden ml-auto">
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'ghost'}
                   size="sm"
@@ -257,7 +255,7 @@ export default function ImageGallery({
       {/* AIDEV-NOTE: Grid de imagens */}
       <motion.div 
         layout
-        className={`grid gap-6 ${gridCols[columns]}`}
+        className={`grid gap-3 sm:gap-6 ${gridCols[columns]}`}
       >
         <AnimatePresence>
           {paginatedImages.map((image, index) => (
@@ -280,7 +278,7 @@ export default function ImageGallery({
                       alt={image.alt}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1200px) 33vw, 25vw"
                     />
                     
                     {/* AIDEV-NOTE: Overlay com informações */}
@@ -307,19 +305,19 @@ export default function ImageGallery({
 
                   {/* AIDEV-NOTE: Informações da imagem */}
                   {(image.title || image.description) && (
-                    <div className="p-4">
+                    <div className="p-2 sm:p-4">
                       {image.title && (
-                        <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1">
+                        <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1 text-xs sm:text-sm">
                           {image.title}
                         </h3>
                       )}
                       {image.description && (
-                        <p className="text-sm text-gray-600 line-clamp-2">
+                        <p className="hidden sm:block text-sm text-gray-600 line-clamp-2">
                           {image.description}
                         </p>
                       )}
                       {image.date && (
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="hidden sm:block text-xs text-gray-500 mt-2">
                           {image.date}
                         </p>
                       )}

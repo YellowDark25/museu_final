@@ -201,18 +201,6 @@ export function EventosCalendarPage({ isAdmin, adminName }: Props) {
     <div className="eventos-calendario min-h-screen bg-gray-50">
       <div className="border-b border-gray-200 bg-white px-4 py-3">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-gray-600">
-            {isAdmin
-              ? "Gerencie a programação cultural do museu."
-              : "Confira a programação cultural publicada."}
-          </p>
-          {!isAdmin && (
-            <Link href="/admin/login">
-              <Button variant="outline" size="sm">
-                Área administrativa
-              </Button>
-            </Link>
-          )}
         </div>
       </div>
 

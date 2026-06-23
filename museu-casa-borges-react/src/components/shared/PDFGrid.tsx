@@ -161,27 +161,26 @@ export function PDFGrid({
           )}
 
           {/* AIDEV-NOTE: Barra de controles */}
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            {/* AIDEV-NOTE: Busca */}
+          <div className="flex flex-col gap-3">
+            {/* Busca */}
             {showSearch && (
-              <div className="relative flex-1 max-w-md">
+              <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
                   placeholder="Buscar por título, autor ou tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 w-full"
                 />
               </div>
             )}
 
-            {/* AIDEV-NOTE: Controles de filtro e visualização */}
-            <div className="flex items-center gap-2">
-              {/* AIDEV-NOTE: Filtro por categoria */}
+            {/* Filtros, ordenação e toggle de visualização */}
+            <div className="flex flex-wrap items-center gap-2">
               {showFilters && categories.length > 1 && (
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="w-40">
-                    <Filter className="w-4 h-4 mr-2" />
+                  <SelectTrigger className="w-36 sm:w-40">
+                    <Filter className="w-4 h-4 mr-2 shrink-0" />
                     <SelectValue placeholder="Categoria" />
                   </SelectTrigger>
                   <SelectContent>
@@ -195,11 +194,10 @@ export function PDFGrid({
                 </Select>
               )}
 
-              {/* AIDEV-NOTE: Ordenação */}
               {showFilters && (
                 <div className="flex items-center gap-1">
                   <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
-                    <SelectTrigger className="w-32">
+                    <SelectTrigger className="w-28 sm:w-32">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -227,9 +225,8 @@ export function PDFGrid({
                 </div>
               )}
 
-              {/* AIDEV-NOTE: Toggle de visualização */}
               {showViewToggle && (
-                <div className="flex items-center border rounded-lg p-1">
+                <div className="flex items-center border rounded-lg p-1 ml-auto">
                   <Button
                     variant={viewMode === 'grid' ? 'default' : 'ghost'}
                     size="sm"
@@ -269,7 +266,7 @@ export function PDFGrid({
             exit="hidden"
             className={
               viewMode === 'grid'
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
+                ? 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6'
                 : 'space-y-4'
             }
           >

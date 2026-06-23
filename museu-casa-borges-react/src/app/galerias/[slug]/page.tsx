@@ -65,18 +65,18 @@ export default async function GaleriaSlugPage({ params }: Props) {
                   {galeria.categoria}
                 </Badge>
               )}
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
                 {galeria.titulo}
               </h1>
               {galeria.descricao && (
-                <p className="text-xl text-gray-600 max-w-3xl">
+                <p className="text-base sm:text-xl text-gray-600 max-w-3xl">
                   {galeria.descricao}
                 </p>
               )}
             </div>
 
             <div className="flex-shrink-0">
-              <div className="bg-slate-50 rounded-lg p-6 space-y-4 border border-slate-200 min-w-[200px]">
+              <div className="bg-slate-50 rounded-lg p-4 sm:p-6 space-y-3 sm:space-y-4 border border-slate-200 sm:min-w-[200px]">
                 {galeria.dataEvento && (
                   <div className="flex items-center text-slate-700">
                     <Calendar className="h-5 w-5 mr-3 text-red-600" />

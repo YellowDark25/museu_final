@@ -43,8 +43,8 @@ export default function StatsCards({ stats, loading }: Props) {
   return (
     <Row gutter={[16, 16]}>
       {items.map((it) => (
-        <Col xs={24} sm={12} lg={6} key={it.label}>
-          <Card variant="borderless" className="shadow-sm" styles={{ body: { padding: "20px 22px" } }}>
+        <Col xs={12} sm={12} lg={6} key={it.label}>
+          <Card variant="borderless" className="shadow-sm" styles={{ body: { padding: "14px 16px" } }}>
             <Statistic
               title={it.label}
               value={loading ? "…" : it.value}
