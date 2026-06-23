@@ -91,7 +91,7 @@ export function PDFCard({
       <Card className="h-full overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm">
         {/* AIDEV-NOTE: Header com miniatura do PDF */}
         <CardHeader className="p-0 relative">
-          <div className="aspect-[3/4] relative overflow-hidden rounded-t-2xl bg-gray-100">
+          <div className="aspect-[3/4] sm:aspect-[3/4] relative overflow-hidden rounded-t-2xl bg-gray-100">
             {/* AIDEV: Miniatura do PDF — garantir que o caminho correto seja passado */}
             <PDFThumbnail
               filePath={pdf.pdfUrl}
@@ -139,34 +139,34 @@ export function PDFCard({
         </CardHeader>
 
         {/* AIDEV-NOTE: Conteúdo do card com informações */}
-        <CardContent className="p-4 space-y-3">
-          {/* AIDEV-NOTE: Título do PDF */}
-          <h3 className="font-semibold text-gray-900 line-clamp-2 text-sm leading-tight">
+        <CardContent className="p-2 sm:p-4 space-y-1.5 sm:space-y-3">
+          {/* Título do PDF */}
+          <h3 className="font-semibold text-gray-900 line-clamp-2 text-xs sm:text-sm leading-tight">
             {pdf.titulo}
           </h3>
 
-          {/* AIDEV-NOTE: Informações do autor e ano */}
-          <div className="flex items-center gap-4 text-xs text-gray-600">
-            <div className="flex items-center gap-1">
-              <User className="w-3 h-3" />
+          {/* Informações do autor e ano */}
+          <div className="flex flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-4 text-xs text-gray-600">
+            <div className="flex items-center gap-1 min-w-0">
+              <User className="w-3 h-3 shrink-0" />
               <span className="truncate">{pdf.autor}</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 shrink-0">
               <Calendar className="w-3 h-3" />
               <span>{pdf.ano}</span>
             </div>
           </div>
 
-          {/* AIDEV-NOTE: Descrição truncada */}
+          {/* Descrição — oculta no mobile */}
           {pdf.descricao && (
-            <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+            <p className="hidden sm:block text-xs text-gray-600 line-clamp-2 leading-relaxed">
               {pdf.descricao}
             </p>
           )}
 
-          {/* AIDEV-NOTE: Tags */}
+          {/* Tags — ocultas no mobile */}
           {pdf.tags && pdf.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1">
+            <div className="hidden sm:flex flex-wrap gap-1">
               {pdf.tags.slice(0, 3).map((tag, index) => (
                 <Badge
                   key={index}
@@ -187,9 +187,9 @@ export function PDFCard({
             </div>
           )}
 
-          {/* AIDEV-NOTE: Footer com estatísticas e ações */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-            <div className="flex items-center gap-3 text-xs text-gray-500">
+          {/* Footer com estatísticas e ações */}
+          <div className="flex items-center justify-between pt-1.5 sm:pt-2 border-t border-gray-100">
+            <div className="hidden sm:flex items-center gap-3 text-xs text-gray-500">
               <div className="flex items-center gap-1">
                 <Eye className="w-3 h-3" />
                 <span>{formatViews(pdf.visualizacoes)}</span>
@@ -200,17 +200,15 @@ export function PDFCard({
               </div>
             </div>
 
-            {/* AIDEV-NOTE: Botões de ação */}
-            <div className="flex gap-1">
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-7 px-3 text-xs"
-                onClick={handleRead}
-              >
-                Ler
-              </Button>
-            </div>
+            {/* Botão de ação */}
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-6 sm:h-7 px-2 sm:px-3 text-xs w-full sm:w-auto"
+              onClick={handleRead}
+            >
+              Ler
+            </Button>
           </div>
         </CardContent>
       </Card>

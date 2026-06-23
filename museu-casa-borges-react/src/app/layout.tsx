@@ -5,6 +5,7 @@ import "./globals.css";
 import { AccessibilityProvider } from "@/components/accessibility/AccessibilityProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 
 export const metadata: Metadata = {
   title: "Museu Casa Borges | Preservando a Memória de Mato Grosso",
@@ -41,6 +42,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <WhatsAppButton />
         </AccessibilityProvider>
       </body>
     </html>

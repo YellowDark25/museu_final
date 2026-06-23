@@ -39,10 +39,10 @@ export default async function GaleriasPage() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
             Galerias Fotográficas
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-gray-200">
+          <p className="text-base sm:text-xl md:text-2xl mb-6 sm:mb-8 text-gray-200">
             Registros visuais da vida cultural e educativa do museu
           </p>
         </div>
@@ -51,11 +51,11 @@ export default async function GaleriasPage() {
       {/* Grid de álbuns */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               Galerias em Destaque
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-xl text-gray-600 max-w-3xl mx-auto">
               Explore nossos registros fotográficos mais recentes e significativos
             </p>
           </div>
@@ -63,7 +63,7 @@ export default async function GaleriasPage() {
           {galerias.length === 0 ? (
             <p className="text-center text-gray-500 py-12">Nenhuma galeria disponível no momento.</p>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
               {galerias.map((galeria) => (
                 <div key={galeria.id} className="group">
                   <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -107,9 +107,9 @@ export default async function GaleriasPage() {
                       </div>
                     </div>
 
-                    <CardContent className="p-6">
+                    <CardContent className="p-4 sm:p-6">
                       {galeria.descricao && (
-                        <p className="text-gray-600 mb-4 line-clamp-3">{galeria.descricao}</p>
+                        <p className="text-gray-600 mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 text-sm sm:text-base">{galeria.descricao}</p>
                       )}
                       <Link href={`/galerias/${galeria.slug}`}>
                         <Button className="w-full group">
@@ -129,12 +129,12 @@ export default async function GaleriasPage() {
       {/* Seção informativa */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
                 Documentando Nossa História
               </h2>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6">
                 Nossas galerias fotográficas capturam momentos especiais da vida do museu,
                 desde oficinas educativas até visitas de grupos e eventos culturais.
                 Cada imagem conta uma história e preserva a memória de nossas atividades.

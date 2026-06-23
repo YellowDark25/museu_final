@@ -48,14 +48,14 @@ export function AcervoGallery({ images }: AcervoGalleryProps) {
     >
       <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">Nossa Coleção</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {images.map((image, index) => (
           <motion.div
             key={image.src}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="relative w-full h-60 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+            className="relative w-full h-40 sm:h-60 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
             onClick={() => handleOpen(index)}
           >
             <Image
@@ -63,7 +63,7 @@ export function AcervoGallery({ images }: AcervoGalleryProps) {
               alt={image.alt}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <span className="text-white text-lg font-semibold">Ver Detalhes</span>

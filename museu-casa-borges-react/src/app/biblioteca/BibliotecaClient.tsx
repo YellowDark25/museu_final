@@ -84,11 +84,11 @@ export default function BibliotecaClient() {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="publicacoes">Publicações</TabsTrigger>
-              <TabsTrigger value="pesquisas">Pesquisas</TabsTrigger>
-              <TabsTrigger value="artigos">Artigos</TabsTrigger>
-              <TabsTrigger value="tcc">TCCs</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto gap-1 sm:gap-0">
+              <TabsTrigger value="publicacoes" className="text-xs sm:text-sm py-2">Publicações</TabsTrigger>
+              <TabsTrigger value="pesquisas" className="text-xs sm:text-sm py-2">Pesquisas</TabsTrigger>
+              <TabsTrigger value="artigos" className="text-xs sm:text-sm py-2">Artigos</TabsTrigger>
+              <TabsTrigger value="tcc" className="text-xs sm:text-sm py-2">TCCs</TabsTrigger>
             </TabsList>
 
             <TabsContent value="publicacoes" className="mt-6">

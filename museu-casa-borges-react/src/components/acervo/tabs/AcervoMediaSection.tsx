@@ -67,10 +67,10 @@ export default function AcervoMediaSection({
           }
         />
       ) : (
-        <Row gutter={[24, 24]}>
+        <Row gutter={[16, 16]}>
           {visibleMedia.map((entry) => (
-            <Col xs={24} md={12} xl={8} key={entry.id}>
-              <Card variant="borderless" className="h-full shadow-sm" styles={{ body: { padding: 24 } }}>
+            <Col xs={24} sm={12} xl={8} key={entry.id}>
+              <Card variant="borderless" className="h-full shadow-sm" styles={{ body: { padding: "16px" } }}>
                 <Space orientation="vertical" size="middle" className="w-full">
                   <Space wrap size={8}>
                     {entry.categoriaNome ? (
